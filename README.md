@@ -27,12 +27,15 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      justify-content: center;
-      padding: 60px;
+      gap: 40px;
+      padding: 80px 24px;
+      max-width: 1280px;
+      margin: 0 auto;
+      min-height: 80vh; /* ensures hero has presence */
     }
     .text-section {
-      flex: 1 1 400px;
-      max-width: 600px;
+      flex: 1 1 50%;
+      max-width: none;
       padding: 20px;
     }
     .text-section h1 {
@@ -62,8 +65,8 @@
       font-size: 14px;
     }
     .image-section {
-      flex: 1 1 400px;
-      max-width: 600px;
+      flex: 1 1 50%;
+      max-width: none;
       padding: 20px;
       text-align: center;
     }
@@ -90,6 +93,9 @@
       grid-template-columns: 1fr 1fr;
       gap: 40px;
       align-items: start;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
     }
     @media (max-width: 900px) {
       .two-col { grid-template-columns: 1fr; }
@@ -125,11 +131,15 @@
     /* sticky header + smooth scroll */
     html { scroll-behavior: smooth; }
     header { position: sticky; top: 0; backdrop-filter: blur(6px); }
+
+    @media (min-width: 1200px) {
+      .text-section h1 { font-size: 64px; }
+    }
   </style>
 </head>
 <body>
   <header>
-    <div><strong>SiCore Research</strong> - Innovative Rugged Power Electronics</div>
+    <div><strong>SiCore Research</strong> - Rugged Power Electronics</div>
     <nav>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
@@ -139,10 +149,10 @@
   <div class="container">
     <div class="text-section">
       <h1>SiCore</h1>
-      <h2>“Innovative Rugged Power Electronics”</h2>
+      <h2>“Innovative Rugged Power”</h2>
       <p>
         SiCore Research specializes in high-performance silicon carbide (SiC) power electronics engineered for extreme environments. 
-        Our designs slash cost, 
+        Our designs eliminate costly devices, 
         delivering unmatched ruggedness, efficiency, and scalability. 
         From military-grade systems to next-generation electrification platforms, 
         we accelerate innovation in renewable energy, electric vehicles, and defense applications.
@@ -150,7 +160,7 @@
       <a href="#about" class="btn">LEARN MORE</a>
     </div>
     <div class="image-section">
-      <img src="https://sicore-research.github.io/images/sicore_power_pcb.jpg?q=80&w=1200&auto=format&fit=crop" alt="SiCore Inverter PCB">
+      <img src="?q=80&w=1200&auto=format&fit=crop" alt="SiCore Inverter PCB">
     </div>
   </div>
 
@@ -163,7 +173,7 @@
         <p class="subtext">SiCore Research designs and builds silicon carbide (SiC) power electronics that thrive where others fail: high temperature, high shock, and mission-critical duty cycles. Our architecture improves reliability while slashing cost and footprint. We partner with integrators across defense, mobility, and energy to accelerate electrification programs from concept to production.</p>
       </div>
       <div class="image-frame">
-        <img src="https://sicore-research.github.io/images/extreme_environments.jpg?q=80&w=1600&auto=format&fit=crop" alt="Inverter and power electronics hardware" style="width:100%;display:block;">
+        <img src="?q=80&w=1600&auto=format&fit=crop" alt="Inverter and power electronics hardware" style="width:100%;display:block;">
       </div>
     </div>
   </section>
@@ -200,7 +210,7 @@
         </form>
       </div>
       <div class="image-frame">
-        <img src="https://sicore-research.github.io/images/electronics_laboratory.jpg?q=80&w=1600&auto=format&fit=crop" alt="Electronics and inverter array" style="width:100%;display:block;">
+        <img src="?q=80&w=1600&auto=format&fit=crop" alt="Electronics and inverter array" style="width:100%;display:block;">
       </div>
     </div>
   </section>
