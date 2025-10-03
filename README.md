@@ -183,7 +183,7 @@
     <div class="two-col">
       <div>
         <div class="display">Contact Us</div>
-        <p class="subtext">Tell us about your application and timelines. We’ll follow up within two business days.</p>
+        <p class="subtext">Interested in working together? Fill out some info and we will be in touch shortly. We can’t wait to hear from you!</p>
         <form action="https://formsubmit.co/contact@sicore-research.com" method="POST">
           <!-- FormSubmit controls -->
           <input type="hidden" name="_subject" value="New inquiry from SiCore website">
