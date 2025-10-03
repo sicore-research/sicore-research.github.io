@@ -150,7 +150,7 @@
       <a href="#about" class="btn">LEARN MORE</a>
     </div>
     <div class="image-section">
-      <img src="https://images.unsplash.com/photo-1587202372775-98927ec9b44d?q=80&w=1200&auto=format&fit=crop" alt="SiCore Inverter PCB">
+      <img src="https://sicore-research.github.io/images/sicore_power_pcb.jpg?q=80&w=1200&auto=format&fit=crop" alt="SiCore Inverter PCB">
     </div>
   </div>
 
@@ -163,7 +163,7 @@
         <p class="subtext">SiCore Research designs and builds silicon carbide (SiC) power electronics that thrive where others fail: high temperature, high shock, and mission-critical duty cycles. Our architecture improves reliability while slashing cost and footprint. We partner with integrators across defense, mobility, and energy to accelerate electrification programs from concept to production.</p>
       </div>
       <div class="image-frame">
-        <img src="https://images.unsplash.com/photo-1627401229250-35c96f8aeecc?q=80&w=1600&auto=format&fit=crop" alt="Inverter and power electronics hardware" style="width:100%;display:block;">
+        <img src="https://sicore-research.github.io/images/extreme_environments.jpg?q=80&w=1600&auto=format&fit=crop" alt="Inverter and power electronics hardware" style="width:100%;display:block;">
       </div>
     </div>
   </section>
@@ -200,7 +200,7 @@
         </form>
       </div>
       <div class="image-frame">
-        <img src="https://images.unsplash.com/photo-1624976282768-6ea8657fca29?q=80&w=1600&auto=format&fit=crop" alt="Electronics and inverter array" style="width:100%;display:block;">
+        <img src="https://sicore-research.github.io/images/electronics_laboratory.jpg?q=80&w=1600&auto=format&fit=crop" alt="Electronics and inverter array" style="width:100%;display:block;">
       </div>
     </div>
   </section>
