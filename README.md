@@ -143,7 +143,7 @@
       <h2>“Innovative Rugged Power”</h2>
       <p>
         SiCore Research specializes in high-performance silicon carbide (SiC) power electronics engineered for extreme environments. 
-        Our designs eliminate costly power modules by leveraging discrete top-side-cooled SiC devices, 
+        Our designs slash cost, 
         delivering unmatched ruggedness, efficiency, and scalability. 
         From military-grade systems to next-generation electrification platforms, 
         we accelerate innovation in renewable energy, electric vehicles, and defense applications.
@@ -161,7 +161,7 @@
       <div>
         <div class="kicker">Who we are</div>
         <div class="display">Engineering for extreme environments</div>
-        <p class="subtext">SiCore Research designs and builds silicon carbide (SiC) power electronics that thrive where others fail: high temperature, high shock, and mission-critical duty cycles. Our module-less, top-side-cooled architecture improves reliability while slashing cost and footprint. We partner with integrators across defense, mobility, and energy to accelerate electrification programs from concept to production.</p>
+        <p class="subtext">SiCore Research designs and builds silicon carbide (SiC) power electronics that thrive where others fail: high temperature, high shock, and mission-critical duty cycles. Our architecture improves reliability while slashing cost and footprint. We partner with integrators across defense, mobility, and energy to accelerate electrification programs from concept to production.</p>
       </div>
       <div class="image-frame">
         <img src="https://images.unsplash.com/photo-1627401229250-35c96f8aeecc?q=80&w=1600&auto=format&fit=crop" alt="Inverter and power electronics hardware" style="width:100%;display:block;">
