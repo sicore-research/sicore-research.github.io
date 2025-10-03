@@ -129,7 +129,7 @@
 </head>
 <body>
   <header>
-    <div><strong>SiCore Research</strong> - Rugged Power Electronics</div>
+    <div><strong>SiCore Research</strong> - Innovative Rugged Power Electronics</div>
     <nav>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
@@ -139,7 +139,7 @@
   <div class="container">
     <div class="text-section">
       <h1>SiCore</h1>
-      <h2>“Innovative Rugged Power”</h2>
+      <h2>“Innovative Rugged Power Electronics”</h2>
       <p>
         SiCore Research specializes in high-performance silicon carbide (SiC) power electronics engineered for extreme environments. 
         Our designs slash cost, 
