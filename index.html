@@ -33,7 +33,6 @@
     /* ---------- Hero ---------- */
     .hero{position:relative;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;height:100vh;overflow:hidden;padding-top:40px}
     .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.42);z-index:-2}
-    /* Image fallback if video fails */
     .hero::before{content:"";position:absolute;inset:0;background:url('images/hero.jpg') center/cover no-repeat,radial-gradient(60% 60% at 50% 40%,#1a1a1a,#000);filter:brightness(.42);z-index:-3}
     .hero-content{z-index:2;max-width:900px;padding:0 20px}
     .hero h1{font-size:72px;line-height:1.05;font-weight:700;letter-spacing:-.02em;margin-bottom:16px}
@@ -51,7 +50,26 @@
     .subtext{font-size:18px;line-height:1.7;color:#ccc}
     .image-frame img{border-radius:12px}
 
-    /* ---------- Cards ---------- */
+    /* ---------- Contact form ---------- */
+    #contact form{display:flex;flex-direction:column;gap:12px;max-width:500px}
+    #contact input,#contact textarea{padding:12px;border:1px solid #444;border-radius:8px;background:#111;color:#eee;font-size:15px}
+    #contact textarea{min-height:120px;resize:vertical}
+
+    /* ---------- Modal ---------- */
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);align-items:center;justify-content:center;z-index:200}
+    .modal-content{background:#111;padding:40px;border-radius:12px;max-width:400px;text-align:center}
+    .modal-content h3{margin-bottom:12px}
+    .close-btn{margin-top:20px;padding:10px 20px;background:#fff;color:#000;border:none;border-radius:8px;cursor:pointer;font-weight:600}
+      /* --- Buttons --- */
+    .btn{display:inline-block;padding:14px 32px;background:#fff;color:#000;border-radius:40px;text-decoration:none;font-weight:700;font-size:15px}
+    .btn.primary{border:none;cursor:pointer}
+
+    /* --- Dots nav --- */
+    .dots{position:absolute;bottom:56px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:2}
+    .dot{width:10px;height:10px;border-radius:50%;background:#666;cursor:pointer;transition:transform .2s,background .2s}
+    .dot.active{background:#fff;transform:scale(1.2)}
+
+    /* --- Cards --- */
     .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
     .card{background:#0f0f0f;border:1px solid #1f1f1f;border-radius:12px;padding:24px}
     .card h3{font-size:20px;margin:0 0 8px}
@@ -59,15 +77,13 @@
     @media(max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:640px){.cards{grid-template-columns:1fr}}
 
-    /* ---------- CTA band ---------- */
+    /* --- CTA band --- */
     .cta-band{background:linear-gradient(90deg,#0a0a0a,#171717);padding:80px 16px;text-align:center}
     .cta-inner{max-width:900px;margin:0 auto}
     .cta-inner h3{font-size:36px;margin:0 0 8px}
     .cta-inner p{color:#ccc;margin:0 0 20px}
-    .btn{display:inline-block;padding:14px 32px;background:#fff;color:#000;border-radius:40px;text-decoration:none;font-weight:700;font-size:15px}
-    .btn.primary{background:#fff;color:#000;border:none;cursor:pointer}
 
-    /* ---------- Footer ---------- */
+    /* --- Footer --- */
     .site-footer{background:#000;padding:60px 24px;border-top:1px solid #111}
     .footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:24px}
     .site-footer h4{margin:0 0 10px}
@@ -76,12 +92,12 @@
     .footnote{text-align:center;color:#777;margin-top:24px;font-size:14px}
     .footcopy{color:#aaa;max-width:420px}
 
-    /* ---------- Dots & reveal ---------- */
-    .dots{position:absolute;bottom:56px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:2}
-    .dot{width:10px;height:10px;border-radius:50%;background:#666;cursor:pointer;transition:transform .2s,background .2s}
-    .dot.active{background:#fff;transform:scale(1.2)}
+    /* --- Reveal --- */
     .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
     .reveal.in{opacity:1;transform:none}
+
+    /* --- Contact layout: force single column --- */
+    #contact .two-col{grid-template-columns:1fr}
   </style>
 </head>
 <body>
@@ -161,19 +177,6 @@
     </div>
   </section>
 
-  <!-- SPLIT SECTION (ALT BACKGROUND) -->
-  <section class="section dark">
-    <div class="wrap">
-      <div class="two-col reveal">
-        <div>
-          <div class="display">Defense-adjacent focus</div>
-          <p class="subtext">We partner with primes, tier-1s, and fast-moving programs where reliability matters most. From vehicle electrification to expeditionary power, our tech is built for the edge.</p>
-        </div>
-        <div class="image-frame"><img src="images/about.jpg" alt="Defense systems"></div>
-      </div>
-    </div>
-  </section>
-
   <!-- CTA BAND -->
   <section class="cta-band reveal">
     <div class="cta-inner">
@@ -200,9 +203,6 @@
             <button class="btn primary" type="submit">SEND</button>
           </form>
           <iframe name="hidden_iframe" style="display:none;"></iframe>
-        </div>
-        <div class="image-frame">
-          <img src="images/contact.jpg" alt="Electronics">
         </div>
       </div>
     </div>
@@ -239,7 +239,6 @@
   </footer>
 
   <script>
-    // Header scroll style & top offset with announcement bar
     function applyHeaderTop(){
       const h = document.getElementById('site-header');
       const bar = document.getElementById('announceBar');
@@ -250,7 +249,6 @@
       h.classList.toggle('scrolled', window.scrollY>50);
     });
 
-    // Dismissible announcement bar (persists via localStorage)
     function dismissAnnounce(){
       const bar = document.getElementById('announceBar');
       bar.classList.add('hidden');
@@ -265,7 +263,6 @@
       applyHeaderTop();
     })();
 
-    // Hamburger menu (desktop + mobile)
     const menuBtn = document.getElementById('menuBtn');
     const menu = document.getElementById('menu');
     function closeMenu(){ menu.style.display='none'; menuBtn.setAttribute('aria-expanded','false'); }
@@ -279,7 +276,6 @@
     document.addEventListener('click', (e)=>{ if(!menu.contains(e.target) && e.target!==menuBtn){ closeMenu(); } });
     window.addEventListener('scroll', closeMenu);
 
-    // Dots nav behavior
     const dots = document.querySelectorAll('.dot');
     dots.forEach(d => d.addEventListener('click', () => {
       const target = document.querySelector(d.dataset.target);
@@ -300,17 +296,14 @@
     window.addEventListener('scroll', updateActiveDot);
     updateActiveDot();
 
-    // Reveal on scroll
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    // Contact form modal
     function showModal(){ setTimeout(function(){ document.getElementById('thankyouModal').style.display='flex'; document.getElementById('contact-form').reset(); }, 700); }
     function closeModal(){ document.getElementById('thankyouModal').style.display='none'; }
 
-    // Disable hero video on small screens (optional data saver)
     if (window.matchMedia('(max-width: 600px)').matches) {
       const v = document.querySelector('.hero-video'); if (v) v.remove();
     }
