@@ -93,7 +93,7 @@
 
   <header id="site-header">
     <div class="header-inner">
-      <div class="brand">SiCore Research</div>
+      <div class="brand">SiCore Researchs</div>
       <div class="actions">
         <button class="get-started" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">Start Building</button>
         <button class="menu-toggle" id="menuBtn" aria-haspopup="true" aria-expanded="false">≡</button>
