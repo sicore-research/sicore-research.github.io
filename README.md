@@ -147,7 +147,7 @@
         </div>
         <div class="card">
           <h3>Module-less SiC</h3>
-          <p>State-of-the-Art SiC devices eliminate expensive power modules while improving reliability and cost.</p>
+          <p>Innovative SiC devices eliminate expensive power modules while improving reliability and cost.</p>
         </div>
         <div class="card">
           <h3>Scalable Platforms</h3>
