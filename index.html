@@ -26,8 +26,8 @@
     .actions{display:flex;gap:12px;align-items:center}
     .get-started{background:#fff;color:#000;border-radius:24px;padding:10px 16px;font-weight:700;border:none;cursor:pointer}
     .menu-toggle{width:36px;height:36px;border:1px solid #444;border-radius:8px;background:#1c1c1c;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
-    .menu{position:absolute;top:56px;right:24px;background:#0f0f0f;border:1px solid #222;border-radius:12px;padding:10px;display:none;flex-direction:column;min-width:180px;z-index:110}
-    .menu a{padding:8px 12px;border-radius:8px}
+    .menu{position:absolute;top:56px;right:24px;background:#0f0f0f;border:1px solid #222;border-radius:12px;padding:10px;display:none;flex-direction:column;min-width:200px;z-index:110}
+    .menu a{padding:10px 12px;border-radius:8px}
     .menu a:hover{background:#1f1f1f}
 
     /* ---------- Hero ---------- */
@@ -51,9 +51,19 @@
     .image-frame img{border-radius:12px}
 
     /* ---------- Contact form ---------- */
-    #contact form{display:flex;flex-direction:column;gap:12px;max-width:500px}
+    #contact form{display:flex;flex-direction:column;gap:12px;max-width:520px}
     #contact input,#contact textarea{padding:12px;border:1px solid #444;border-radius:8px;background:#111;color:#eee;font-size:15px}
     #contact textarea{min-height:120px;resize:vertical}
+
+    /* ---------- Blog cards ---------- */
+    #insights .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    #insights .blog-card{background:#0f0f0f;border:1px solid #1f1f1f;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:10px}
+    #insights .blog-card h4{font-size:18px}
+    #insights .meta{color:#9aa0a6;font-size:13px}
+    #insights .excerpt{color:#cfcfcf;line-height:1.6}
+    #insights .read{margin-top:auto}
+    @media(max-width:1000px){#insights .blog-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:640px){#insights .blog-grid{grid-template-columns:1fr}}
 
     /* ---------- Modal ---------- */
     .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);align-items:center;justify-content:center;z-index:200}
@@ -115,8 +125,9 @@
         <button class="menu-toggle" id="menuBtn" aria-haspopup="true" aria-expanded="false">≡</button>
         <div class="menu" id="menu">
           <a href="#capabilities">Capabilities</a>
+          <a href="#insights">Blog</a>
+          <a href="blog.html">All Posts →</a>
           <a href="#contact">Start Building</a>
-          <a href="#" onclick="alert('Coming soon');return false;">Products</a>
         </div>
       </div>
     </div>
@@ -134,6 +145,7 @@
     <div class="dots" aria-label="Section navigation">
       <span class="dot" data-target="#about" aria-label="About"></span>
       <span class="dot" data-target="#capabilities" aria-label="Capabilities"></span>
+      <span class="dot" data-target="#insights" aria-label="Blog"></span>
       <span class="dot" data-target="#contact" aria-label="Start Building"></span>
     </div>
     <div id="scroll-cue">Scroll to Explore</div>
@@ -186,6 +198,18 @@
     </div>
   </section>
 
+  <!-- LATEST INSIGHTS (auto from posts/posts.json) -->
+  <section id="insights" class="section dark">
+    <div class="wrap">
+      <div class="display" style="margin-bottom:16px;">Latest Insights</div>
+      <p class="subtext" style="margin-bottom:28px;">New technical notes, program updates, and perspectives from the SiCore team.</p>
+      <div class="blog-grid" id="blogGrid">
+        <!-- populated by JS from posts/posts.json -->
+      </div>
+      <div style="margin-top:24px"><a class="btn" href="blog.html">View all posts</a></div>
+    </div>
+  </section>
+
   <section id="contact" class="section">
     <div class="wrap">
       <div class="two-col reveal">
@@ -226,6 +250,7 @@
         <h4>Company</h4>
         <a href="#about">About</a>
         <a href="#capabilities">Capabilities</a>
+        <a href="blog.html">Blog</a>
         <a href="#contact">Start Building</a>
       </div>
       <div>
@@ -281,7 +306,7 @@
       const target = document.querySelector(d.dataset.target);
       if(target){ target.scrollIntoView({behavior:'smooth'}); }
     }));
-    const sections = ['#about','#capabilities','#contact']
+    const sections = ['#about','#capabilities','#insights','#contact']
       .map(sel => document.querySelector(sel))
       .filter(Boolean);
     function updateActiveDot(){
@@ -307,6 +332,31 @@
     if (window.matchMedia('(max-width: 600px)').matches) {
       const v = document.querySelector('.hero-video'); if (v) v.remove();
     }
+
+    // ---- BLOG: fetch latest posts from /posts/posts.json ----
+    async function loadPosts(){
+      const grid = document.getElementById('blogGrid');
+      try {
+        const res = await fetch('posts/posts.json',{cache:'no-store'});
+        if(!res.ok) throw new Error('Missing posts.json');
+        const list = await res.json();
+        const latest = list
+          .sort((a,b)=> new Date(b.date)-new Date(a.date))
+          .slice(0,3);
+        if(!latest.length){ grid.innerHTML = '<p class="subtext">No posts yet. Check back soon.</p>'; return; }
+        grid.innerHTML = latest.map(p=>`
+          <article class="blog-card">
+            <div class="meta">${new Date(p.date).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'2-digit'})}${p.tag?` • ${p.tag}`:''}</div>
+            <h4>${p.title}</h4>
+            <p class="excerpt">${p.excerpt||''}</p>
+            <div class="read"><a class="btn" href="${p.url}">Read more →</a></div>
+          </article>
+        `).join('');
+      } catch(err){
+        grid.innerHTML = '<p class="subtext">Blog feed unavailable.</p>';
+      }
+    }
+    loadPosts();
   </script>
 </body>
 </html>
