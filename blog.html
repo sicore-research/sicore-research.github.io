@@ -167,4 +167,34 @@
       {
         title: "Parasitic Inductance in High-Frequency SiC Converters",
         date: "2025-12-10",
-       
+       tag: "Power Electronics",
+        excerpt: "The 10 nH of busbar inductance that produces a 50V spike at 5 A/ns produces a 500V spike at 50 A/ns - potentially exceeding device ratings on an 800V bus. This article covers sources of parasitic inductance, voltage overshoot calculation, laminated busbar design, PCB power loop layout, decoupling capacitor selection, snubber sizing, and measurement techniques for high-frequency SiC converters.",
+        url: "posts/parasitic-inductance.html"
+      },
+      {
+        title: "EMI/EMC in High-Power SiC Inverters",
+        date: "2025-12-03",
+        tag: "Power Electronics",
+        excerpt: "The fast switching that makes SiC efficient is also the root cause of its worst EMI challenges. A SiC inverter at 100 kHz generates significant harmonic content to several hundred megahertz, couples common-mode current through parasitic capacitances, and must meet demanding standards including MIL-STD-461 and DO-160. This article covers CM and DM filter design, grounding strategy, shielding, motor cable effects, and pre-compliance testing.",
+        url: "posts/emi-emc-sic-inverters.html"
+      }
+    ];
+
+    const grid = document.getElementById('articleGrid');
+    const sorted = POSTS.sort((a,b) => new Date(b.date)-new Date(a.date));
+    if(sorted.length) {
+      grid.innerHTML = sorted.map(p=>`
+        <article class="blog-card">
+          <div class="blog-inner">
+            <p class="blog-date">${new Date(p.date).toLocaleDateString('en-US',{month:'short',day:'2-digit',year:'numeric'})}${p.tag?` &nbsp;·&nbsp; ${p.tag}`:''}</p>
+            <h2 class="blog-title">${p.title}</h2>
+            <p class="blog-excerpt">${p.excerpt||''}</p>
+            <a href="${p.url}" class="blog-link">Read Article</a>
+          </div>
+        </article>`).join('');
+    } else {
+      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#555;padding:60px 0">No articles yet.</p>';
+    }
+  </script>
+</body>
+</html>
