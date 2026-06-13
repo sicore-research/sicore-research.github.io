@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gate Driver Design for SiC MOSFETs | SiCore Research</title>
+  <link rel="icon" type="image/svg+xml" href="../images/SiC_Logo_Inverted.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A rigorous engineering guide to gate driver design for silicon carbide MOSFETs: voltage requirements, negative turn-off, short-circuit protection, CMTI, Kelvin source connections, and layout.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:'Inter',system-ui,-apple-system,sans-serif;background:#0a0a0a;color:#e8e8e8;-webkit-font-smoothing:antialiased}
+    h1,h2,h3,h4,p{margin:0;padding:0}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    :root{--accent:#e07820}
+
+    /* Header */
+    header{position:fixed;top:0;left:0;width:100%;z-index:100;background:rgba(8,8,8,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(224,120,32,.12)}
+    .header-inner{max-width:1400px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand-logo{height:36px;width:36px}
+    .brand-name{font-weight:900;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#fff}
+    .nav-right{display:flex;gap:40px;align-items:center}
+    .nav-link{font-size:11px;color:#777;transition:color .2s;text-transform:uppercase;letter-spacing:.8px;font-weight:700}
+    .nav-link:hover{color:#e07820}
+    .cta-btn{background:#e07820;color:#000;border:none;padding:10px 22px;font-weight:800;cursor:pointer;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;transition:all .2s}
+    .cta-btn:hover{background:#c06010}
+
+    /* Post Layout */
+    .post-wrap{max-width:800px;margin:0 auto;padding:140px 40px 100px}
+
+    /* Back link */
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:1.2px;font-weight:800;color:#666;margin-bottom:48px;transition:color .2s}
+    .back-link:hover{color:#e07820}
+    .back-link::before{content:"←"}
+
+    /* Post header */
+    .post-tag{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#e07820;margin-bottom:16px;display:block}
+    .post-title{font-size:52px;font-weight:900;line-height:1;text-transform:uppercase;letter-spacing:-.03em;margin-bottom:20px}
+    .post-meta{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:56px;padding-bottom:32px;border-bottom:1px solid rgba(224,120,32,.08)}
+
+    /* Post content */
+    .post-content h2{font-size:28px;font-weight:800;text-transform:uppercase;letter-spacing:-.02em;margin:56px 0 16px;color:#fff;line-height:1.1}
+    .post-content h2::before{content:"";display:block;width:24px;height:2px;background:#e07820;margin-bottom:12px}
+    .post-content h3{font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin:32px 0 10px;color:#ccc}
+    .post-content p{font-size:17px;line-height:1.85;color:#999;margin:0 0 20px}
+    .post-content a{color:#e07820;text-decoration:underline;text-underline-offset:3px}
+    .post-content strong{color:#e8e8e8;font-weight:700}
+    .post-content code,kbd{background:#14140e;border:1px solid #2a1e0a;padding:3px 7px;font-size:13px;font-family:monospace;color:#e07820;border-radius:2px}
+    .post-content ul,.post-content ol{color:#999;line-height:1.85;margin:0 0 20px;padding-left:24px;font-size:17px}
+    .post-content li{margin:6px 0}
+    .post-content hr{border:0;border-top:1px solid rgba(224,120,32,.08);margin:48px 0}
+
+    /* Table */
+    .post-content table{width:100%;border-collapse:collapse;margin:24px 0;font-size:13px}
+    .post-content th{background:#0e0c08;border:1px solid #2a1e0a;padding:10px 14px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:#e07820}
+    .post-content td{border:1px solid #1a1608;padding:10px 14px;color:#888;vertical-align:top}
+    .post-content tr:hover td{background:rgba(224,120,32,.02)}
+
+    /* TOC */
+    .toc{background:#0e0c08;border:1px solid rgba(224,120,32,.12);padding:28px 32px;margin:0 0 48px;position:relative}
+    .toc::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:#e07820}
+    .toc h3{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:#e07820;margin:0 0 16px}
+    .toc ol{margin:0;padding-left:20px;color:#666;font-size:14px;line-height:2}
+    .toc a{color:#666;transition:color .2s}
+    .toc a:hover{color:#e07820;text-decoration:none}
+    .toc ul{margin:0;padding-left:16px}
+
+    /* Note callout */
+    .note{background:#0e0c08;border-left:2px solid #e07820;padding:16px 20px;margin:24px 0;font-size:14px;color:#888;line-height:1.7}
+
+    /* Footer */
+    footer{background:#040402;border-top:3px solid #e07820;padding:80px 40px 36px}
+    .footer-wrap{max-width:1400px;margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:80px;margin-bottom:56px}
+    footer h4{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 24px;font-weight:900;color:#e07820}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .footer-brand img{height:26px;width:26px;opacity:.7}
+    .footer-brand-name{font-size:12px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
+    .footer-tagline{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6a5a4a;margin-bottom:16px}
+    .footer-tagline em{color:#e07820;font-style:normal}
+    footer p{font-size:13px;line-height:1.9;color:#666;margin:0}
+    footer a{display:block;font-size:13px;color:#888;margin-bottom:12px;transition:all .2s;font-weight:500}
+    footer a:hover{color:#e07820;padding-left:4px}
+    .footer-bottom{border-top:1px solid rgba(224,120,32,.08);padding-top:28px;font-size:10px;color:#666;display:flex;justify-content:space-between;align-items:center}
+    .footer-bottom a{color:#666;display:inline;margin:0;padding:0}
+    .footer-bottom a:hover{color:#e07820;padding-left:0}
+    @media(max-width:900px){.post-title{font-size:36px}.footer-grid{grid-template-columns:1fr 1fr;gap:40px}.footer-bottom{flex-direction:column;gap:12px;text-align:center}}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="../index.html" class="brand">
+        <img class="brand-logo" src="../images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+        <span class="brand-name">SiCore Research</span>
+      </a>
+      <div class="nav-right">
+        <a href="../index.html#markets" class="nav-link">Markets</a>
+        <a href="../index.html#technology" class="nav-link">Technology</a>
+        <a href="../index.html#capabilities" class="nav-link">Capabilities</a>
+        <a href="../blog.html" class="nav-link">Research</a>
+        <a href="../careers.html" class="nav-link">Careers</a>
+        <button class="cta-btn" onclick="window.location.href='../index.html#contact'">Partner Inquiry</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="post-wrap">
+    <a href="../blog.html" class="back-link">All Research</a>
+
+    <span class="post-tag">Power Electronics</span>
+    <h1 class="post-title">Gate Driver Design for SiC MOSFETs</h1>
+    <div class="post-meta">Dec 18, 2025 &nbsp;·&nbsp; SiCore Research</div>
+
+    <div class="post-content">
+
+      <p>Silicon carbide MOSFETs are not drop-in replacements for silicon IGBTs. The device physics are fundamentally different, and nowhere is that more apparent than at the gate. SiC MOSFETs operate with a narrower threshold voltage window, require negative turn-off bias to prevent parasitic turn-on, switch at speeds that demand microsecond-class short-circuit detection, and impose common-mode transient immunity requirements that most standard gate driver ICs cannot meet. Getting the gate driver wrong is one of the most reliable ways to destroy an otherwise well-designed SiC converter - often spectacularly, and often intermittently enough that the root cause is difficult to trace. This article covers the key design decisions and their engineering rationale, from voltage rail selection to PCB layout, with practical targets for high-power applications.</p>
+
+      <div class="toc">
+        <h3>Contents</h3>
+        <ol>
+          <li><a href="#why-different">Why SiC Gate Drive Differs from Silicon</a></li>
+          <li><a href="#voltage">Gate Voltage Window and Threshold Margin</a></li>
+          <li><a href="#negative">Negative Turn-Off Voltage and the Miller Effect</a></li>
+          <li><a href="#gate-resistance">Gate Resistance Selection</a></li>
+          <li><a href="#isolation">Isolation Requirements</a></li>
+          <li><a href="#power-supply">Isolated Power Supply Design</a></li>
+          <li><a href="#sc-protection">Short-Circuit Protection</a></li>
+          <li><a href="#dead-time">Propagation Delay and Dead Time</a></li>
+          <li><a href="#cmti">Common-Mode Transient Immunity</a></li>
+          <li><a href="#kelvin">Kelvin Source Connection</a></li>
+          <li><a href="#layout">PCB Layout for Gate Drivers</a></li>
+          <li><a href="#ics">Driver IC Selection</a></li>
+          <li><a href="#reliability">Reliability and Qualification</a></li>
+          <li><a href="#example">Worked Example</a></li>
+          <li><a href="#references">References</a></li>
+        </ol>
+      </div>
+
+      <h2 id="why-different">1. Why SiC Gate Drive Differs from Silicon</h2>
+      <p>Silicon IGBTs and SiC MOSFETs differ in three properties that directly shape gate driver requirements. First, the SiC gate oxide is thinner and operates closer to its breakdown field. Recommended gate voltages are tightly bounded - typically +15V to +20V on the high side, and -2V to -5V on the low side - compared to the generous +15V/0V window common in IGBT practice. Second, the threshold voltage of SiC MOSFETs is substantially lower than silicon, commonly 2.5V to 4V, which means the device begins to conduct at a voltage level that can appear on the gate from coupling effects alone during fast switching events. Third, SiC switches at dV/dt rates of 10-50 V/ns and dI/dt rates that can exceed 10 A/ns, generating transients that the gate driver and its isolated supply must survive without misoperation.</p>
+      <p>These three characteristics interact. A fast turn-off creates a large dV/dt on the switching node. That dV/dt couples through the Miller capacitance (Cgd) into the gate of the complementary switch. If the gate driver is not actively holding the gate negative, the coupled voltage can push the gate above threshold and cause an unintended shoot-through event. This failure mode is silent at low switching frequency and becomes catastrophic at high frequency - a common experience when engineers push SiC converters above their initial test conditions.</p>
+
+      <h2 id="voltage">2. Gate Voltage Window and Threshold Margin</h2>
+      <p>SiC MOSFETs have a recommended operating gate voltage range defined by the datasheet, but two additional numbers matter more in practice: the absolute maximum gate voltage (typically +22V) and the threshold voltage (Vth). The ratio between Vth and the gate overdrive voltage determines on-resistance - driving to +15V versus +20V can result in a 30-40% increase in Rds,on for some devices, which directly impacts conduction losses.</p>
+      <p>On the low side, 0V is insufficient. At 0V, the gate is floating relative to source during the off-state, and any Miller-coupled charge will raise the gate voltage above zero. A -2V to -5V rail provides a defined low state with margin against parasitic turn-on. Some designs use active Miller clamps in addition to, or instead of, negative rail voltage to reduce the gate supply requirement.</p>
+
+      <table>
+        <tr><th>Parameter</th><th>Typical SiC MOSFET</th><th>Typical Si IGBT</th><th>Design Implication</th></tr>
+        <tr><td>Recommended Vgs,on</td><td>+15 to +20V</td><td>+15V</td><td>Positive rail: 18-20V preferred for low Rds,on</td></tr>
+        <tr><td>Recommended Vgs,off</td><td>-2 to -5V</td><td>0V</td><td>Negative rail required; dual-supply isolated converter</td></tr>
+        <tr><td>Threshold voltage (Vth)</td><td>2.5 to 4V</td><td>5 to 7V</td><td>Tighter margin; Miller clamp often required</td></tr>
+        <tr><td>Gate oxide Vmax</td><td>+22 to +25V</td><td>+20V</td><td>Less margin above operating point; transient clamping needed</td></tr>
+        <tr><td>Gate charge (Qg)</td><td>100 to 300 nC (high voltage)</td><td>500 to 3000 nC</td><td>Lower drive energy; but faster transitions demand low Rg</td></tr>
+      </table>
+
+      <p>The gate-source voltage should never exceed the datasheet absolute maximum, including during transients. Zener clamp diodes (TVS) across Vgs are standard practice and add negligible cost. Select clamp voltage 2-3V below the absolute maximum - a 20V TVS for a device rated at +22V, for example.</p>
+
+      <h2 id="negative">3. Negative Turn-Off Voltage and the Miller Effect</h2>
+      <p>The Miller capacitance Cgd couples the drain (switching node) to the gate. During a turn-on event in one switch, the switching node slews at dV/dt, injecting charge into the gate of the complementary device through Cgd. The resulting gate voltage spike is approximately:</p>
+      <p><code>Vgs,spike = Cgd / (Cgd + Cgs) x dVds/dt x Rg,off</code></p>
+      <p>For a typical 1200V SiC MOSFET with Cgd = 10pF, Cgs = 400pF, dV/dt = 30 V/ns, and Rg,off = 5 ohms, the spike is approximately 3.7V - which is right at or above the threshold of the device. With a -3V negative rail, the effective gate potential during the spike is 3.7V - 3V = 0.7V, safely below threshold. Without the negative rail, the device may partially conduct during the complementary switch's turn-on, causing a shoot-through current pulse that looks like an unexplained switching loss increase or, under high-current conditions, device failure.</p>
+
+      <div class="note"><strong>Active Miller clamp:</strong> Some driver ICs include an active Miller clamp - a low-impedance path that shorts gate to source the moment the gate drops below a threshold (typically 2V). This reduces or eliminates the need for a negative rail in some applications, but requires careful coordination with the main turn-off signal and adds complexity to the driver IC evaluation.</div>
+
+      <h2 id="gate-resistance">4. Gate Resistance Selection</h2>
+      <p>Gate resistance controls the switching speed, and switching speed affects switching losses, voltage overshoot, and EMI. A lower Rg turns the device on faster, reducing switching losses, but increasing dV/dt and dI/dt. A higher Rg slows switching but increases losses and thermal stress.</p>
+      <p>Most designs use separate turn-on (Rg,on) and turn-off (Rg,off) resistors, diode-isolated. This allows independent control of the two transitions. Turn-on is typically slower (higher Rg,on) to limit inrush and dV/dt. Turn-off can be faster (lower Rg,off) to reduce switching energy, as the Miller effect concern is managed by the negative rail or active clamp.</p>
+
+      <table>
+        <tr><th>Rg,on Range</th><th>Switching Behavior</th><th>Application Fit</th></tr>
+        <tr><td>1 to 5 ohm</td><td>Very fast; high dV/dt and dI/dt; aggressive EMI and overshoot</td><td>Low-inductance busbars only; motorsport or research platforms</td></tr>
+        <tr><td>5 to 15 ohm</td><td>Moderate speed; practical balance of loss and stress</td><td>Most industrial and traction applications at 20-100 kHz</td></tr>
+        <tr><td>15 to 33 ohm</td><td>Soft switching; low EMI; higher switching losses</td><td>Systems with long cables, high inductance loops, or stringent EMC</td></tr>
+      </table>
+
+      <p>External gate resistance adds to the internal gate resistance already present in the device (Rg,int, typically 1 to 10 ohms for SiC). The combined series resistance damps gate oscillations caused by the resonance between Rg and the parasitic inductance of the gate loop. Gate oscillation at 100-500 MHz is a common failure mode in prototype layouts with long gate traces.</p>
+
+      <h2 id="isolation">5. Isolation Requirements</h2>
+      <p>Each switch in a half-bridge requires a galvanically isolated gate drive channel. The high-side switch floats with its source at the switching node, which swings between ground and bus voltage at dV/dt rates of 10-50 V/ns. The isolation barrier must withstand this repetitive common-mode transient without coupling enough voltage to misfire the gate.</p>
+      <p>Working insulation voltage is set by the bus voltage plus safety margin - a 800V bus requires at least 1200V working insulation, with 2500V or higher preferred for industrial and 4000V or higher for aerospace applications. Isolation technology options include optocouplers (limited CMTI), capacitive isolators, transformer-based isolators, and silicon dioxide-based digital isolators. For SiC applications, the common-mode transient immunity (CMTI) specification is the most critical selection criterion.</p>
+
+      <table>
+        <tr><th>Isolation Technology</th><th>Typical CMTI</th><th>Propagation Delay</th><th>Notes</th></tr>
+        <tr><td>Standard optocoupler</td><td>10 to 25 kV/us</td><td>0.5 to 3 us</td><td>Usually inadequate for SiC; legacy designs only</td></tr>
+        <tr><td>High-speed optocoupler</td><td>25 to 50 kV/us</td><td>100 to 500 ns</td><td>Marginal for 30 V/ns dV/dt at 800V bus</td></tr>
+        <tr><td>Capacitive digital isolator</td><td>50 to 150 kV/us</td><td>5 to 30 ns</td><td>Good CMTI; common in commercial SiC drivers</td></tr>
+        <tr><td>Transformer-based isolator</td><td>50 to 200 kV/us</td><td>20 to 100 ns</td><td>Robust; common in custom and military designs</td></tr>
+        <tr><td>Fiber optic</td><td>Immune (no common impedance)</td><td>50 to 200 ns</td><td>Best isolation; cost and board space penalty</td></tr>
+      </table>
+
+      <h2 id="power-supply">6. Isolated Power Supply Design</h2>
+      <p>Each isolated gate driver channel requires its own isolated DC supply, providing the positive rail (+15 to +20V), the negative rail (-2 to -5V), and sufficient current to charge and discharge the gate at the required switching speed. The required average current scales with gate charge and switching frequency:</p>
+      <p><code>Iavg = Qg x fsw</code></p>
+      <p>For a device with Qg = 200 nC switching at 50 kHz, Iavg = 10 mA. The peak current during the gate charge/discharge cycle can be 1-5A, so the supply output capacitance must be sufficient to supply the peak without significant voltage droop. A 10 uF ceramic output capacitor is a minimum starting point for 100+ kHz operation.</p>
+      <p>Isolated supply topologies include: single-stage flyback (simple, compact, adequate for most applications), push-pull (better efficiency at higher power), and off-the-shelf isolated DC-DC modules (Murata MGJ, Recom, Traco). The supply must survive the common-mode dV/dt across its isolation barrier, which means the parasitic capacitance of the transformer and the supply's CMTI specification both matter.</p>
+
+      <div class="note"><strong>Supply rail regulation under load:</strong> Gate driver supply rail voltage shifts with load current. A positive rail that droops from 20V to 16V under peak load will increase Rds,on during fast switching events - exactly when the device is most stressed. Use a supply with load regulation better than 5% and confirm rail voltage under worst-case switching conditions during characterization.</div>
+
+      <h2 id="sc-protection">7. Short-Circuit Protection</h2>
+      <p>SiC MOSFETs have a short-circuit withstand time (tsc) of 2 to 10 microseconds - significantly shorter than silicon IGBTs, which commonly specify 10 microseconds. This requires short-circuit detection and response within approximately 2 us of fault onset. Desaturation (desat) detection is the most common method: a high-voltage diode connected from the drain is monitored during the on-state. When the device goes into short circuit, Vds rises sharply above normal saturation voltage, and the desat comparator triggers a soft turn-off.</p>
+
+      <table>
+        <tr><th>Protection Method</th><th>Detection Time</th><th>Complexity</th><th>Notes</th></tr>
+        <tr><td>Desaturation (desat) detection</td><td>0.5 to 2 us</td><td>Moderate</td><td>Most common; requires blanking during turn-on</td></tr>
+        <tr><td>Drain current sensing (shunt)</td><td>0.1 to 0.5 us</td><td>Higher</td><td>Fastest; adds loss; layout-sensitive</td></tr>
+        <tr><td>Rogowski current sensor</td><td>0.1 to 0.5 us</td><td>Higher</td><td>No added loss; requires integration circuit</td></tr>
+        <tr><td>Gate charge sensing</td><td>1 to 3 us</td><td>Lower</td><td>Indirect method; less reliable in all conditions</td></tr>
+      </table>
+
+      <p>The desat circuit requires a blanking time at turn-on to prevent false triggering while Vds is still falling. Blanking is typically implemented with a small capacitor on the desat node. A blanking time of 0.5 to 1.5 us is common - short enough to detect a fault before tsc expires, but long enough to avoid triggering on the normal Vds transient during turn-on. This blanking time must be validated against the worst-case turn-on time of the device under full load and temperature.</p>
+      <p>When a fault is detected, the driver executes a soft turn-off: the gate is brought down slowly (via a larger Rg,off or a staged clamp) to limit the dI/dt during fault current interruption and avoid destructive overvoltage spikes. A typical soft turn-off slews the gate at 2-5 V/us rather than the normal 20+ V/ns rate.</p>
+
+      <h2 id="dead-time">8. Propagation Delay and Dead Time</h2>
+      <p>Dead time is inserted between the turn-off of one switch and the turn-on of the complementary switch to prevent shoot-through. The minimum required dead time is determined by propagation delay and device switching time:</p>
+      <p><code>t_dead,min = t_prop,max + t_off,device + t_margin</code></p>
+      <p>For a driver with 100 ns propagation delay and a device with 50 ns fall time, minimum dead time is approximately 200 ns with margin. In practice, dead time of 200 to 500 ns is common for SiC half-bridges at 50-200 kHz. Longer dead time is wasteful - during dead time, body diode conduction creates additional losses and voltage stress - but insufficient dead time causes shoot-through.</p>
+      <p>Matched propagation delay between high-side and low-side channels is important. Delay mismatch effectively shifts the dead time for one transition. An asymmetric delay of 50 ns in a 200 ns dead time design consumes 25% of the dead time margin - a significant risk at high temperature when device switching times slow slightly.</p>
+
+      <h2 id="cmti">9. Common-Mode Transient Immunity</h2>
+      <p>CMTI quantifies the maximum dV/dt across the isolation barrier that the driver can reject without propagating a false output transition. At a 800V bus with dV/dt of 30 V/ns, the CMTI requirement is 30,000 V/us. At 50 V/ns on a 1200V bus it reaches 60,000 V/us. Many standard optocouplers specify 10,000 to 25,000 V/us - entirely inadequate.</p>
+      <p>CMTI failures manifest as spurious turn-on or turn-off pulses on the gate output during the opposite switch's switching event. These can destroy devices through shoot-through and are difficult to observe without a high-bandwidth differential probe positioned directly at the gate. If an inverter shows unexplained single-pulse overcurrents that correlate with switching transitions, low CMTI is a primary suspect.</p>
+
+      <h2 id="kelvin">10. Kelvin Source Connection</h2>
+      <p>Power MOSFETs in module and discrete packages include a dedicated Kelvin source pin separated from the power source terminal. The power source carries load current, which creates a voltage drop across the package inductance (Ls) during switching: <code>V = Ls x dI/dt</code>. This voltage appears in series with the gate drive loop, effectively opposing the gate drive voltage and slowing the switching transition.</p>
+      <p>Connecting the gate driver return to the power source rather than the Kelvin pin introduces the full package inductance into the gate loop. At dI/dt = 5 A/ns and Ls = 5 nH, the error is 25V - comparable to the gate drive voltage itself. The result is dramatically slowed switching and increased losses, without any obvious fault indication.</p>
+      <p>The Kelvin source connection must be routed as a separate trace from gate driver return to the Kelvin pin, never merging with the power source current path. This applies to both discrete device layouts and module designs where the Kelvin terminal is a separate bonding wire.</p>
+
+      <h2 id="layout">11. PCB Layout for Gate Drivers</h2>
+      <p>Gate loop inductance - the inductance of the loop formed by the gate driver output, gate pin, source pin, and return path - directly affects gate oscillation, switching speed repeatability, and EMI. The goal is to minimize this loop. Key rules:</p>
+      <ul>
+        <li><strong>Minimize gate trace length.</strong> The driver IC should be as close to the device gate pin as practical - within 20 mm is a common target.</li>
+        <li><strong>Use a ground plane beneath the gate drive circuit</strong> to reduce loop inductance. Route gate and Kelvin return as a tightly coupled differential pair.</li>
+        <li><strong>Place bypass capacitors at the driver supply pins</strong> with sub-5 mm traces to the IC. Ceramic 100 nF at VCC and VEE is a minimum; 10 uF bulk capacitor nearby for sustained burst switching.</li>
+        <li><strong>Separate gate drive ground from power ground</strong> with a single connection at the source star point. Ground loops between driver and power circuits couple switching noise directly into the gate path.</li>
+        <li><strong>Ferrite bead in series with gate</strong> (100 to 600 ohm at 100 MHz) can damp high-frequency gate oscillations without significantly affecting switching speed. Use only if oscillation is confirmed - adds parasitic inductance.</li>
+      </ul>
+
+      <div class="note"><strong>Gate resistor placement:</strong> Gate resistors must be placed at the device end of the gate trace, not at the driver end. Placing Rg at the driver increases the effective gate loop inductance by the inductance of the trace between Rg and the device, potentially causing resonance.</div>
+
+      <h2 id="ics">12. Driver IC Selection</h2>
+      <p>The SiC gate driver IC market has matured significantly. Key suppliers include Silicon Labs (Si827x), Texas Instruments (UCC21xxx series), Infineon (EiceDRIVER), Skyworks (Si823x), Rohm (BM6xxx), and several others. Selection criteria beyond CMTI and propagation delay include: integrated desat protection, Miller clamp, adjustable output drive strength, undervoltage lockout (UVLO) thresholds, and fault reporting.</p>
+
+      <table>
+        <tr><th>Feature</th><th>Why It Matters for SiC</th></tr>
+        <tr><td>CMTI &gt; 100 kV/us</td><td>Required for 800V+ bus with fast SiC switching</td></tr>
+        <tr><td>Integrated desat protection</td><td>Reduces component count; blanking time must be configurable</td></tr>
+        <tr><td>Negative output voltage capability</td><td>Must support -5V output without external level shifting</td></tr>
+        <tr><td>Miller clamp output</td><td>Provides low-impedance gate hold-off independent of main driver</td></tr>
+        <tr><td>UVLO on both supply rails</td><td>Prevents partial-enhancement operation if negative rail fails</td></tr>
+        <tr><td>Adjustable drive strength</td><td>Allows Rg optimization without additional external resistors</td></tr>
+        <tr><td>Fault output pin</td><td>Enables system-level fault logging and graceful shutdown</td></tr>
+      </table>
+
+      <h2 id="reliability">13. Reliability and Qualification</h2>
+      <p>Gate oxide reliability is the primary long-term concern for SiC MOSFETs. Oxide degradation accelerates with both gate voltage magnitude and temperature. Operating at the lower end of the recommended gate voltage range (+15V rather than +20V) reduces oxide stress at the cost of slightly higher Rds,on. For applications requiring 10+ year service life under harsh conditions, gate voltage derating is worth considering.</p>
+      <p>The isolated power supply is often the weakest reliability link in the gate drive subsystem. Transformer core materials degrade under temperature cycling; optocoupler CTR (current transfer ratio) decreases over time and with radiation dose for space applications. In high-reliability designs, the isolated supply and the isolator should both be evaluated against the expected mission lifetime with appropriate derating applied to operating stress levels.</p>
+      <p>For defense and aerospace applications, the gate driver circuit should undergo qualification testing per MIL-STD-810 (shock and vibration), MIL-STD-461 (EMC), and applicable reliability standards. Gate driver ICs in plastic packages are typically rated to 125°C junction temperature - designs operating in high-ambient environments may require derating or thermal management for the driver PCB itself.</p>
+
+      <h2 id="example">14. Worked Example: 800V, 100 kHz Half-Bridge</h2>
+      <p>Consider a 800V half-bridge switching at 100 kHz with 1200V/300A SiC MOSFETs (Qg = 250 nC, Vth = 3.2V, tsc = 3 us).</p>
+      <ul>
+        <li><strong>Gate voltage rails:</strong> +18V / -3V. +18V provides full enhancement with margin below +22V absolute max; -3V provides 0.2V margin below Vth during Miller coupling events.</li>
+        <li><strong>Gate resistance:</strong> Rg,on = 10 ohm, Rg,off = 5 ohm (diode-isolated). Targeting dV/dt of approximately 20 V/ns.</li>
+        <li><strong>Isolated supply:</strong> Output power = Qg x fsw x Vgs,on = 250 nC x 100 kHz x 18V = 450 mW per channel. Use a 1W isolated DC-DC module with dual output (+18/-3V) and 50 uF output capacitance.</li>
+        <li><strong>CMTI requirement:</strong> 20 V/ns x 800V / 1000 = 16,000 V/us minimum. Select driver with 100 kV/us rated CMTI for 6x margin.</li>
+        <li><strong>Desat protection:</strong> Blanking time = 1 us. Fault response within 1.5 us to stay within tsc = 3 us. Soft turn-off slew rate 3 V/us.</li>
+        <li><strong>Dead time:</strong> Driver propagation delay = 80 ns, device fall time = 40 ns. Dead time = 200 ns minimum; set to 300 ns.</li>
+        <li><strong>Gate loop inductance target:</strong> Below 5 nH. Gate trace under 15 mm, direct Kelvin source routing.</li>
+      </ul>
+
+      <h2 id="references">15. References</h2>
+      <ul>
+        <li>Wolfspeed Application Note: "Design Considerations for Designing with Cree SiC Modules" (CPWR-AN08)</li>
+        <li>Infineon Application Note: "Gate Resistor - Principles and Applications" (AN 2015-02)</li>
+        <li>Texas Instruments Application Report: "Gate Drive Design Basics for SiC MOSFET Modules" (SLYY109)</li>
+        <li>Millan, J. et al., "A Survey of Wide Bandgap Power Semiconductor Devices," IEEE Trans. Power Electronics, 2014</li>
+        <li>Hazra, S. et al., "High Power Density and High Efficiency SiC Inverter for EV Drive Train," IEEE ECCE, 2015</li>
+        <li>Nayak, P. et al., "Gate Driver Design for High-Power SiC MOSFET Modules," IEEE Trans. Industry Applications, 2018</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="../images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+            <span class="footer-brand-name">SiCore Research</span>
+          </div>
+          <div class="footer-tagline">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Where Physics Goes to Work.</em></div>
+          <p>NDAA compliant SiC converters and power electronics for motorsports, defense, aerospace, and industrial. Advancing electrification through proprietary module-less architecture.</p>
+        </div>
+        <div>
+          <h4>Navigate</h4>
+          <a href="../index.html">Home</a>
+          <a href="../index.html#markets">Markets</a>
+          <a href="../index.html#technology">Technology</a>
+          <a href="../index.html#capabilities">Capabilities</a>
+          <a href="../index.html#contact">Contact</a>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <a href="../privacy.html">Privacy Policy</a>
+          <a href="../terms.html">Terms of Use</a>
+          <a href="../index.html#contact">Partner Inquiry</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 SiCore Research, LLC. All rights reserved.</span>
+        <span><a href="../privacy.html">Privacy</a> &nbsp;|&nbsp; <a href="../terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

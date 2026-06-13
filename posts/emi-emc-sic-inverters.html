@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EMI/EMC in High-Power SiC Inverters | SiCore Research</title>
+  <link rel="icon" type="image/svg+xml" href="../images/SiC_Logo_Inverted.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Engineering guide to EMI and EMC in high-power SiC inverters: conducted and radiated emission sources, common-mode and differential-mode filter design, grounding, shielding, and compliance with DO-160 and MIL-STD-461.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:'Inter',system-ui,-apple-system,sans-serif;background:#0a0a0a;color:#e8e8e8;-webkit-font-smoothing:antialiased}
+    h1,h2,h3,h4,p{margin:0;padding:0}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    :root{--accent:#e07820}
+
+    /* Header */
+    header{position:fixed;top:0;left:0;width:100%;z-index:100;background:rgba(8,8,8,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(224,120,32,.12)}
+    .header-inner{max-width:1400px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand-logo{height:36px;width:36px}
+    .brand-name{font-weight:900;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#fff}
+    .nav-right{display:flex;gap:40px;align-items:center}
+    .nav-link{font-size:11px;color:#777;transition:color .2s;text-transform:uppercase;letter-spacing:.8px;font-weight:700}
+    .nav-link:hover{color:#e07820}
+    .cta-btn{background:#e07820;color:#000;border:none;padding:10px 22px;font-weight:800;cursor:pointer;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;transition:all .2s}
+    .cta-btn:hover{background:#c06010}
+
+    /* Post Layout */
+    .post-wrap{max-width:800px;margin:0 auto;padding:140px 40px 100px}
+
+    /* Back link */
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:1.2px;font-weight:800;color:#666;margin-bottom:48px;transition:color .2s}
+    .back-link:hover{color:#e07820}
+    .back-link::before{content:"←"}
+
+    /* Post header */
+    .post-tag{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#e07820;margin-bottom:16px;display:block}
+    .post-title{font-size:52px;font-weight:900;line-height:1;text-transform:uppercase;letter-spacing:-.03em;margin-bottom:20px}
+    .post-meta{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:56px;padding-bottom:32px;border-bottom:1px solid rgba(224,120,32,.08)}
+
+    /* Post content */
+    .post-content h2{font-size:28px;font-weight:800;text-transform:uppercase;letter-spacing:-.02em;margin:56px 0 16px;color:#fff;line-height:1.1}
+    .post-content h2::before{content:"";display:block;width:24px;height:2px;background:#e07820;margin-bottom:12px}
+    .post-content h3{font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin:32px 0 10px;color:#ccc}
+    .post-content p{font-size:17px;line-height:1.85;color:#999;margin:0 0 20px}
+    .post-content a{color:#e07820;text-decoration:underline;text-underline-offset:3px}
+    .post-content strong{color:#e8e8e8;font-weight:700}
+    .post-content code,kbd{background:#14140e;border:1px solid #2a1e0a;padding:3px 7px;font-size:13px;font-family:monospace;color:#e07820;border-radius:2px}
+    .post-content ul,.post-content ol{color:#999;line-height:1.85;margin:0 0 20px;padding-left:24px;font-size:17px}
+    .post-content li{margin:6px 0}
+    .post-content hr{border:0;border-top:1px solid rgba(224,120,32,.08);margin:48px 0}
+
+    /* Table */
+    .post-content table{width:100%;border-collapse:collapse;margin:24px 0;font-size:13px}
+    .post-content th{background:#0e0c08;border:1px solid #2a1e0a;padding:10px 14px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:#e07820}
+    .post-content td{border:1px solid #1a1608;padding:10px 14px;color:#888;vertical-align:top}
+    .post-content tr:hover td{background:rgba(224,120,32,.02)}
+
+    /* TOC */
+    .toc{background:#0e0c08;border:1px solid rgba(224,120,32,.12);padding:28px 32px;margin:0 0 48px;position:relative}
+    .toc::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:#e07820}
+    .toc h3{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:#e07820;margin:0 0 16px}
+    .toc ol{margin:0;padding-left:20px;color:#666;font-size:14px;line-height:2}
+    .toc a{color:#666;transition:color .2s}
+    .toc a:hover{color:#e07820;text-decoration:none}
+    .toc ul{margin:0;padding-left:16px}
+
+    /* Note callout */
+    .note{background:#0e0c08;border-left:2px solid #e07820;padding:16px 20px;margin:24px 0;font-size:14px;color:#888;line-height:1.7}
+
+    /* Footer */
+    footer{background:#040402;border-top:3px solid #e07820;padding:80px 40px 36px}
+    .footer-wrap{max-width:1400px;margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:80px;margin-bottom:56px}
+    footer h4{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 24px;font-weight:900;color:#e07820}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .footer-brand img{height:26px;width:26px;opacity:.7}
+    .footer-brand-name{font-size:12px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
+    .footer-tagline{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6a5a4a;margin-bottom:16px}
+    .footer-tagline em{color:#e07820;font-style:normal}
+    footer p{font-size:13px;line-height:1.9;color:#666;margin:0}
+    footer a{display:block;font-size:13px;color:#888;margin-bottom:12px;transition:all .2s;font-weight:500}
+    footer a:hover{color:#e07820;padding-left:4px}
+    .footer-bottom{border-top:1px solid rgba(224,120,32,.08);padding-top:28px;font-size:10px;color:#666;display:flex;justify-content:space-between;align-items:center}
+    .footer-bottom a{color:#666;display:inline;margin:0;padding:0}
+    .footer-bottom a:hover{color:#e07820;padding-left:0}
+    @media(max-width:900px){.post-title{font-size:36px}.footer-grid{grid-template-columns:1fr 1fr;gap:40px}.footer-bottom{flex-direction:column;gap:12px;text-align:center}}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="../index.html" class="brand">
+        <img class="brand-logo" src="../images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+        <span class="brand-name">SiCore Research</span>
+      </a>
+      <div class="nav-right">
+        <a href="../index.html#markets" class="nav-link">Markets</a>
+        <a href="../index.html#technology" class="nav-link">Technology</a>
+        <a href="../index.html#capabilities" class="nav-link">Capabilities</a>
+        <a href="../blog.html" class="nav-link">Research</a>
+        <a href="../careers.html" class="nav-link">Careers</a>
+        <button class="cta-btn" onclick="window.location.href='../index.html#contact'">Partner Inquiry</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="post-wrap">
+    <a href="../blog.html" class="back-link">All Research</a>
+
+    <span class="post-tag">Power Electronics</span>
+    <h1 class="post-title">EMI/EMC in High-Power SiC Inverters</h1>
+    <div class="post-meta">Dec 3, 2025 &nbsp;·&nbsp; SiCore Research</div>
+
+    <div class="post-content">
+
+      <p>Silicon carbide is a compelling switching technology precisely because it switches fast. That speed - the 10-50 V/ns dV/dt and multi-A/ns dI/dt that enables high switching frequency, small magnetics, and reduced filter requirements - is also the root cause of the worst electromagnetic interference challenges in modern power conversion. A SiC inverter running at 100 kHz generates significant harmonic content from the fundamental up through several hundred megahertz. It couples noise through parasitic capacitance to the chassis, through the motor cable to the load, and back through the DC bus to upstream equipment. Managing this without sacrificing the efficiency and power density advantages of SiC requires a systematic approach to EMI source identification, propagation path analysis, and filter design. This article covers that process for high-power inverter applications in the defense, aerospace, and motorsport markets where EMC compliance is not optional.</p>
+
+      <div class="toc">
+        <h3>Contents</h3>
+        <ol>
+          <li><a href="#sources">EMI Sources in SiC Inverters</a></li>
+          <li><a href="#modes">Conducted EMI: Common Mode vs Differential Mode</a></li>
+          <li><a href="#standards">EMC Standards for Target Markets</a></li>
+          <li><a href="#cm-filter">Common-Mode Filter Design</a></li>
+          <li><a href="#dm-filter">Differential-Mode Filter Design</a></li>
+          <li><a href="#motor-cable">Motor Cable and Output dV/dt Filters</a></li>
+          <li><a href="#grounding">Grounding Strategy</a></li>
+          <li><a href="#shielding">Shielding</a></li>
+          <li><a href="#pcb-layout">PCB Layout for EMI Reduction</a></li>
+          <li><a href="#dvdt-tradeoff">dV/dt Control Trade-offs</a></li>
+          <li><a href="#testing">Pre-Compliance Testing</a></li>
+          <li><a href="#example">Worked Example: Defense Inverter</a></li>
+          <li><a href="#references">References</a></li>
+        </ol>
+      </div>
+
+      <h2 id="sources">1. EMI Sources in SiC Inverters</h2>
+      <p>Every switching event in an inverter generates two types of electromagnetic disturbance: conducted, which propagates along power and signal conductors, and radiated, which propagates through space as electromagnetic fields. Both originate from the same physical event - the switching node voltage and current transitioning at high speed - but they propagate by different mechanisms and require different mitigation strategies.</p>
+      <p>The primary EMI sources in a SiC half-bridge inverter are:</p>
+      <ul>
+        <li><strong>Switching node voltage (dV/dt):</strong> The switching node transitions between 0 and bus voltage at 10-50 V/ns. This trapezoidal waveform contains harmonic energy at multiples of the switching frequency, with significant content extending to 100+ MHz depending on rise time. This is the dominant source of common-mode current through parasitic capacitances.</li>
+        <li><strong>Bus current ripple (dI/dt):</strong> The pulsed current drawn from the DC bus at each switching event generates differential-mode noise on the bus. Amplitude is determined by load current; frequency content extends from switching frequency to the ringing frequency of the commutation loop.</li>
+        <li><strong>Ringing at switching node:</strong> LC resonance between parasitic inductance and device output capacitance produces high-frequency ringing (10-500 MHz) superimposed on the switching transition. This is a broadband radiated source and also couples into adjacent circuits capacitively.</li>
+        <li><strong>Dead-time pulses:</strong> Body diode conduction during dead time creates narrow current pulses with very high dI/dt, generating broadband noise impulses at twice the switching frequency.</li>
+      </ul>
+
+      <h2 id="modes">2. Conducted EMI: Common Mode vs Differential Mode</h2>
+      <p>Conducted EMI on the DC input lines of an inverter is separated into two components based on the current path. Understanding which mode dominates determines which filter topology is effective.</p>
+      <p><strong>Differential-mode (DM) noise</strong> flows between the positive and negative bus conductors in opposite directions. It is generated primarily by the pulsed DC bus current drawn during switching, and by the voltage ripple across the DC link. DM noise is attenuated by series inductance (common-mode chokes do not help) and shunt capacitance between positive and negative rails.</p>
+      <p><strong>Common-mode (CM) noise</strong> flows in the same direction on both bus conductors and returns through the chassis ground. It is generated by the dV/dt of the switching node coupling through parasitic capacitances to chassis - the capacitance from the heatsink through the device thermal interface to the substrate, from the motor winding to the motor frame, and from any PCB conductor that is physically close to chassis. CM noise is attenuated by common-mode chokes (which present high impedance to equal currents) and by Y-capacitors from bus rails to chassis.</p>
+
+      <table>
+        <tr><th>Noise Type</th><th>Current Path</th><th>Primary Source</th><th>Filter Element</th></tr>
+        <tr><td>Differential mode (DM)</td><td>+bus to -bus</td><td>DC bus current ripple, bus voltage ripple</td><td>Series inductors, X-capacitors</td></tr>
+        <tr><td>Common mode (CM)</td><td>Both conductors to chassis</td><td>Switching node dV/dt via parasitic capacitance</td><td>CM choke, Y-capacitors</td></tr>
+        <tr><td>Mixed mode</td><td>Asymmetric paths</td><td>Layout asymmetry, component imbalance</td><td>Both; layout correction preferred</td></tr>
+      </table>
+
+      <p>In practice, both modes are present simultaneously, and their relative amplitudes depend on the specific circuit and layout. Characterization with a line impedance stabilization network (LISN) and a spectrum analyzer, with CM and DM separation networks, is the correct method for identifying which mode requires the most attenuation.</p>
+
+      <h2 id="standards">3. EMC Standards for Target Markets</h2>
+      <p>Compliance requirements vary significantly by application market. Defense and aerospace impose the most demanding specifications; industrial and automotive follow recognizable international standards. Understanding the applicable standard before beginning filter design is essential, as the limit levels, frequency ranges, and measurement methods differ substantially.</p>
+
+      <table>
+        <tr><th>Standard</th><th>Market</th><th>Scope</th><th>Key Frequency Range</th></tr>
+        <tr><td>MIL-STD-461G (CE102/RE102)</td><td>Defense</td><td>Conducted emissions on power leads; radiated emissions</td><td>10 kHz to 10 GHz</td></tr>
+        <tr><td>DO-160G Section 21</td><td>Aerospace (civil)</td><td>Conducted and radiated emissions for aircraft equipment</td><td>150 kHz to 152 MHz (conducted)</td></tr>
+        <tr><td>CISPR 25</td><td>Automotive / motorsport</td><td>Conducted and radiated emissions for vehicles</td><td>150 kHz to 2500 MHz</td></tr>
+        <tr><td>CISPR 11 / IEC 61000-6-4</td><td>Industrial</td><td>Radiated and conducted emissions</td><td>150 kHz to 30 MHz (conducted)</td></tr>
+        <tr><td>EN 55032 / FCC Part 15</td><td>Commercial electronics</td><td>Radiated and conducted</td><td>150 kHz to 30 MHz (conducted)</td></tr>
+      </table>
+
+      <p>MIL-STD-461 CE102 limits conducted emissions from 10 kHz to 10 MHz and are typically 60-80 dBuV below the levels at which a typical SiC inverter would operate without filtering. DO-160 imposes similar attenuation requirements but the limit shapes differ. Both standards include conducted susceptibility tests (CS101, CS114) that require the converter to remain functional in the presence of injected noise - a filter that reduces emissions may also need to attenuate incoming disturbances.</p>
+
+      <h2 id="cm-filter">4. Common-Mode Filter Design</h2>
+      <p>A common-mode choke consists of two windings on a shared high-permeability toroidal core, wound such that differential-mode currents (equal and opposite) cancel in the core while common-mode currents (equal direction) add and see the full magnetizing inductance. This makes it highly effective against CM noise without affecting the DC bus current that flows differentially.</p>
+      <p>The CM inductance required for a given attenuation at frequency f is:</p>
+      <p><code>L_cm = 1 / (2 x pi x f x Gm)</code>, where Gm is the CM conductance of the source and load.</p>
+      <p>In practice, CM choke values for SiC inverter applications at 150 kHz to 30 MHz range are typically 1 to 10 mH. The core material determines frequency performance: ferrite (MnZn for lower frequency, NiZn for above 1 MHz) is standard. Nanocrystalline cores provide higher permeability at lower frequency but saturate at lower flux density - verify saturation with DC bias from the cable shield or ground currents in the worst case.</p>
+
+      <table>
+        <tr><th>CM Choke Inductance</th><th>Target Attenuation</th><th>Effective Range</th><th>Core Material</th></tr>
+        <tr><td>100 to 500 uH</td><td>20 to 40 dB at 150 kHz</td><td>150 kHz to 1 MHz</td><td>MnZn ferrite</td></tr>
+        <tr><td>1 to 5 mH</td><td>40 to 60 dB at 150 kHz</td><td>150 kHz to 30 MHz</td><td>MnZn ferrite or nanocrystalline</td></tr>
+        <tr><td>5 to 10 mH</td><td>60 dB+ at 150 kHz</td><td>150 kHz to 10 MHz</td><td>Nanocrystalline; verify saturation</td></tr>
+      </table>
+
+      <p>Y-capacitors from each bus rail to chassis ground provide a low-impedance return path for CM current at the inverter input, preventing CM current from propagating along the bus to upstream equipment. Typical values are 10 to 100 nF at 1200-2000V rating. The chassis connection must be a direct, low-impedance bond - a long wire from the capacitor to a chassis ground point adds series inductance that erodes high-frequency effectiveness.</p>
+
+      <div class="note"><strong>Y-capacitor limits by market:</strong> IEC and MIL standards impose limits on Y-capacitor values on grounded systems due to touch current (shock hazard) concerns in AC-powered equipment. In isolated DC systems such as vehicle traction inverters, these limits may not apply, but should be confirmed with the applicable standard for the specific installation context.</div>
+
+      <h2 id="dm-filter">5. Differential-Mode Filter Design</h2>
+      <p>Differential-mode filter inductors carry the full DC bus current and must be sized accordingly for both saturation current and DC resistance. DM inductors are placed in series in the positive and negative bus conductors, combined with X-capacitors (bus-to-bus) to form LC low-pass filters.</p>
+      <p>The DM filter cutoff frequency should be set well below the switching frequency. A second-order LC filter provides 40 dB/decade attenuation above its corner frequency. For a 100 kHz switching frequency and a 40 dB attenuation target at 150 kHz:</p>
+      <p><code>f_corner = 150 kHz / 10^(40/40) = 15 kHz</code></p>
+      <p>This requires a fairly aggressive filter, and the inductor must carry full DC load current without saturating. For a 300A application, a DM inductor of 10-50 uH in a 400A-rated core is typical. Copper loss in the DM inductor is a real efficiency penalty - a 0.5 mohm DCR at 300A costs 45W of continuous loss. Conductor sizing and core geometry must balance inductance, saturation, and loss simultaneously.</p>
+      <p>X-capacitors (rated for full bus voltage plus overshoot) are typically 1 to 10 uF for high-power applications. Film capacitors are preferred over electrolytics for their lower ESR and ESL. Multiple smaller capacitors in parallel improve high-frequency performance by reducing combined ESL.</p>
+
+      <h2 id="motor-cable">6. Motor Cable and Output dV/dt Filters</h2>
+      <p>The motor cable is one of the most significant EMI propagation paths in an inverter drive system. The cable acts as a transmission line for the fast-switching voltage waveforms from the inverter output, and its distributed capacitance to the shield (and thus chassis) provides a low-impedance path for CM current at high frequencies. For cables longer than approximately 3 meters, the transmission line effect becomes significant: voltage reflections at the motor terminal can double the applied voltage above the bus level if the cable characteristic impedance does not match the motor winding impedance at switching frequencies.</p>
+
+      <table>
+        <tr><th>Cable Length</th><th>Reflection Risk</th><th>CM Current (100 kHz, 100 pF/m)</th><th>Mitigation</th></tr>
+        <tr><td>Under 1 m</td><td>Negligible</td><td>Low</td><td>Standard cable, no dV/dt filter required</td></tr>
+        <tr><td>1 to 5 m</td><td>Moderate at fast dV/dt</td><td>Moderate</td><td>Shielded cable; consider output CM choke</td></tr>
+        <tr><td>5 to 20 m</td><td>Significant; motor terminal overvoltage possible</td><td>High</td><td>dV/dt filter required; shielded cable mandatory</td></tr>
+        <tr><td>Over 20 m</td><td>Severe; motor insulation stress</td><td>Very high</td><td>dV/dt filter plus output CM choke; verify motor insulation rating</td></tr>
+      </table>
+
+      <p>An output dV/dt filter consists of small inductors in series with each phase output, combined with capacitors to chassis or between phases. The objective is to limit dV/dt at the motor terminal to below 1000 V/us for standard motor insulation systems, or per the motor manufacturer's specification for high-voltage or high-frequency rated motors. The filter must not significantly attenuate the fundamental output frequency while providing attenuation above the inverter switching frequency.</p>
+
+      <h2 id="grounding">7. Grounding Strategy</h2>
+      <p>Grounding is the most frequently misunderstood aspect of EMC in power electronics. Ground is not simply the return conductor for DC current - it is the reference plane for all voltage measurements, the return path for CM current, and the equipotential bond between chassis, housings, and system references. Poor grounding creates the very ground loops that allow CM noise to propagate.</p>
+      <p>For SiC inverters in vehicle, aerospace, and defense applications, the recommended grounding architecture is a single-point star ground at the chassis, with separate bonds for power ground (DC bus negative or midpoint), signal ground (control electronics), and chassis ground (mechanical structure). The bonding impedance between each of these grounds matters: a long, thin wire bond introduces inductance that allows high-frequency CM currents to develop voltage differences between grounds, which then appear as interference on signal circuits.</p>
+      <ul>
+        <li><strong>Power ground bond:</strong> Wide copper strap, minimum 25 mm wide, direct to chassis bonding point. Under 5 mohm DC resistance and under 10 nH inductance.</li>
+        <li><strong>Signal ground bond:</strong> Separate short bond to same chassis point. Never route signal ground return current through power ground conductors.</li>
+        <li><strong>Heatsink bond:</strong> Heatsink to chassis is a CM current path and must be a low-impedance bond. Anodized aluminum provides poor electrical contact - use bare aluminum contact with conductive hardware at the bond point.</li>
+        <li><strong>Cable shield termination:</strong> Motor cable shield must be terminated 360 degrees at both the inverter housing and the motor frame using EMC cable glands or back-shell connectors. Pigtail connections add inductance and are ineffective above 1 MHz.</li>
+      </ul>
+
+      <h2 id="shielding">8. Shielding</h2>
+      <p>A conductive enclosure attenuates radiated emissions from internal sources and provides immunity against external fields. Shielding effectiveness (SE) depends on material conductivity and permeability, enclosure geometry, and the frequency of interest. Aluminum at 1 mm thickness provides 40-60 dB of shielding above 10 MHz. Steel provides additional low-frequency magnetic shielding. At frequencies above 100 MHz, skin depth in aluminum is under 0.01 mm, so sheet thickness has diminishing returns and seam and aperture integrity dominates.</p>
+      <p>Every aperture in a shielded enclosure - ventilation holes, connectors, display windows - reduces shielding effectiveness. Honeycomb ventilation panels maintain airflow while providing 60+ dB SE by acting as a waveguide below cutoff. Connector feedthroughs require filtered connectors or feedthrough capacitors to maintain SE at the conductor penetration point. A single 10 mm hole in an otherwise perfect shield reduces SE to approximately 30 dB at frequencies above 15 GHz - a negligible concern for power electronics - but a 100 mm unsealed seam reduces SE to 30 dB at 1.5 GHz, which matters for DO-160 testing.</p>
+
+      <div class="note"><strong>Seam treatment:</strong> Aluminum panels oxidize rapidly, and aluminum oxide is a poor conductor. EMC gaskets (beryllium copper finger stock, conductive foam with metallic coating, or wire mesh) are required at every seam to maintain electrical continuity. Unpainted mating surfaces at all seams are required for reliable gasketing - painting over the mating surface before installing the gasket defeats the purpose entirely.</div>
+
+      <h2 id="pcb-layout">9. PCB Layout for EMI Reduction</h2>
+      <p>A significant portion of high-frequency EMI in SiC converters originates from or propagates through the PCB. Layout choices that reduce switching loop inductance (covered in the parasitic inductance article) also reduce radiated emissions from the switching loop, since a smaller radiating area produces less radiated field for the same current amplitude.</p>
+      <p>Additional layout practices specific to EMI reduction:</p>
+      <ul>
+        <li><strong>Switching node copper area minimization:</strong> The switching node is a high-dV/dt conductor that acts as an antenna. Minimize the copper area connected to the switching node on all layers. Do not use the switching node net as a fill area.</li>
+        <li><strong>Separate analog and digital grounds:</strong> Control circuitry, ADCs, and signal isolators should have their own ground plane area connected to power ground at a single point. Switching currents must not flow through the analog ground plane.</li>
+        <li><strong>Decoupling capacitor placement:</strong> All IC supply pins need local ceramic bypass capacitors within 2-3 mm. Long traces from bypass caps to supply pins allow supply rail voltage to spike during fast transients, coupling noise into IC logic.</li>
+        <li><strong>Gate drive routing:</strong> Gate drive traces are high-frequency signal conductors. Route them away from high-current power conductors and keep them short. Avoid running gate drive traces adjacent to the switching node or DC bus conductors.</li>
+        <li><strong>Thermal interface pad isolation:</strong> The device thermal pad, if connected to drain (common in SiC MOSFETs), is a high-dV/dt conductor connected to a large copper area for heat spreading. Isolate this area from the chassis with low-capacitance thermal interface material, or accept the CM current path and filter accordingly.</li>
+      </ul>
+
+      <h2 id="dvdt-tradeoff">10. dV/dt Control Trade-offs</h2>
+      <p>Slowing the switching transition is the most direct way to reduce EMI. Increasing gate resistance reduces dV/dt, which reduces both the high-frequency harmonic content and the CM current amplitude. The trade-off is increased switching losses - slower switching means longer transition times, more energy dissipated in the device during each event, and reduced efficiency.</p>
+
+      <table>
+        <tr><th>dV/dt (V/ns)</th><th>Switching Loss (relative)</th><th>EMI Characteristic Frequency</th><th>CM Current (relative)</th></tr>
+        <tr><td>50</td><td>1x</td><td>~150 MHz</td><td>5x</td></tr>
+        <tr><td>20</td><td>1.3 to 1.6x</td><td>~60 MHz</td><td>2x</td></tr>
+        <tr><td>10</td><td>1.8 to 2.5x</td><td>~30 MHz</td><td>1x</td></tr>
+        <tr><td>5</td><td>2.5 to 4x</td><td>~15 MHz</td><td>0.5x</td></tr>
+      </table>
+
+      <p>For most applications, an optimum exists in the 10-20 V/ns range: fast enough to keep switching losses acceptable at 50-100 kHz, slow enough that filtering requirements are not excessive. Below 10 V/ns, switching losses typically become the limiting factor on efficiency. Above 30 V/ns, filter and shielding costs often exceed the efficiency gain from faster switching.</p>
+      <p>Adaptive gate drive - varying gate resistance as a function of operating point - can optimize this trade-off at different load conditions. At light load, slower switching reduces partial-load efficiency losses and EMI simultaneously. At full load, faster switching reduces conduction and switching loss where thermal margin is tightest.</p>
+
+      <h2 id="testing">11. Pre-Compliance Testing</h2>
+      <p>Full compliance testing at an accredited EMC laboratory is expensive and time-consuming. Pre-compliance testing with in-house equipment, conducted early in the design cycle, catches EMI problems before they become schedule risks. A practical pre-compliance setup for a SiC inverter program includes:</p>
+      <ul>
+        <li><strong>LISN (Line Impedance Stabilization Network):</strong> Required for standardized conducted emission measurement. A 50-ohm LISN per MIL-STD-461 or CISPR is available from vendors such as Fischer Custom Communications, Tekbox, or similar. Do not attempt conducted emission measurement without a LISN.</li>
+        <li><strong>Spectrum analyzer:</strong> 9 kHz to at least 1 GHz for conducted emissions; 30 MHz to 6 GHz for radiated. A tracking generator is useful for antenna/filter S-parameter measurements. A near-field probe set (loop and monopole probes) allows identification of specific EMI sources on the PCB without a full anechoic chamber.</li>
+        <li><strong>Current probes:</strong> For measuring CM current on cables without breaking the circuit. A 100 Hz to 100 MHz current probe over the full cable bundle quantifies CM noise directly.</li>
+        <li><strong>High-bandwidth oscilloscope:</strong> 1 GHz minimum for SiC switching waveform characterization. Used for verifying dV/dt, identifying ringing, and time-domain correlation of EMI events with switching transitions.</li>
+      </ul>
+      <p>Pre-compliance testing is most valuable when conducted iteratively: measure, identify the dominant frequency and mode, apply a targeted fix (choke, capacitor, layout change), measure again. This systematic approach is far more efficient than designing a comprehensive filter from the outset and hoping it passes.</p>
+
+      <h2 id="example">12. Worked Example: Defense Inverter, MIL-STD-461G Compliance</h2>
+      <p>Consider a 270V DC, 150 kW SiC inverter for a defense vehicle application, requiring compliance with MIL-STD-461G CE102 (conducted emissions, 10 kHz to 10 MHz) and RE102 (radiated emissions, 2 MHz to 18 GHz).</p>
+      <ul>
+        <li><strong>Switching frequency:</strong> 80 kHz. Fundamental and harmonics appear at 80, 160, 240 kHz... with significant content to 30+ MHz depending on rise time.</li>
+        <li><strong>Target dV/dt:</strong> 15 V/ns as a compromise. Characteristic EMI frequency approximately 45 MHz.</li>
+        <li><strong>CM current source:</strong> Switching node at 270V peak with 15 V/ns through approximately 500 pF heatsink capacitance: <code>I_cm = C x dV/dt = 500 pF x 15 V/ns = 7.5 A peak</code>. This is the CM current that must be filtered before reaching the input bus LISN.</li>
+        <li><strong>CM filter:</strong> 3 mH nanocrystalline CM choke, 22 nF Y-capacitors to chassis at input. Target 60 dB attenuation at 150 kHz. Measured in pre-compliance testing and iterated.</li>
+        <li><strong>DM filter:</strong> 20 uH DM inductors (300A rated, low DCR), 10 uF X-capacitors. Corner frequency approximately 10 kHz. Targeted at bus ripple and switching frequency harmonic on DC bus.</li>
+        <li><strong>Enclosure:</strong> 2 mm aluminum welded chassis, conductive EMC gland at motor cable feedthrough, honeycomb ventilation panels at cooling air inlets. All seams gasketed with beryllium copper finger stock.</li>
+        <li><strong>Grounding:</strong> Single chassis bond point, 30 mm copper strap from power ground. Signal and chassis ground star at bond point. Motor cable shielded, 360-degree termination at housing backshell.</li>
+        <li><strong>Pre-compliance result:</strong> CE102 margin approximately 6 dB at 150 kHz (worst case) after filter optimization. RE102 comfortable margin with enclosure in place. Formal lab testing scheduled after thermal validation complete.</li>
+      </ul>
+
+      <h2 id="references">13. References</h2>
+      <ul>
+        <li>MIL-STD-461G: Requirements for the Control of Electromagnetic Interference Characteristics of Subsystems and Equipment, 2015</li>
+        <li>RTCA DO-160G: Environmental Conditions and Test Procedures for Airborne Equipment, Section 21, 2010</li>
+        <li>Nave, M.J., "Power Line Filter Design for Switched-Mode Power Supplies," Van Nostrand Reinhold, 1991</li>
+        <li>Ott, H.W., "Electromagnetic Compatibility Engineering," Wiley, 2009</li>
+        <li>Heldwein, M.L. et al., "Impact of EMC Filters on the Power Density of Modern Three-Phase PWM Converters," IEEE Trans. Power Electronics, 2009</li>
+        <li>Chen, H. et al., "Common Mode EMI Noise Modeling and Reduction Techniques for SiC-Based Motor Drive," IEEE Trans. Electromagnetic Compatibility, 2020</li>
+        <li>Wang, S. et al., "Characterization, Evaluation, and Design of Noise Separator for Conducted EMI Noise Diagnosis," IEEE Trans. Power Electronics, 2006</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="../images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+            <span class="footer-brand-name">SiCore Research</span>
+          </div>
+          <div class="footer-tagline">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Where Physics Goes to Work.</em></div>
+          <p>NDAA compliant SiC converters and power electronics for motorsports, defense, aerospace, and industrial. Advancing electrification through proprietary module-less architecture.</p>
+        </div>
+        <div>
+          <h4>Navigate</h4>
+          <a href="../index.html">Home</a>
+          <a href="../index.html#markets">Markets</a>
+          <a href="../index.html#technology">Technology</a>
+          <a href="../index.html#capabilities">Capabilities</a>
+          <a href="../index.html#contact">Contact</a>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <a href="../privacy.html">Privacy Policy</a>
+          <a href="../terms.html">Terms of Use</a>
+          <a href="../index.html#contact">Partner Inquiry</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 SiCore Research, LLC. All rights reserved.</span>
+        <span><a href="../privacy.html">Privacy</a> &nbsp;|&nbsp; <a href="../terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Parasitic Inductance in High-Frequency SiC Converters | SiCore Research</title>
+  <link rel="icon" type="image/svg+xml" href="../images/SiC_Logo_Inverted.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Engineering guide to parasitic inductance in high-frequency SiC power converters: sources, voltage overshoot calculation, busbar design, PCB layout, snubber sizing, and measurement techniques.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:'Inter',system-ui,-apple-system,sans-serif;background:#0a0a0a;color:#e8e8e8;-webkit-font-smoothing:antialiased}
+    h1,h2,h3,h4,p{margin:0;padding:0}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    :root{--accent:#e07820}
+
+    /* Header */
+    header{position:fixed;top:0;left:0;width:100%;z-index:100;background:rgba(8,8,8,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(224,120,32,.12)}
+    .header-inner{max-width:1400px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand-logo{height:36px;width:36px}
+    .brand-name{font-weight:900;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#fff}
+    .nav-right{display:flex;gap:40px;align-items:center}
+    .nav-link{font-size:11px;color:#777;transition:color .2s;text-transform:uppercase;letter-spacing:.8px;font-weight:700}
+    .nav-link:hover{color:#e07820}
+    .cta-btn{background:#e07820;color:#000;border:none;padding:10px 22px;font-weight:800;cursor:pointer;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;transition:all .2s}
+    .cta-btn:hover{background:#c06010}
+
+    /* Post Layout */
+    .post-wrap{max-width:800px;margin:0 auto;padding:140px 40px 100px}
+
+    /* Back link */
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:1.2px;font-weight:800;color:#666;margin-bottom:48px;transition:color .2s}
+    .back-link:hover{color:#e07820}
+    .back-link::before{content:"←"}
+
+    /* Post header */
+    .post-tag{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#e07820;margin-bottom:16px;display:block}
+    .post-title{font-size:52px;font-weight:900;line-height:1;text-transform:uppercase;letter-spacing:-.03em;margin-bottom:20px}
+    .post-meta{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:56px;padding-bottom:32px;border-bottom:1px solid rgba(224,120,32,.08)}
+
+    /* Post content */
+    .post-content h2{font-size:28px;font-weight:800;text-transform:uppercase;letter-spacing:-.02em;margin:56px 0 16px;color:#fff;line-height:1.1}
+    .post-content h2::before{content:"";display:block;width:24px;height:2px;background:#e07820;margin-bottom:12px}
+    .post-content h3{font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin:32px 0 10px;color:#ccc}
+    .post-content p{font-size:17px;line-height:1.85;color:#999;margin:0 0 20px}
+    .post-content a{color:#e07820;text-decoration:underline;text-underline-offset:3px}
+    .post-content strong{color:#e8e8e8;font-weight:700}
+    .post-content code,kbd{background:#14140e;border:1px solid #2a1e0a;padding:3px 7px;font-size:13px;font-family:monospace;color:#e07820;border-radius:2px}
+    .post-content ul,.post-content ol{color:#999;line-height:1.85;margin:0 0 20px;padding-left:24px;font-size:17px}
+    .post-content li{margin:6px 0}
+    .post-content hr{border:0;border-top:1px solid rgba(224,120,32,.08);margin:48px 0}
+
+    /* Table */
+    .post-content table{width:100%;border-collapse:collapse;margin:24px 0;font-size:13px}
+    .post-content th{background:#0e0c08;border:1px solid #2a1e0a;padding:10px 14px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:#e07820}
+    .post-content td{border:1px solid #1a1608;padding:10px 14px;color:#888;vertical-align:top}
+    .post-content tr:hover td{background:rgba(224,120,32,.02)}
+
+    /* TOC */
+    .toc{background:#0e0c08;border:1px solid rgba(224,120,32,.12);padding:28px 32px;margin:0 0 48px;position:relative}
+    .toc::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:#e07820}
+    .toc h3{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:#e07820;margin:0 0 16px}
+    .toc ol{margin:0;padding-left:20px;color:#666;font-size:14px;line-height:2}
+    .toc a{color:#666;transition:color .2s}
+    .toc a:hover{color:#e07820;text-decoration:none}
+    .toc ul{margin:0;padding-left:16px}
+
+    /* Note callout */
+    .note{background:#0e0c08;border-left:2px solid #e07820;padding:16px 20px;margin:24px 0;font-size:14px;color:#888;line-height:1.7}
+
+    /* Footer */
+    footer{background:#040402;border-top:3px solid #e07820;padding:80px 40px 36px}
+    .footer-wrap{max-width:1400px;margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:80px;margin-bottom:56px}
+    footer h4{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 24px;font-weight:900;color:#e07820}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .footer-brand img{height:26px;width:26px;opacity:.7}
+    .footer-brand-name{font-size:12px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
+    .footer-tagline{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6a5a4a;margin-bottom:16px}
+    .footer-tagline em{color:#e07820;font-style:normal}
+    footer p{font-size:13px;line-height:1.9;color:#666;margin:0}
+    footer a{display:block;font-size:13px;color:#888;margin-bottom:12px;transition:all .2s;font-weight:500}
+    footer a:hover{color:#e07820;padding-left:4px}
+    .footer-bottom{border-top:1px solid rgba(224,120,32,.08);padding-top:28px;font-size:10px;color:#666;display:flex;justify-content:space-between;align-items:center}
+    .footer-bottom a{color:#666;display:inline;margin:0;padding:0}
+    .footer-bottom a:hover{color:#e07820;padding-left:0}
+    @media(max-width:900px){.post-title{font-size:36px}.footer-grid{grid-template-columns:1fr 1fr;gap:40px}.footer-bottom{flex-direction:column;gap:12px;text-align:center}}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="../index.html" class="brand">
+        <img class="brand-logo" src="../images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+        <span class="brand-name">SiCore Research</span>
+      </a>
+      <div class="nav-right">
+        <a href="../index.html#markets" class="nav-link">Markets</a>
+        <a href="../index.html#technology" class="nav-link">Technology</a>
+        <a href="../index.html#capabilities" class="nav-link">Capabilities</a>
+        <a href="../blog.html" class="nav-link">Research</a>
+        <a href="../careers.html" class="nav-link">Careers</a>
+        <button class="cta-btn" onclick="window.location.href='../index.html#contact'">Partner Inquiry</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="post-wrap">
+    <a href="../blog.html" class="back-link">All Research</a>
+
+    <span class="post-tag">Power Electronics</span>
+    <h1 class="post-title">Parasitic Inductance in High-Frequency SiC Converters</h1>
+    <div class="post-meta">Dec 10, 2025 &nbsp;·&nbsp; SiCore Research</div>
+
+    <div class="post-content">
+
+      <p>In silicon IGBT converters switching at 5-20 kHz, parasitic inductance is a nuisance. In SiC converters switching at 50-200 kHz with dI/dt rates exceeding 5 A/ns, it becomes a primary design constraint. The same 10 nH of busbar inductance that produces a 50V spike at 5 A/ns produces a 500V spike at 50 A/ns - potentially exceeding device voltage ratings on a 800V bus with no remaining margin. This article covers the physics of parasitic inductance in high-frequency power conversion, the sources that matter most, and the design techniques that keep voltage stress within bounds without sacrificing the switching speed advantage that motivated the SiC selection in the first place.</p>
+
+      <div class="toc">
+        <h3>Contents</h3>
+        <ol>
+          <li><a href="#physics">Why Inductance Matters More at High Frequency</a></li>
+          <li><a href="#sources">Sources of Parasitic Inductance</a></li>
+          <li><a href="#overshoot">Voltage Overshoot Calculation</a></li>
+          <li><a href="#package">Device Package Inductance</a></li>
+          <li><a href="#busbar">Power Loop and Busbar Inductance</a></li>
+          <li><a href="#laminated">Laminated Busbar Design</a></li>
+          <li><a href="#pcb">PCB Power Loop Layout</a></li>
+          <li><a href="#decoupling">Decoupling Capacitor Selection and Placement</a></li>
+          <li><a href="#kelvin">Kelvin Source and Gate Loop Inductance</a></li>
+          <li><a href="#snubber">Snubber Design</a></li>
+          <li><a href="#measurement">Measurement Techniques</a></li>
+          <li><a href="#comparison">Technology Comparison</a></li>
+          <li><a href="#example">Worked Example</a></li>
+          <li><a href="#references">References</a></li>
+        </ol>
+      </div>
+
+      <h2 id="physics">1. Why Inductance Matters More at High Frequency</h2>
+      <p>Parasitic inductance is present in every converter regardless of technology. The voltage it generates is <code>V = L x dI/dt</code>. At 10 kHz with a silicon IGBT turning off 200A in 500 ns, dI/dt is 0.4 A/ns and 10 nH produces 4V - trivial against a 600V bus. The same 10 nH in a SiC converter turning off 200A in 40 ns generates 50V, and at 10 A/ns it generates 100V. On a 800V bus with a 1200V device, 100V of additional overshoot consumes half the available margin. At 25 A/ns it fills the margin entirely.</p>
+      <p>The relationship is linear but the consequence is not - there is no averaging or statistical mitigation. Every switching event at maximum current produces the full overshoot voltage, and it appears superimposed on the bus voltage at the device terminals. A converter that passes static voltage withstand testing can fail in switching service when the combination of bus voltage, overshoot, and ringing exceeds device ratings.</p>
+      <p>The second effect of inductance in high-frequency converters is LC resonance. The parasitic inductance of the commutation loop resonates with the output capacitance (Coss) of the devices, producing ringing at the switching node. This ringing adds to peak voltage stress, generates radiated EMI across a broad frequency range, and can couple back into control and gate driver circuits.</p>
+
+      <h2 id="sources">2. Sources of Parasitic Inductance</h2>
+      <p>The total commutation loop inductance is the sum of all inductive elements in the path that current follows during a switching event: from the DC bus capacitor, through the upper device, through the load, back through the lower device, and back to the capacitor. Each physical segment contributes.</p>
+
+      <table>
+        <tr><th>Inductance Source</th><th>Typical Range</th><th>Reduction Method</th></tr>
+        <tr><td>Device package (through-hole TO-247)</td><td>10 to 20 nH</td><td>Switch to low-inductance package (TO-247-4L, D2PAK)</td></tr>
+        <tr><td>Device package (SiC power module)</td><td>5 to 15 nH</td><td>Select low-inductance module; direct-die architecture eliminates</td></tr>
+        <tr><td>DC bus bar / PCB trace (per cm)</td><td>1 to 5 nH/cm</td><td>Laminated busbar; minimize loop area</td></tr>
+        <tr><td>DC link capacitor ESL</td><td>2 to 30 nH</td><td>Film cap arrays; parallel low-ESL ceramics</td></tr>
+        <tr><td>PCB via (per via)</td><td>0.5 to 1.5 nH</td><td>Multiple vias in parallel; minimize via length</td></tr>
+        <tr><td>Solder joint / bond wire</td><td>0.5 to 5 nH</td><td>Direct-die bonding; wide bond ribbons</td></tr>
+        <tr><td>Connector contacts</td><td>1 to 10 nH</td><td>Avoid connectors in power path; use busbars</td></tr>
+      </table>
+
+      <p>The total commutation loop inductance for a discrete-device PCB design is typically 20 to 60 nH without careful layout. With a laminated busbar and optimized PCB, 5 to 15 nH is achievable. Purpose-built SiC power modules target 5 to 10 nH. Direct-die designs with integrated busbars can achieve 2 to 5 nH.</p>
+
+      <h2 id="overshoot">3. Voltage Overshoot Calculation</h2>
+      <p>During turn-off, the current through the commutation loop decreases at dI/dt determined by the gate drive speed. The energy stored in the parasitic inductance cannot transfer instantaneously to the bus capacitor, so it appears as a voltage spike across the device:</p>
+      <p><code>Vpeak = Vbus + L_loop x dI/dt + Vring</code></p>
+      <p>Where Vring is the additional peak voltage from LC resonance after the initial spike. For a first-order estimate:</p>
+      <p><code>Vpeak,ring = Vbus + (L_loop / Coss)^0.5 x Ipeak</code></p>
+      <p>For L_loop = 15 nH, Coss = 200 pF (typical 1200V SiC MOSFET at Vbus), and Ipeak = 150A: the characteristic impedance is 274 ohms and the ringing voltage amplitude is 41V. Combined with a 50V spike from dI/dt = 10 A/ns, total peak voltage is 800 + 50 + 41 = 891V against a 1200V rating. This leaves 309V margin - acceptable but not generous.</p>
+      <p>If the designer reduces gate resistance to speed up turn-off and dI/dt increases to 20 A/ns, the spike doubles and the margin reduces to 209V. At the device's maximum junction temperature, Coss changes, Vth shifts, and the margin may erode further. Overshoot calculations must be validated with measurement at worst-case operating conditions, not only at room temperature and partial load.</p>
+
+      <h2 id="package">4. Device Package Inductance</h2>
+      <p>The choice of device package directly determines a floor on achievable loop inductance. Traditional TO-247 packages contribute 10-20 nH of internal inductance from the lead frame and bond wires. The four-pin TO-247 variant (TO-247-4L, used by Wolfspeed and others for SiC) separates the Kelvin source from the power source, reducing the inductance in the gate loop but not the power loop.</p>
+      <p>Chip-scale and surface-mount packages (TO-263, D2PAK, SMD) reduce package inductance to 2-5 nH but introduce thermal resistance challenges. Power modules eliminate lead inductance within the package but replace it with internal busbar inductance, which varies significantly by module design - from 5 nH in optimized SiC modules to 20+ nH in legacy module designs adapted for SiC.</p>
+      <p>Direct-die approaches, where the SiC chips are bonded directly to the power substrate without an intermediate module package, can reduce package inductance below 2 nH. This represents the lowest achievable floor and is the architecture preferred for the highest switching frequency applications.</p>
+
+      <h2 id="busbar">5. Power Loop and Busbar Inductance</h2>
+      <p>The inductance of the current path external to the device package is determined by the geometry of the conductors forming the commutation loop. Inductance scales approximately with the area enclosed by the loop and inversely with conductor width. For a single rectangular conductor of length l and width w at height h above a ground plane:</p>
+      <p><code>L ≈ 2l x ln(2h/w) nH (with dimensions in cm)</code></p>
+      <p>The critical insight is that two conductors carrying current in opposite directions with close proximity cancel their magnetic fields, dramatically reducing net inductance. This is the principle behind laminated busbars.</p>
+
+      <table>
+        <tr><th>Busbar Configuration</th><th>Typical Loop Inductance</th><th>Notes</th></tr>
+        <tr><td>Single copper bar, 10 cm long</td><td>30 to 60 nH</td><td>No field cancellation; unacceptable for SiC</td></tr>
+        <tr><td>Two parallel bars, 5 mm separation</td><td>10 to 20 nH</td><td>Partial cancellation; marginal</td></tr>
+        <tr><td>Laminated busbar, 1 mm insulation</td><td>3 to 8 nH</td><td>Strong cancellation; standard for SiC converters</td></tr>
+        <tr><td>Laminated busbar, 0.25 mm insulation</td><td>1 to 3 nH</td><td>Maximum practical cancellation; dielectric selection critical</td></tr>
+        <tr><td>PCB with power planes, 4-layer</td><td>2 to 6 nH</td><td>Adjacent planes for positive and negative rails</td></tr>
+      </table>
+
+      <h2 id="laminated">6. Laminated Busbar Design</h2>
+      <p>A laminated busbar consists of positive and negative DC bus conductors separated by a thin insulating layer, bonded under pressure. Current flows in opposite directions on the two conductors, and their magnetic fields cancel to a degree determined by conductor separation - the closer the conductors, the stronger the cancellation and the lower the net inductance.</p>
+      <p>Insulating materials for laminated busbars at 800-1500V DC include Kapton (polyimide) film, Nomex, FR4, and Mylar. Kapton provides high dielectric strength (up to 100 kV/mm) with low thermal expansion mismatch, making it the preferred choice for high-frequency designs. A 0.1 mm Kapton layer can withstand over 7 kV, providing substantial margin at 1200V bus voltages.</p>
+      <p>Key design parameters for laminated busbars in SiC applications:</p>
+      <ul>
+        <li><strong>Conductor thickness:</strong> 2 to 5 mm copper, balanced between current carrying capacity and skin-depth losses at high frequency. At 100 kHz, skin depth in copper is approximately 0.21 mm, so conductors thicker than 0.5 mm carry current only in the outer skin layers.</li>
+        <li><strong>Conductor width:</strong> Maximize within mechanical constraints. Each doubling of width roughly halves inductance for a fixed length.</li>
+        <li><strong>Interleaving:</strong> For three-phase or multi-phase designs, interleaving positive and negative bars of all phases within the same laminated structure further reduces inductance through additional field cancellation.</li>
+        <li><strong>Termination method:</strong> Bolted connections at device terminals should minimize loop area. Flexible copper braid transitions from rigid busbar to device terminals accommodate thermal expansion without introducing long flexible leads.</li>
+      </ul>
+
+      <div class="note"><strong>Creepage and clearance:</strong> IEC 60664 and UL 840 specify minimum creepage and clearance distances for the bus voltage. At 800V DC in a Pollution Degree 2 environment, minimum creepage is approximately 6.4 mm for basic insulation. Laminated busbars must maintain this spacing at all exposed edges and at terminal connections. Insulation tape or overmold may be required at terminations.</div>
+
+      <h2 id="pcb">7. PCB Power Loop Layout</h2>
+      <p>For designs using discrete SiC devices on PCB, the power loop is formed by the traces connecting the DC link capacitors to the device drain and source pads. Minimizing this loop area is the single most impactful layout action available to the PCB designer.</p>
+      <p>In a half-bridge configuration, the optimal layout places the high-side and low-side devices close together, with DC link capacitors immediately adjacent. The positive and negative bus connections to the capacitors should be on adjacent copper layers, routed directly beneath the switching node to maximize flux cancellation. A 4-layer PCB with dedicated inner power planes outperforms a 2-layer design by a factor of 3-5 in power loop inductance for the same footprint.</p>
+      <ul>
+        <li><strong>Device placement:</strong> High-side drain pad directly connected to positive bus; low-side source pad directly connected to negative bus. Switching node (mid-point) connects internally between devices - minimize this connection length.</li>
+        <li><strong>Capacitor placement:</strong> DC link capacitors within 10 mm of device pads. Each additional centimeter of trace adds approximately 1-2 nH.</li>
+        <li><strong>Via stitching:</strong> Multiple vias in parallel between layers reduce via inductance. A single 0.5 mm via contributes approximately 1 nH; eight vias in parallel reduce this to 0.13 nH.</li>
+        <li><strong>Copper pour fill:</strong> Fill unused PCB area with copper connected to the appropriate bus potential, reducing the inductance of traces that run over the fill.</li>
+      </ul>
+
+      <h2 id="decoupling">8. Decoupling Capacitor Selection and Placement</h2>
+      <p>DC link capacitors serve a dual function: they supply switching current during transients (reducing the inductance the device switching current must traverse), and they absorb the energy released from parasitic inductance during turn-off. Their equivalent series inductance (ESL) is as important as their capacitance value for high-frequency operation.</p>
+
+      <table>
+        <tr><th>Capacitor Type</th><th>Typical ESL</th><th>Voltage Range</th><th>Role in SiC Designs</th></tr>
+        <tr><td>Electrolytic (snap-in)</td><td>15 to 50 nH</td><td>450 to 1000V</td><td>Bulk energy storage only; too inductive for local decoupling</td></tr>
+        <tr><td>Film (polypropylene, box)</td><td>5 to 30 nH</td><td>600 to 1500V</td><td>Main DC link; low ESR; parallel arrays reduce ESL</td></tr>
+        <tr><td>Film (stacked/wound, low inductance)</td><td>2 to 8 nH</td><td>600 to 1500V</td><td>Preferred for high-frequency DC link</td></tr>
+        <tr><td>Ceramic (X7R, MLCC)</td><td>0.5 to 2 nH</td><td>Up to 500V practical</td><td>Local high-frequency bypass at device; complements film caps</td></tr>
+        <tr><td>SiC-rated ceramic arrays</td><td>0.2 to 1 nH</td><td>500 to 1000V</td><td>Emerging; best local decoupling for high-voltage SiC</td></tr>
+      </table>
+
+      <p>The optimal decoupling strategy uses two stages: a low-ESL film capacitor (or paralleled array) as the main DC link, and small ceramic capacitors placed as close as physically possible to the device switching node for high-frequency bypassing. The ceramic capacitors supply current during the first few nanoseconds of the switching event before the film capacitor can respond through its own ESL and the remaining connection inductance.</p>
+
+      <h2 id="kelvin">9. Kelvin Source and Gate Loop Inductance</h2>
+      <p>The gate loop inductance is separate from the power loop inductance but interacts with it. The power source terminal carries switching current; if the gate driver return is connected to this terminal rather than a dedicated Kelvin source, the dI/dt-induced voltage in the power source inductance appears in series with the gate drive signal. At 5 A/ns and 3 nH of source inductance, this is 15V - comparable to the gate drive voltage and capable of dramatically altering switching waveforms.</p>
+      <p>The consequence of inadequate Kelvin source routing is not always obvious. The switching waveform may look approximately correct on a probe connected to the power source terminal, but the actual gate voltage is distorted. Switching losses measured by probing Vds and Id may appear normal while the actual device junction is experiencing a different waveform. This is a systematic measurement error that can mask a genuine design problem until the device accumulates stress under field conditions.</p>
+      <p>Gate loop inductance targets: below 5 nH is achievable with careful layout; below 2 nH requires dedicated attention to gate trace routing, Kelvin pin connection, and bypass capacitor placement.</p>
+
+      <h2 id="snubber">10. Snubber Design</h2>
+      <p>When parasitic inductance cannot be reduced below the level required to keep voltage overshoot within device ratings, a snubber circuit absorbs the excess energy. The two practical options for SiC converters are RC snubbers and RCD snubbers.</p>
+      <p>An RC snubber placed across the device (drain to source) provides a low-impedance path for high-frequency ringing energy. The resistor damps the LC resonance; the capacitor bypasses the device at switching frequencies. Design equations:</p>
+      <p><code>C_snub = L_loop / Z_char^2</code>, where <code>Z_char = (L_loop / Coss)^0.5</code></p>
+      <p>For L_loop = 15 nH and Coss = 200 pF: Z_char = 274 ohms, C_snub = 200 pF. The resistor is set to Z_char / 2 = 137 ohms. In practice, values are swept experimentally to achieve critical damping while minimizing added losses.</p>
+
+      <table>
+        <tr><th>Snubber Type</th><th>Loss Mechanism</th><th>Best Application</th><th>Limitations</th></tr>
+        <tr><td>RC across device</td><td>Resistive dissipation of ringing energy</td><td>Discrete device PCB designs</td><td>Adds capacitive switching loss at high fsw</td></tr>
+        <tr><td>RCD clamp</td><td>Diode clamps overshoot; R discharges cap</td><td>High-current, moderate-frequency designs</td><td>Diode speed must match SiC dV/dt</td></tr>
+        <tr><td>Active gate clamping</td><td>Slows dI/dt during turn-off via gate signal</td><td>When overshoot occurs only near rated current</td><td>Increases switching losses; complex control</td></tr>
+        <tr><td>Laminated busbar redesign</td><td>Eliminates the problem rather than managing it</td><td>New designs or redesign opportunity</td><td>Mechanical and cost impact</td></tr>
+      </table>
+
+      <div class="note"><strong>Snubber diode selection:</strong> In an RCD clamp snubber for a 1200V SiC converter, the clamp diode must conduct the full turn-off current at a forward voltage substantially below the clamp voltage, and it must block the bus voltage in reverse. SiC Schottky diodes are the correct choice - their near-zero reverse recovery eliminates the current spike that occurs when a silicon diode commutates in this position. Using a silicon diode in an RCD clamp on a SiC converter generates a current spike at every snubber recovery that can exceed the original overshoot it was intended to address.</div>
+
+      <h2 id="measurement">11. Measurement Techniques</h2>
+      <p>Accurate characterization of parasitic inductance requires appropriate measurement tools. Three methods are relevant:</p>
+      <p><strong>Vector Network Analyzer (VNA) impedance measurement:</strong> The most accurate method for characterizing L, C, and R of individual components and small assemblies. A VNA sweeping 100 kHz to 100 MHz can characterize the complex impedance of a busbar, capacitor, or connector with high accuracy. Calibration at the measurement plane is essential.</p>
+      <p><strong>Double-pulse test:</strong> A practical in-circuit method for evaluating total commutation loop inductance. The device is pulsed with a defined current; at turn-off, the voltage overshoot and ringing frequency both reveal the effective inductance: <code>L_eff = Vpeak / (dI/dt)</code> from the measured overshoot, or <code>L_eff = 1 / (4pi^2 x f_ring^2 x Coss)</code> from the ringing frequency.</p>
+      <p><strong>High-bandwidth probing:</strong> Measuring fast switching transients requires probes with bandwidth above 500 MHz. A standard 10:1 passive probe at 100 MHz will heavily distort SiC switching waveforms and can underreport peak voltages by 30-50%. Differential high-voltage probes (1000V+) or isolated floating probes are required for safe measurement at high bus voltages.</p>
+
+      <h2 id="comparison">12. Technology Comparison: Loop Inductance Targets</h2>
+      <table>
+        <tr><th>Design Approach</th><th>Achievable L_loop</th><th>Switching Speed</th><th>Max Practical Overshoot at 200A, 800V bus</th></tr>
+        <tr><td>Discrete TO-247, standard PCB layout</td><td>40 to 80 nH</td><td>Limited to 2-5 A/ns</td><td>80 to 400V</td></tr>
+        <tr><td>Discrete TO-247-4L, optimized PCB</td><td>15 to 30 nH</td><td>5 to 10 A/ns</td><td>75 to 300V</td></tr>
+        <tr><td>SiC power module, laminated busbar</td><td>8 to 15 nH</td><td>10 to 20 A/ns</td><td>80 to 300V</td></tr>
+        <tr><td>Optimized SiC module, integrated busbar</td><td>3 to 8 nH</td><td>20 to 40 A/ns</td><td>60 to 320V</td></tr>
+        <tr><td>Direct-die, integrated busbar structure</td><td>1 to 4 nH</td><td>30 to 60 A/ns</td><td>30 to 240V</td></tr>
+      </table>
+
+      <h2 id="example">13. Worked Example: 800V, 300A Half-Bridge</h2>
+      <p>Target: 800V DC bus, 300A peak current, 100 kHz switching, 1200V-rated SiC devices (absolute max Vds = 1200V). Available overshoot budget: 1200V - 800V - 100V margin = 300V. Target dI/dt = 15 A/ns.</p>
+      <ul>
+        <li><strong>Required L_loop:</strong> V = L x dI/dt, so L_max = 300V / 15 A/ns = 20 nH</li>
+        <li><strong>Busbar design:</strong> Laminated copper busbar, 0.5 mm Kapton insulation, 80 mm wide conductors. Estimated inductance: 6 nH for 150 mm length.</li>
+        <li><strong>DC link capacitor:</strong> 4x 100 uF, 900V film capacitors with 5 nH ESL each. Paralleled ESL: 1.25 nH. Placed within 20 mm of device pads.</li>
+        <li><strong>Device package:</strong> Low-inductance SiC module, 6 nH internal. Total estimated loop: 6 + 1.25 + 6 + connector/trace ~2 nH = 15.25 nH. Within budget.</li>
+        <li><strong>Ringing frequency:</strong> Coss at 800V approximately 150 pF. f_ring = 1 / (2pi x sqrt(15 nH x 150 pF)) = 106 MHz. Ringing amplitude = sqrt(L/C) x I = 316 ohm x 0.3A residual = acceptable. Main concern is turn-off spike, not ringing.</li>
+        <li><strong>Peak voltage:</strong> 800V + 15 nH x 15 A/ns = 800 + 225 = 1025V. Margin to 1200V: 175V. Acceptable with measured validation.</li>
+      </ul>
+
+      <h2 id="references">14. References</h2>
+      <ul>
+        <li>Wolfspeed Application Note: "Power Module Parasitic Inductance Extraction and Validation" (CRD-06DD12P)</li>
+        <li>Rodriguez, M. et al., "Parasitic Inductance Reduction in High-Speed Power Converters," IEEE APEC, 2017</li>
+        <li>Lemmon, A. et al., "Ultrahigh-Speed Gallium-Nitride-Based Power Inverter: Part II - Dynamic Characterization," IEEE Trans. Power Electronics, 2016</li>
+        <li>Infineon Application Note: "Measurement of Parasitic Inductance with Impedance Analyzer" (AN 2018-05)</li>
+        <li>IPC-2141A: Controlled Impedance Circuit Boards and High-Speed Logic Design</li>
+        <li>Burkart, R. et al., "Comparative Evaluation of SiC and Si PV Inverter Systems Based on Power Density and Efficiency," IEEE COMPEL, 2013</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="../images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+            <span class="footer-brand-name">SiCore Research</span>
+          </div>
+          <div class="footer-tagline">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Where Physics Goes to Work.</em></div>
+          <p>NDAA compliant SiC converters and power electronics for motorsports, defense, aerospace, and industrial. Advancing electrification through proprietary module-less architecture.</p>
+        </div>
+        <div>
+          <h4>Navigate</h4>
+          <a href="../index.html">Home</a>
+          <a href="../index.html#markets">Markets</a>
+          <a href="../index.html#technology">Technology</a>
+          <a href="../index.html#capabilities">Capabilities</a>
+          <a href="../index.html#contact">Contact</a>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <a href="../privacy.html">Privacy Policy</a>
+          <a href="../terms.html">Terms of Use</a>
+          <a href="../index.html#contact">Partner Inquiry</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 SiCore Research, LLC. All rights reserved.</span>
+        <span><a href="../privacy.html">Privacy</a> &nbsp;|&nbsp; <a href="../terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

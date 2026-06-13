@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thermal Design at 105°C Coolant | SiCore Research</title>
+  <link rel="icon" type="image/svg+xml" href="../images/SiC_Logo_Inverted.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Engineering notes on pin-fin cold plate design, pressure drop targets, TIM selection, and realistic thermal resistance values for 105°C high-temperature coolant applications in SiC power electronics.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:'Inter',system-ui,-apple-system,sans-serif;background:#0a0a0a;color:#e8e8e8;-webkit-font-smoothing:antialiased}
+    h1,h2,h3,h4,p{margin:0;padding:0}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    :root{--accent:#e07820}
+
+    /* Header */
+    header{position:fixed;top:0;left:0;width:100%;z-index:100;background:rgba(8,8,8,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(224,120,32,.12)}
+    .header-inner{max-width:1400px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand-logo{height:36px;width:36px}
+    .brand-name{font-weight:900;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#fff}
+    .nav-right{display:flex;gap:40px;align-items:center}
+    .nav-link{font-size:11px;color:#777;transition:color .2s;text-transform:uppercase;letter-spacing:.8px;font-weight:700}
+    .nav-link:hover{color:#e07820}
+    .cta-btn{background:#e07820;color:#000;border:none;padding:10px 22px;font-weight:800;cursor:pointer;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;transition:all .2s}
+    .cta-btn:hover{background:#c06010}
+
+    /* Post Layout */
+    .post-wrap{max-width:800px;margin:0 auto;padding:140px 40px 100px}
+
+    /* Back link */
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:1.2px;font-weight:800;color:#666;margin-bottom:48px;transition:color .2s}
+    .back-link:hover{color:#e07820}
+    .back-link::before{content:"←"}
+
+    /* Post header */
+    .post-tag{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#e07820;margin-bottom:16px;display:block}
+    .post-title{font-size:52px;font-weight:900;line-height:1;text-transform:uppercase;letter-spacing:-.03em;margin-bottom:20px}
+    .post-meta{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:56px;padding-bottom:32px;border-bottom:1px solid rgba(224,120,32,.08)}
+
+    /* Post content */
+    .post-content h2{font-size:28px;font-weight:800;text-transform:uppercase;letter-spacing:-.02em;margin:56px 0 16px;color:#fff;line-height:1.1}
+    .post-content h2::before{content:"";display:block;width:24px;height:2px;background:#e07820;margin-bottom:12px}
+    .post-content h3{font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin:32px 0 10px;color:#ccc}
+    .post-content p{font-size:17px;line-height:1.85;color:#999;margin:0 0 20px}
+    .post-content a{color:#e07820;text-decoration:underline;text-underline-offset:3px}
+    .post-content strong{color:#e8e8e8;font-weight:700}
+    .post-content code,kbd{background:#14140e;border:1px solid #2a1e0a;padding:3px 7px;font-size:13px;font-family:monospace;color:#e07820;border-radius:2px}
+    .post-content ul,.post-content ol{color:#999;line-height:1.85;margin:0 0 20px;padding-left:24px;font-size:17px}
+    .post-content li{margin:6px 0}
+    .post-content hr{border:0;border-top:1px solid rgba(224,120,32,.08);margin:48px 0}
+
+    /* Table */
+    .post-content table{width:100%;border-collapse:collapse;margin:24px 0;font-size:13px}
+    .post-content th{background:#0e0c08;border:1px solid #2a1e0a;padding:10px 14px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:#e07820}
+    .post-content td{border:1px solid #1a1608;padding:10px 14px;color:#888;vertical-align:top}
+    .post-content tr:hover td{background:rgba(224,120,32,.02)}
+
+    /* TOC */
+    .toc{background:#0e0c08;border:1px solid rgba(224,120,32,.12);padding:28px 32px;margin:0 0 48px;position:relative}
+    .toc::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:#e07820}
+    .toc h3{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:#e07820;margin:0 0 16px}
+    .toc ol{margin:0;padding-left:20px;color:#666;font-size:14px;line-height:2}
+    .toc a{color:#666;transition:color .2s}
+    .toc a:hover{color:#e07820;text-decoration:none}
+    .toc ul{margin:0;padding-left:16px}
+
+    /* Note callout */
+    .note{background:#0e0c08;border-left:2px solid #e07820;padding:16px 20px;margin:24px 0;font-size:14px;color:#888;line-height:1.7}
+
+    /* Footer */
+    footer{background:#040402;border-top:3px solid #e07820;padding:80px 40px 36px}
+    .footer-wrap{max-width:1400px;margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:80px;margin-bottom:56px}
+    footer h4{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 24px;font-weight:900;color:#e07820}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .footer-brand img{height:26px;width:26px;opacity:.7}
+    .footer-brand-name{font-size:12px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
+    .footer-tagline{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6a5a4a;margin-bottom:16px}
+    .footer-tagline em{color:#e07820;font-style:normal}
+    footer p{font-size:13px;line-height:1.9;color:#666;margin:0}
+    footer a{display:block;font-size:13px;color:#888;margin-bottom:12px;transition:all .2s;font-weight:500}
+    footer a:hover{color:#e07820;padding-left:4px}
+    .footer-bottom{border-top:1px solid rgba(224,120,32,.08);padding-top:28px;font-size:10px;color:#666;display:flex;justify-content:space-between;align-items:center}
+    .footer-bottom a{color:#666;display:inline;margin:0;padding:0}
+    .footer-bottom a:hover{color:#e07820;padding-left:0}
+    @media(max-width:900px){.post-title{font-size:36px}.footer-grid{grid-template-columns:1fr 1fr;gap:40px}.footer-bottom{flex-direction:column;gap:12px;text-align:center}}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="../index.html" class="brand">
+        <img class="brand-logo" src="../images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+        <span class="brand-name">SiCore Research</span>
+      </a>
+      <div class="nav-right">
+        <a href="../index.html#markets" class="nav-link">Markets</a>
+        <a href="../index.html#technology" class="nav-link">Technology</a>
+        <a href="../index.html#capabilities" class="nav-link">Capabilities</a>
+        <a href="../blog.html" class="nav-link">Research</a>
+        <a href="../careers.html" class="nav-link">Careers</a>
+        <button class="cta-btn" onclick="window.location.href='../index.html#contact'">Partner Inquiry</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="post-wrap">
+    <a href="../blog.html" class="back-link">All Research</a>
+
+    <span class="post-tag">Thermal Engineering</span>
+    <h1 class="post-title">Thermal Design Notes for 105°C Coolant</h1>
+    <div class="post-meta">Nov 2, 2025 &nbsp;·&nbsp; SiCore Research</div>
+
+    <div class="post-content">
+
+      <p>Most power electronics thermal design assumes a comfortable coolant inlet temperature - 65°C in commercial EV systems, perhaps 85°C in demanding industrial applications. At those temperatures, a well-designed cold plate with a standard glycol-water circuit has enough thermal headroom to keep silicon carbide junctions safely below their rated limits even at high power density.</p>
+      <p>The 105°C regime is different. It appears in military ground vehicles where the coolant loop is shared with engine systems, in aircraft power converters operating in high-bay environments with elevated ambient air, and in motorsport applications where coolant temperature climbs under sustained race load. When the coolant itself is running hot, every decision in the thermal stack - pin-fin geometry, material selection, interface technology, flow rate - carries greater consequence.</p>
+      <p>This article documents the specific design choices that matter at 105°C. It is not a general treatment of thermal resistance theory - see our companion article on <a href="understanding-rth.html">Understanding Thermal Resistance in Liquid-Cooled Power Electronics</a> for that foundation. These are working notes on <strong>what to specify, what to avoid, and what realistic numbers look like</strong> at the high-temperature end of the liquid cooling envelope.</p>
+
+      <div class="toc">
+        <h3>Contents</h3>
+        <ol>
+          <li><a href="#budget">The 105°C Thermal Budget</a></li>
+          <li><a href="#pinfin">Pin-Fin Geometry and Selection</a>
+            <ul>
+              <li><a href="#inline">Inline vs. Staggered Arrays</a></li>
+              <li><a href="#dimensions">Fin Dimensions and Pitch</a></li>
+              <li><a href="#enhancement">Surface Enhancement Options</a></li>
+            </ul>
+          </li>
+          <li><a href="#pressure">Pressure Drop Targets at 5–10 LPM</a></li>
+          <li><a href="#rth-numbers">Realistic Rθ Numbers by Flow Rate</a></li>
+          <li><a href="#materials">Cold Plate Material Selection</a></li>
+          <li><a href="#tim">Thermal Interface Materials at 105°C</a></li>
+          <li><a href="#coolants">Coolant Fluid Selection</a></li>
+          <li><a href="#seals">Seal and Gasket Materials</a></li>
+          <li><a href="#surface">Surface Finish Requirements</a></li>
+          <li><a href="#manifold">Manifold Design and Flow Distribution</a></li>
+          <li><a href="#corrosion">Corrosion and Compatibility</a></li>
+          <li><a href="#reliability">Reliability Under Sustained High Temperature</a></li>
+          <li><a href="#validation">Validation Approach</a></li>
+          <li><a href="#example">Worked Example: 3 kW Per Phase at 105°C</a></li>
+          <li><a href="#comparison">Design Comparison: 65°C vs. 85°C vs. 105°C</a></li>
+          <li><a href="#conclusion">Conclusion</a></li>
+          <li><a href="#refs">References</a></li>
+        </ol>
+      </div>
+
+      <h2 id="budget">1. The 105°C Thermal Budget</h2>
+      <p>The thermal budget available to a designer is defined by the gap between coolant inlet temperature and maximum allowable junction temperature. For a standard SiC MOSFET rated to <code>Tj,max = 175°C</code> and a 105°C coolant inlet:</p>
+      <p><code>ΔT,available = 175 − 105 = 70°C</code></p>
+      <p>For a device dissipating 1 kW, that constrains the entire thermal stack - junction to coolant - to <code>Rθ,total ≤ 0.070 °C/W</code>. At 3 kW per device, the budget tightens further to <code>0.023 °C/W</code>. These are not generous numbers.</p>
+      <p>Extended-temperature SiC devices rated to 200°C improve the situation somewhat:</p>
+      <p><code>ΔT,available = 200 − 105 = 95°C → Rθ ≤ 0.032 °C/W at 3 kW</code></p>
+      <p>In either case, the designer should reserve a reliability margin of 15–25°C below the rated junction limit - accounting for device-to-device variation, aging, and transient overloads. A practical working budget for a 175°C device at 105°C coolant is therefore closer to <code>ΔT,working ≈ 45–55°C</code>, implying <code>Rθ,total ≤ 0.015–0.018 °C/W</code> at 3 kW.</p>
+      <div class="note"><strong>Key implication:</strong> The 105°C regime eliminates most of the comfortable margin that 65°C designs take for granted. There is no room for a sloppy TIM application, an underperforming cold plate, or a flow rate that hasn't been characterized. Every fraction of °C/W is load-bearing.</div>
+
+      <h2 id="pinfin">2. Pin-Fin Geometry and Selection</h2>
+      <p>Pin-fin cold plates are the standard choice for high heat flux electronics cooling at 5–15 LPM flow rates. They offer a favorable combination of surface area, turbulence promotion, and manufacturability compared to flat-channel or folded-fin designs.</p>
+
+      <h3 id="inline">2.1 Inline vs. Staggered Arrays</h3>
+      <p>Inline arrays arrange pins on a square grid. Staggered arrays offset alternate rows by half a pitch, forcing the flow to navigate a more tortuous path. The heat transfer difference is meaningful: staggered arrays achieve <strong>15–25% higher convective heat transfer coefficients</strong> than inline at equivalent flow rates, at the cost of 10–20% higher pressure drop.</p>
+      <p>For 105°C coolant applications, staggered arrays are the correct default. The thermal margin is tight enough that the additional heat transfer coefficient is worth the modest increase in pumping requirement. Inline arrays are acceptable when pressure drop is strictly constrained (below 0.2 bar at target flow) and when the device power density is lower.</p>
+
+      <h3 id="dimensions">2.2 Fin Dimensions and Pitch</h3>
+      <p>Practical pin-fin dimensions for power electronics cold plates in the 5–15 LPM range:</p>
+      <table>
+        <tr><th>Parameter</th><th>Typical Range</th><th>Notes for 105°C</th></tr>
+        <tr><td>Pin diameter (d)</td><td>1.5 – 4.0 mm</td><td>Smaller pins increase surface area and h but raise pressure drop and clogging risk; 2.0–3.0 mm is a practical compromise</td></tr>
+        <tr><td>Longitudinal pitch (Sl)</td><td>2.5d – 4d</td><td>Tighter pitch increases heat transfer but amplifies pressure drop nonlinearly; 3d is a typical starting point</td></tr>
+        <tr><td>Transverse pitch (St)</td><td>2d – 3.5d</td><td>For staggered arrays, St/d ≈ 2.5 maximizes heat transfer without excessive resistance</td></tr>
+        <tr><td>Fin height (H)</td><td>6 – 14 mm</td><td>Taller fins increase wetted area and overall heat transfer; diminishing returns beyond H/d ≈ 5</td></tr>
+        <tr><td>Base thickness</td><td>2 – 4 mm</td><td>Copper: 2 mm sufficient. Aluminum: 3 mm minimum for spreading</td></tr>
+      </table>
+      <p>For a 100 × 60 mm active footprint at 105°C with staggered copper pins (d = 2.5 mm, H = 10 mm, Sl = 7.5 mm, St = 6.25 mm), expected surface area enhancement is approximately 4–6× the base footprint. This is the geometry range where good cold plates achieve <code>h = 8,000–14,000 W/m²·K</code> at 8–10 LPM.</p>
+
+      <h3 id="enhancement">2.3 Surface Enhancement Options</h3>
+      <p>Beyond basic pin geometry, several enhancement approaches improve <code>h</code> at 105°C without increasing footprint:</p>
+      <ul>
+        <li><strong>Dimpled or roughened pin surfaces</strong> - EDM texturing or chemical etching creates micro-scale turbulence promoters. Gains of 10–20% in h with minimal pressure drop penalty.</li>
+        <li><strong>Tapered pins</strong> - Draft angle of 1–3° can improve flow detachment at the trailing edge and reduce dead zones in staggered arrays.</li>
+        <li><strong>Hybrid arrays</strong> - Denser pin fields under high-heat-flux die locations, transitioning to wider pitch in lower-flux regions. Reduces thermal gradient across the plate without globally increasing pressure drop.</li>
+        <li><strong>Jet impingement inserts</strong> - For very small footprint devices at extreme power density, an impingement insert upstream of a pin array can push local <code>h</code> above 20,000 W/m²·K. Adds manifold complexity.</li>
+      </ul>
+
+      <h2 id="pressure">3. Pressure Drop Targets at 5–10 LPM</h2>
+      <p>Pressure drop across a pin-fin cold plate scales approximately as <code>ΔP ∝ Q^1.7–1.9</code> for turbulent flow conditions typical of this geometry and flow range. The exact exponent depends on pin geometry and channel Reynolds number.</p>
+      <table>
+        <tr><th>Flow Rate</th><th>Typical ΔP (copper, staggered, 100×60 mm)</th><th>Pump Power (η = 0.65)</th></tr>
+        <tr><td>5 LPM</td><td>0.15 – 0.30 bar</td><td>19 – 38 W</td></tr>
+        <tr><td>7 LPM</td><td>0.25 – 0.50 bar</td><td>44 – 88 W</td></tr>
+        <tr><td>8 LPM</td><td>0.32 – 0.65 bar</td><td>66 – 133 W</td></tr>
+        <tr><td>10 LPM</td><td>0.48 – 0.95 bar</td><td>123 – 243 W</td></tr>
+      </table>
+      <p>The wide ranges reflect variation in pin geometry. A tighter-pitched array at the lower end of the diameter range will be closer to the upper pressure drop bound. For 105°C systems, the target window is typically <strong>0.25–0.55 bar at 7–9 LPM</strong> - enough flow to achieve useful thermal performance without overloading a compact pump.</p>
+      <div class="note"><strong>System-level consideration:</strong> In shared coolant loops (e.g., engine glycol circuits), the cold plate must meet its thermal targets within the available differential pressure the vehicle system can supply - often 0.3–0.8 bar. Design the plate to hit its thermal targets at no more than 70% of that limit, leaving headroom for manifold and plumbing losses.</div>
+      <p>Pressure drop can be measured during characterization with a differential pressure transducer across the inlet and outlet ports. Confirm that the measured curve matches CFD predictions within ±10% - deviations larger than that typically indicate flow maldistribution, partial blockage, or manifold design issues, not simply model error.</p>
+
+      <h2 id="rth-numbers">4. Realistic Rθ Numbers by Flow Rate</h2>
+      <p>The following values represent surface-to-fluid thermal resistance <code>Rθ(surface→fluid)</code> for a well-designed staggered copper pin-fin cold plate, 100 × 60 mm active area, at 105°C EG/water coolant. They do not include junction-to-case resistance or TIM resistance, which must be added separately.</p>
+      <table>
+        <tr><th>Flow Rate</th><th>Rθ surface→fluid (°C/W)</th><th>h effective (W/m²·K)</th><th>Notes</th></tr>
+        <tr><td>5 LPM</td><td>0.020 – 0.026</td><td>6,000 – 8,000</td><td>Minimum practical flow; acceptable only at lower power densities</td></tr>
+        <tr><td>7 LPM</td><td>0.014 – 0.019</td><td>8,500 – 11,500</td><td>Good balance of performance and pump demand</td></tr>
+        <tr><td>8 LPM</td><td>0.012 – 0.016</td><td>10,000 – 13,500</td><td>Preferred operating point for 105°C high-power applications</td></tr>
+        <tr><td>10 LPM</td><td>0.010 – 0.013</td><td>12,000 – 16,000</td><td>Diminishing returns above this rate; pressure drop cost increases rapidly</td></tr>
+      </table>
+      <p>Adding a well-executed metallic TIM (<code>Rθ,tim ≈ 0.001–0.003 °C/W</code>) and a typical SiC module junction-to-case resistance (<code>Rθ,j–c ≈ 0.04–0.06 °C/W</code>) brings the total stack to approximately <code>0.053–0.089 °C/W</code> at 8 LPM - consistent with the 45–55°C junction headroom budget established in Section 1 for power levels of roughly 0.6–1.0 kW per device.</p>
+      <p>For higher per-device losses, either the flow rate must increase, the junction-to-case resistance must decrease (better device packaging), or the TIM must move to a metallic bond. There is no other lever.</p>
+
+      <h2 id="materials">5. Cold Plate Material Selection</h2>
+      <p>Material choice at 105°C is more constrained than at lower temperatures. The combination of elevated temperature, glycol-water chemistry, and long service life eliminates several options common in commercial applications.</p>
+      <table>
+        <tr><th>Material</th><th>k (W/m·K)</th><th>105°C Suitability</th><th>Notes</th></tr>
+        <tr><td>Aluminum 6061</td><td>167</td><td>Marginal</td><td>Acceptable with aggressive inhibitor chemistry; prone to crevice and pitting corrosion above 90°C with EG/water; not recommended for &gt;10,000 hr service</td></tr>
+        <tr><td>Aluminum 3003</td><td>155</td><td>Marginal</td><td>Better corrosion resistance than 6061; still vulnerable in high-temperature glycol without active chemistry management</td></tr>
+        <tr><td>Copper C110</td><td>385</td><td>Good</td><td>Excellent conductivity and corrosion resistance in glycol-water; heavier; not suitable for mixed aluminum-copper systems without isolation</td></tr>
+        <tr><td>Copper-Nickel (70/30)</td><td>29</td><td>Excellent</td><td>Superior corrosion resistance; preferred for harsh high-temp loops; lower k compensated by thinner walls and pin geometry</td></tr>
+        <tr><td>316L Stainless</td><td>16</td><td>Excellent</td><td>Maximum corrosion resistance; very low k demands optimized geometry; used in highest-reliability applications</td></tr>
+        <tr><td>Copper-Tungsten</td><td>180–200</td><td>Excellent</td><td>High k, low CTE mismatch to SiC; expensive; primarily used as intermediate spreader in direct-attach configurations</td></tr>
+      </table>
+      <p>For most 105°C programs, <strong>copper C110 with a full-copper circuit</strong> (no aluminum in the loop) is the pragmatic choice. It offers adequate corrosion resistance, high conductivity, and established manufacturing processes for brazed and machined cold plates. Copper-nickel becomes relevant when the coolant loop cannot be kept aluminum-free or when the service life requirement exceeds 20,000 hours under continuous high-temperature exposure.</p>
+
+      <h2 id="tim">6. Thermal Interface Materials at 105°C</h2>
+      <p>This is where many 105°C designs fail quietly over time. Polymer-based TIMs - greases, phase-change materials, and filled pads - degrade meaningfully above 85°C under sustained exposure. The failure mode is not sudden. It is a gradual increase in <code>Rθ,tim</code> as the matrix volatilizes, the filler settles, or the material pumps out from repeated thermal cycling.</p>
+
+      <h3>6.1 What Fails and Why</h3>
+      <p>Silicone greases have continuous service limits typically quoted at 150–200°C, but their thermal cycling performance at 105°C base temperature - combined with junction cycling of 30–50°C above that - accelerates pump-out and dry-out. A grease applied at 100 µm bond line may reach 200–400 µm after 5,000 thermal cycles, quadrupling interface resistance. Phase-change pads show similar behavior. Indium-filled polymer pads are more stable but still drift over thousands of cycles.</p>
+
+      <h3>6.2 What Works</h3>
+      <table>
+        <tr><th>TIM Type</th><th>Rθ (°C/W, 25 cm²)</th><th>Stability at 105°C</th><th>Notes</th></tr>
+        <tr><td>Silicone grease (standard)</td><td>0.008 – 0.020</td><td>Poor long-term</td><td>Pump-out above 90°C; not recommended for &gt;5,000 cycles at 105°C</td></tr>
+        <tr><td>Non-silicone phase change</td><td>0.006 – 0.015</td><td>Moderate</td><td>Better pump-out resistance; confirm cycling stability at temperature</td></tr>
+        <tr><td>Graphite sheet</td><td>0.003 – 0.008</td><td>Good</td><td>Stable, no pump-out; requires very flat surfaces (≤ 25 µm); compressible to fill minor voids</td></tr>
+        <tr><td>Indium foil</td><td>0.001 – 0.004</td><td>Excellent</td><td>Low melting point allows compliance; excellent long-term stability; cost and assembly care required</td></tr>
+        <tr><td>Sintered silver</td><td>0.0005 – 0.002</td><td>Excellent</td><td>Best long-term stability; requires controlled sintering process; used in highest-reliability programs</td></tr>
+        <tr><td>Solder bond (SAC305)</td><td>0.0005 – 0.003</td><td>Excellent</td><td>Permanent bond; CTE mismatch must be managed; not reworkable</td></tr>
+      </table>
+      <p>For 105°C continuous service, <strong>graphite sheet, indium foil, or sintered silver</strong> are the appropriate choices. The selection depends on assembly process maturity, rework requirements, and CTE mismatch with the substrate. Sintered silver is increasingly standard in defense and automotive-grade high-temperature programs where thermal cycling life exceeds 10,000 cycles.</p>
+
+      <h2 id="coolants">7. Coolant Fluid Selection</h2>
+      <p>Standard 50/50 ethylene glycol/water (EG/W) is compatible with 105°C service and remains the default for most applications. Its thermal properties at elevated temperature are well-characterized and its inhibitor packages are mature. Propylene glycol/water (PG/W) is an alternative where toxicity is a concern, with slightly inferior heat transfer properties.</p>
+      <table>
+        <tr><th>Fluid</th><th>k at 100°C (W/m·K)</th><th>cp at 100°C (J/kg·K)</th><th>Viscosity at 100°C (mPa·s)</th><th>Notes</th></tr>
+        <tr><td>50% EG/Water</td><td>0.44</td><td>3,760</td><td>0.90</td><td>Standard choice; good inhibitor availability; compatible with copper systems</td></tr>
+        <tr><td>50% PG/Water</td><td>0.41</td><td>3,820</td><td>1.05</td><td>Lower toxicity; slightly lower thermal performance than EG</td></tr>
+        <tr><td>PAO (MIL-PRF-23699)</td><td>0.14</td><td>2,090</td><td>1.8</td><td>Dielectric; used where electrical isolation required; significantly higher Rθ,conv for same geometry</td></tr>
+        <tr><td>Fluorocarbon (FC-72)</td><td>0.057</td><td>1,050</td><td>0.38</td><td>Dielectric immersion cooling; very low k demands large flow or impingement; limited to specialist applications</td></tr>
+      </table>
+      <p>The jump from EG/water to PAO for dielectric isolation is costly: PAO's thermal conductivity is roughly 3× lower, which approximately triples <code>Rθ,conv</code> for the same plate geometry and flow rate. If the system requires dielectric coolant, the cold plate design must compensate - typically through tighter pin pitch, higher flow rate, or both - increasing pressure drop significantly.</p>
+      <p>At 105°C, inhibitor concentration and pH should be monitored at 12–18 month intervals. Depleted inhibitors allow corrosion to begin on aluminum components and accelerate even in copper systems. Maintain pH between 7.5 and 10.5 and OAT (organic acid technology) inhibitor levels per the coolant manufacturer's specification.</p>
+
+      <h2 id="seals">8. Seal and Gasket Materials</h2>
+      <p>This is a detail that is easy to underspecify and expensive to fix in the field. Standard EPDM O-rings are rated to approximately 120–150°C continuous in glycol-water, which appears to provide margin at 105°C. In practice, EPDM under sustained compression at 105°C with thermal cycling begins to take a compression set within 2,000–5,000 hours, depending on compound formulation. Compression set means the seal no longer fully recovers when thermal cycling reduces clamp load.</p>
+      <table>
+        <tr><th>Seal Material</th><th>Max Continuous Temp</th><th>EG/Water Compatibility</th><th>Notes</th></tr>
+        <tr><td>EPDM</td><td>120 – 150°C</td><td>Excellent</td><td>Acceptable for ≤ 5,000 hr; monitor compression set in long-life programs</td></tr>
+        <tr><td>FKM (Viton)</td><td>200°C</td><td>Good</td><td>Better compression set resistance; higher durometer; preferred for 105°C continuous service</td></tr>
+        <tr><td>FFKM (Kalrez / Perlast)</td><td>230 – 275°C</td><td>Excellent</td><td>Best choice for harsh chemistry or long life (&gt; 15,000 hr); high cost</td></tr>
+        <tr><td>Metal C-ring or spiral wound</td><td>&gt; 300°C</td><td>Excellent</td><td>Zero leak tolerance applications (defense, aerospace); requires precise groove machining</td></tr>
+      </table>
+      <p>For 105°C programs with a 10,000+ hour life requirement, specify <strong>FKM as the minimum</strong>. FFKM for zero-leak-tolerance defense applications. Budget for the groove machining tolerances and surface finish that metal seals require - this is not something to add late in the design cycle.</p>
+
+      <h2 id="surface">9. Surface Finish Requirements</h2>
+      <p>Interface thermal resistance is directly proportional to TIM bond line thickness, and bond line thickness is driven by surface flatness and roughness. At 105°C where TIM options are limited to stiffer, less-compliant materials, surface quality matters more than at lower temperatures.</p>
+      <ul>
+        <li><strong>Flatness:</strong> ≤ 25 µm across the device footprint. For sintered silver or indium bonds, tighter - ≤ 15 µm is preferred. Measure with a surface plate and feeler gauge or laser profilometer after machining and plating.</li>
+        <li><strong>Roughness (Ra):</strong> ≤ 0.8 µm for graphite or phase-change TIMs. ≤ 0.4 µm for metallic bonds. Surfaces that appear smooth visually may still have lay patterns from end-milling that increase effective bond line.</li>
+        <li><strong>Nickel plating:</strong> Electroless nickel plating (2–8 µm) on copper cold plates improves surface hardness, prevents oxidation that would otherwise degrade bond quality, and provides a consistent surface for TIM application. Specify low-phosphorus EN for soldering compatibility, high-phosphorus for maximum corrosion resistance.</li>
+      </ul>
+      <div class="note"><strong>Flatness measurement timing:</strong> Measure flatness after all machining, plating, and thermal treatment - not on the raw machined surface. Plating adds residual stress, and temperature cycling during process qualification can induce warpage in thin plates. A plate that passes at 20°C may fail the flatness requirement after one thermal soak at 105°C.</div>
+
+      <h2 id="manifold">10. Manifold Design and Flow Distribution</h2>
+      <p>A cold plate that performs well at one corner and poorly at the other is worse than average across its footprint - it creates a hot spot that determines the system's power limit. Manifold design must ensure that coolant velocity and temperature are as uniform as practical across the entire active area.</p>
+      <p>Common failure modes in manifold design include:</p>
+      <ul>
+        <li><strong>Short-circuit flow paths</strong> - fluid finds the path of least resistance through the nearest pins and bypasses the far end of the plate. Symptoms: measured inlet-to-outlet temperature rise lower than predicted (flow bypasses heat source), localized hot spots at the far end.</li>
+        <li><strong>Inlet jet effects</strong> - high-velocity fluid from the port creates excess turbulence near the inlet while the bulk of the plate runs at lower velocity. Results in non-uniform <code>h</code> distribution.</li>
+        <li><strong>Stagnant corners</strong> - dead zones at manifold corners where fluid velocity approaches zero. These regions develop high local temperature and can become corrosion initiation sites at 105°C.</li>
+      </ul>
+      <p>Mitigations include tapered inlet plenums that spread flow gradually across the pin array width, perforated distribution plates upstream of the pin field, and outlet manifolds designed to draw uniformly rather than preferentially from the near end. CFD validation of the manifold is strongly recommended before committing to tooling - the flow distribution cannot be adequately predicted from 1D pressure drop models alone.</p>
+
+      <h2 id="corrosion">11. Corrosion and Compatibility at 105°C</h2>
+      <p>Elevated temperature accelerates every electrochemical process. A corrosion rate that is acceptable at 65°C may exceed design limits at 105°C for the same material-fluid combination.</p>
+      <p>The most common failure mode in mixed-metal 105°C systems is <strong>galvanic corrosion at aluminum-copper interfaces</strong>. Aluminum is anodic to copper in glycol-water, and the attack rate is a strong function of temperature. Systems that mix aluminum components (manifold, housing) with copper cold plates must either isolate the metals galvanically (dielectric fittings, isolation gaskets) or accept aggressive inhibitor management to suppress the galvanic current.</p>
+      <p>For 105°C applications, a single-metal philosophy is strongly preferred: all wetted surfaces in the same alloy family. A full-copper system (copper plate, copper or stainless fittings, copper manifold) is stable with properly inhibited glycol-water indefinitely at 105°C. A full-aluminum system requires aluminum-compatible OAT inhibitors at specification concentration, and coolant replacement on a shorter interval than a copper system.</p>
+      <p>Signs of corrosion onset include: increase in coolant pH above 10.5 or drop below 7.5, visible particulate in coolant samples (pull a 10 mL sample at each service interval), and any measured increase in cold plate pressure drop at constant flow that cannot be attributed to temperature-dependent viscosity change.</p>
+
+      <h2 id="reliability">12. Reliability Under Sustained High Temperature</h2>
+      <p>Three degradation mechanisms dominate at 105°C that are largely absent or slow at lower coolant temperatures:</p>
+
+      <h3>12.1 TIM Pump-Out and Creep</h3>
+      <p>Polymer TIMs under sustained compressive load at 105°C creep toward the edges of the contact interface. The rate depends on material stiffness, load, and temperature. Metallic TIMs are immune - indium, sintered silver, and solder bonds do not pump out. For programs requiring &gt; 5,000 operating hours, account for this degradation in the thermal budget if polymer TIMs are specified.</p>
+
+      <h3>12.2 Seal Compression Set</h3>
+      <p>As described in Section 8, elastomeric seals lose some recovery after sustained compression at elevated temperature. The practical consequence is reduced clamp load on the TIM contact and potential for microleaks at the cold plate perimeter. Address by specifying FKM minimum, designing for higher initial clamp load to account for set, and including re-torque provisions at the first service interval.</p>
+
+      <h3>12.3 Inhibitor Depletion</h3>
+      <p>Inhibitor consumption rate roughly doubles for every 10°C increase in coolant temperature. A coolant formulated for a 4-year change interval at 85°C may require a 2-year interval at 105°C. Specify coolant analysis at each PM interval - pH and inhibitor concentration - rather than relying solely on calendar time.</p>
+
+      <h2 id="validation">13. Validation Approach</h2>
+      <p>Validation of a 105°C cold plate design should proceed in three phases before integration into a power assembly:</p>
+      <p><strong>Phase 1 - Hydraulic characterization:</strong> Measure pressure drop vs. flow rate from 3 to 15 LPM using water at room temperature (20°C). Compare to CFD. Confirm flow uniformity with thermal imaging during a low-power heater test - the temperature map across the plate surface under uniform electrical heating should be uniform to within ±5°C at target flow rate.</p>
+      <p><strong>Phase 2 - Thermal resistance measurement at temperature:</strong> Apply a known, uniform heat flux using a calibrated heater bonded with the target TIM process. Measure surface temperature at multiple points with embedded thermocouples. Calculate <code>Rθ(surface→fluid)</code> at three flow rates (5, 8, 10 LPM) with coolant at 105°C inlet. Confirm alignment with Section 4 targets within ±15%.</p>
+      <p><strong>Phase 3 - Thermal cycling endurance:</strong> Cycle the assembly between 20°C and 105°C coolant temperature at a rate representative of system operation, for a minimum of 3,000 cycles or equivalent hours. Re-measure <code>Rθ</code> and pressure drop at end of test. An increase in <code>Rθ</code> greater than 15% is a disqualifying result and indicates TIM degradation, surface delamination, or internal corrosion.</p>
+
+      <h2 id="example">14. Worked Example: 3 kW Per Phase at 105°C</h2>
+      <p>Consider a SiC half-bridge with total losses of 3 kW, coolant inlet 105°C, device rated to <code>Tj,max = 175°C</code>. Reliability budget reserves 20°C, so working junction target is 155°C.</p>
+      <p>Available thermal budget: <code>155 − 105 = 50°C</code></p>
+      <p>Target total <code>Rθ(j→fluid) = 50 / 3000 = 0.0167 °C/W</code></p>
+      <p>Allocate the budget across layers:</p>
+      <table>
+        <tr><th>Layer</th><th>Allocated Rθ (°C/W)</th><th>How to achieve</th></tr>
+        <tr><td>Junction to case, Rθ(j–c)</td><td>0.006</td><td>SiC module with low j–c spec; or direct-die architecture eliminating module layer</td></tr>
+        <tr><td>TIM (case to cold plate)</td><td>0.002</td><td>Sintered silver or indium foil; flat surface ≤ 15 µm</td></tr>
+        <tr><td>Cold plate conduction</td><td>0.001</td><td>Copper, 2 mm base, spreading well-modeled</td></tr>
+        <tr><td>Convection (plate to coolant)</td><td>0.006</td><td>Staggered copper pins, 8–10 LPM, h ≈ 12,000 W/m²·K</td></tr>
+        <tr><td>Coolant rise along plate</td><td>0.002</td><td>8 LPM, ΔTfluid ≈ 5.7°C at 3 kW</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>0.017</strong></td><td>Matches target</td></tr>
+      </table>
+      <p>This budget is achievable - but only with metallic TIM, a copper pin-fin plate, and flow at the upper end of the 5–10 LPM window. Replace sintered silver with silicone grease and the TIM budget alone consumes 0.010–0.020 °C/W, blowing the total allocation by 3–4×. The 105°C regime is unforgiving in this respect.</p>
+
+      <h2 id="comparison">15. Design Comparison: 65°C vs. 85°C vs. 105°C</h2>
+      <table>
+        <tr><th>Parameter</th><th>65°C Coolant</th><th>85°C Coolant</th><th>105°C Coolant</th></tr>
+        <tr><td>Available ΔT (175°C Tj,max)</td><td>110°C</td><td>90°C</td><td>70°C</td></tr>
+        <tr><td>Total Rθ target at 3 kW</td><td>0.037 °C/W</td><td>0.030 °C/W</td><td>0.023 °C/W</td></tr>
+        <tr><td>Cold plate material</td><td>Aluminum acceptable</td><td>Copper preferred</td><td>Copper required</td></tr>
+        <tr><td>TIM type</td><td>Silicone grease acceptable</td><td>Phase change or graphite preferred</td><td>Metallic bond required for long life</td></tr>
+        <tr><td>Seal material</td><td>EPDM acceptable</td><td>FKM preferred</td><td>FKM minimum; FFKM for long life</td></tr>
+        <tr><td>Optimal flow rate</td><td>5 – 8 LPM</td><td>6 – 10 LPM</td><td>8 – 12 LPM</td></tr>
+        <tr><td>Coolant interval</td><td>4 – 5 years</td><td>2 – 3 years</td><td>1.5 – 2 years</td></tr>
+        <tr><td>Corrosion risk</td><td>Low</td><td>Moderate</td><td>High without single-metal discipline</td></tr>
+        <tr><td>Relative system cost</td><td>1×</td><td>1.3 – 1.6×</td><td>2 – 3×</td></tr>
+      </table>
+      <p>The cost increase from 65°C to 105°C is real and driven primarily by material upgrades in TIM, plate material, and seals - not by cold plate complexity. The geometry of a well-designed 105°C copper plate is not fundamentally more complex than a 65°C aluminum plate. The cost delta is in the material and process specification, not in the machining.</p>
+
+      <h2 id="conclusion">16. Conclusion</h2>
+      <p>Designing for 105°C coolant is not simply a matter of applying a higher temperature specification to a conventional design. The combination of tight junction temperature margin, accelerated TIM degradation, elevated corrosion rates, and seal compression set creates a set of interdependent constraints that must all be resolved simultaneously. Missing any one of them produces a system that passes initial qualification but fails in service.</p>
+      <p>The key choices: staggered copper pin-fin geometry, 8–10 LPM flow in a 0.3–0.6 bar pressure drop window, metallic TIM (sintered silver or indium foil), FKM or FFKM seals, and single-metal wetted surfaces. These are not conservative choices born of excessive caution - they are the minimum specification for a system expected to deliver ten or more years of reliable service at this temperature class.</p>
+      <p>At SiCore Research, 105°C capability is a base requirement, not an option. Our direct-die architecture eliminates the module junction-to-case resistance that consumes the largest share of the thermal budget in conventional designs - making it possible to build within the tight margins that 105°C coolant demands without relying on exotic cooling hardware.</p>
+
+      <h2 id="refs">References</h2>
+      <ol>
+        <li>Zukauskas, A. Heat Transfer from Tubes in Crossflow. <em>Advances in Heat Transfer</em>, Vol. 8. Academic Press. 1972.</li>
+        <li>Incropera, F. P. et al. <em>Fundamentals of Heat and Mass Transfer</em>, 7th ed. Wiley. 2011.</li>
+        <li>SAE J1455. Joint SAE/TMC Recommended Environmental Practices for Electronic Equipment Design in Heavy-Duty Truck Applications. SAE International. 2018.</li>
+        <li>MIL-PRF-46170. Antifreeze, Inhibited, Ethylene Glycol, Heavy Duty. U.S. Department of Defense. 2017.</li>
+        <li>Gurrum, S. P. et al. Thermal Issues in Next-Generation Integrated Circuits. <em>IEEE Transactions on Device and Materials Reliability</em>. 2004.</li>
+        <li>Herbsommer, J. A. et al. Thermal Interface Material Characterization and Selection for High-Power Applications. <em>IEEE ECTC</em>. 2012.</li>
+      </ol>
+
+      <hr>
+      <p style="font-size:12px;color:#666">© 2025 SiCore Research LLC &nbsp;·&nbsp; Michigan &nbsp;·&nbsp; <a href="../index.html#contact" style="color:#e07820;text-decoration:none">Partner Inquiry →</a></p>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="../images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+            <span class="footer-brand-name">SiCore Research</span>
+          </div>
+          <div class="footer-tagline">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Where Physics Goes to Work.</em></div>
+          <p>Michigan built, NDAA compliant SiC converters and power electronics for motorsports, industrial, defense, and aerospace. Advancing electrification through proprietary module-less architecture and rigorous engineering.</p>
+        </div>
+        <div>
+          <h4>Navigate</h4>
+          <a href="../index.html">Home</a>
+          <a href="../index.html#markets">Markets</a>
+          <a href="../index.html#technology">Technology</a>
+          <a href="../blog.html">Research</a>
+          <a href="../index.html#contact">Contact</a>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <a href="#" onclick="alert('Datasheets available to qualified partners under NDA.');return false">Datasheets (NDA)</a>
+          <a href="../index.html#contact">Partner Inquiry</a>
+          <a href="#" onclick="alert('Careers info coming soon.');return false">Careers</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 SiCore Research, LLC. All rights reserved.</span>
+        <span><a href="../privacy.html">Privacy</a> &nbsp;|&nbsp; <a href="../terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

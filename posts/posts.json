@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Understanding Thermal Resistance in Liquid-Cooled Power Electronics",
+    "date": "2025-11-05",
+    "tag": "Thermal",
+    "excerpt": "Wide-bandgap (WBG) technologies have changed the design landscape. Devices now switch faster, operate at higher voltages, and deliver unprecedented power densities. Yet those same strengths bring new challenges: high local heat flux, tight packaging, and higher junction-temperature limits that demand more sophisticated cooling.",
+    "url": "posts/understanding-rth.html"
+  },
+  {
+    "title": "Thermal design notes for 105°C coolant",
+    "date": "2025-11-02",
+    "tag": "Thermal",
+    "excerpt": "Key pin-fin choices, pressure drop targets, and realistic °C/W numbers at 5–10 LPM.",
+    "url": "posts/thermal-105c.html"
+  }
+]

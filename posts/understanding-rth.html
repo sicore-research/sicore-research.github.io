@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding Thermal Resistance | SiCore Research</title>
+  <link rel="icon" type="image/svg+xml" href="../images/SiC_Logo_Inverted.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A rigorous engineering guide to thermal resistance in liquid-cooled power electronics with calculations, targets for 65°C, 85°C, 105°C coolant, design tradeoffs, validation, and references.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:'Inter',system-ui,-apple-system,sans-serif;background:#0a0a0a;color:#e8e8e8;-webkit-font-smoothing:antialiased}
+    h1,h2,h3,h4,p{margin:0;padding:0}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    :root{--accent:#e07820}
+
+    /* Header */
+    header{position:fixed;top:0;left:0;width:100%;z-index:100;background:rgba(8,8,8,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(224,120,32,.12)}
+    .header-inner{max-width:1400px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand-logo{height:36px;width:36px}
+    .brand-name{font-weight:900;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#fff}
+    .nav-right{display:flex;gap:40px;align-items:center}
+    .nav-link{font-size:11px;color:#777;transition:color .2s;text-transform:uppercase;letter-spacing:.8px;font-weight:700}
+    .nav-link:hover{color:#e07820}
+    .cta-btn{background:#e07820;color:#000;border:none;padding:10px 22px;font-weight:800;cursor:pointer;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;transition:all .2s}
+    .cta-btn:hover{background:#c06010}
+
+    /* Post Layout */
+    .post-wrap{max-width:800px;margin:0 auto;padding:140px 40px 100px}
+
+    /* Back link */
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:1.2px;font-weight:800;color:#666;margin-bottom:48px;transition:color .2s}
+    .back-link:hover{color:#e07820}
+    .back-link::before{content:"←"}
+
+    /* Post header */
+    .post-tag{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#e07820;margin-bottom:16px;display:block}
+    .post-title{font-size:52px;font-weight:900;line-height:1;text-transform:uppercase;letter-spacing:-.03em;margin-bottom:20px}
+    .post-meta{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:56px;padding-bottom:32px;border-bottom:1px solid rgba(224,120,32,.08)}
+
+    /* Post content */
+    .post-content h2{font-size:28px;font-weight:800;text-transform:uppercase;letter-spacing:-.02em;margin:56px 0 16px;color:#fff;line-height:1.1}
+    .post-content h2::before{content:"";display:block;width:24px;height:2px;background:#e07820;margin-bottom:12px}
+    .post-content h3{font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin:32px 0 10px;color:#ccc}
+    .post-content p{font-size:17px;line-height:1.85;color:#999;margin:0 0 20px}
+    .post-content a{color:#e07820;text-decoration:underline;text-underline-offset:3px}
+    .post-content strong{color:#e8e8e8;font-weight:700}
+    .post-content code,kbd{background:#14140e;border:1px solid #2a1e0a;padding:3px 7px;font-size:13px;font-family:monospace;color:#e07820;border-radius:2px}
+    .post-content ul,.post-content ol{color:#999;line-height:1.85;margin:0 0 20px;padding-left:24px;font-size:17px}
+    .post-content li{margin:6px 0}
+    .post-content hr{border:0;border-top:1px solid rgba(224,120,32,.08);margin:48px 0}
+
+    /* Table */
+    .post-content table{width:100%;border-collapse:collapse;margin:24px 0;font-size:13px}
+    .post-content th{background:#0e0c08;border:1px solid #2a1e0a;padding:10px 14px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:#e07820}
+    .post-content td{border:1px solid #1a1608;padding:10px 14px;color:#888;vertical-align:top}
+    .post-content tr:hover td{background:rgba(224,120,32,.02)}
+
+    /* TOC */
+    .toc{background:#0e0c08;border:1px solid rgba(224,120,32,.12);padding:28px 32px;margin:0 0 48px;position:relative}
+    .toc::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:#e07820}
+    .toc h3{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:#e07820;margin:0 0 16px}
+    .toc ol{margin:0;padding-left:20px;color:#666;font-size:14px;line-height:2}
+    .toc a{color:#666;transition:color .2s}
+    .toc a:hover{color:#e07820;text-decoration:none}
+    .toc ul{margin:0;padding-left:16px}
+
+    /* Note callout */
+    .note{background:#0e0c08;border-left:2px solid #e07820;padding:16px 20px;margin:24px 0;font-size:14px;color:#888;line-height:1.7}
+
+    /* Footer */
+    footer{background:#040402;border-top:3px solid #e07820;padding:80px 40px 36px}
+    .footer-wrap{max-width:1400px;margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:80px;margin-bottom:56px}
+    footer h4{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 24px;font-weight:900;color:#e07820}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .footer-brand img{height:26px;width:26px;opacity:.7}
+    .footer-brand-name{font-size:12px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
+    .footer-tagline{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6a5a4a;margin-bottom:16px}
+    .footer-tagline em{color:#e07820;font-style:normal}
+    footer p{font-size:13px;line-height:1.9;color:#666;margin:0}
+    footer a{display:block;font-size:13px;color:#888;margin-bottom:12px;transition:all .2s;font-weight:500}
+    footer a:hover{color:#e07820;padding-left:4px}
+    .footer-bottom{border-top:1px solid rgba(224,120,32,.08);padding-top:28px;font-size:10px;color:#666;display:flex;justify-content:space-between;align-items:center}
+    .footer-bottom a{color:#666;display:inline;margin:0;padding:0}
+    .footer-bottom a:hover{color:#e07820;padding-left:0}
+    @media(max-width:900px){.post-title{font-size:36px}.footer-grid{grid-template-columns:1fr 1fr;gap:40px}.footer-bottom{flex-direction:column;gap:12px;text-align:center}}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="../index.html" class="brand">
+        <img class="brand-logo" src="../images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+        <span class="brand-name">SiCore Research</span>
+      </a>
+      <div class="nav-right">
+        <a href="../index.html#markets" class="nav-link">Markets</a>
+        <a href="../index.html#technology" class="nav-link">Technology</a>
+        <a href="../index.html#capabilities" class="nav-link">Capabilities</a>
+        <a href="../blog.html" class="nav-link">Research</a>
+        <a href="../careers.html" class="nav-link">Careers</a>
+        <button class="cta-btn" onclick="window.location.href='../index.html#contact'">Partner Inquiry</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="post-wrap">
+    <a href="../blog.html" class="back-link">All Research</a>
+
+    <span class="post-tag">Thermal Engineering</span>
+    <h1 class="post-title">Understanding Thermal Resistance in Liquid-Cooled Power Electronics</h1>
+    <div class="post-meta">Nov 5, 2025 &nbsp;·&nbsp; SiCore Research</div>
+
+    <div class="post-content">
+
+      <p>In modern power conversion, managing heat is just as critical as managing current. Every watt that passes through a semiconductor eventually becomes heat, and that heat must go somewhere. In high power inverter and converter systems - especially those using silicon carbide (SiC) or gallium nitride (GaN) devices - the ability to remove heat efficiently defines the boundary between high performance and premature failure.</p>
+      <p>Wide bandgap (WBG) technologies have changed the design landscape. Devices now switch faster, operate at higher voltages, and deliver unprecedented power densities. Yet those same strengths bring new challenges: high local heat flux, tight packaging, and higher junction temperature limits that demand more sophisticated cooling.</p>
+      <p>At the center of this challenge lies a deceptively simple metric: <strong>thermal resistance</strong>, expressed in degrees Celsius per watt (°C/W). It quantifies how much temperature rise occurs for each watt of heat flow and is as fundamental to thermal design as resistance is to electrical design.</p>
+      <p>This article provides a detailed technical discussion of thermal resistance in <strong>liquid cooled power electronics</strong>. It explains how to calculate it, what typical values mean, how it scales with flow rate and material choice, and what designers must consider for coolant temperatures of <strong>65°C, 85°C, and 105°C</strong>.</p>
+
+      <div class="toc">
+        <h3>Contents</h3>
+        <ol>
+          <li><a href="#fundamentals">Fundamentals of Thermal Resistance</a></li>
+          <li><a href="#network">The Thermal Resistance Network</a></li>
+          <li><a href="#segments">Segment by Segment Analysis</a>
+            <ul>
+              <li><a href="#j2c">Junction to Case</a></li>
+              <li><a href="#tim">Case to Plate Interface</a></li>
+              <li><a href="#conduction">Cold Plate Conduction</a></li>
+              <li><a href="#convection">Convective Transfer to Coolant</a></li>
+              <li><a href="#coolant-rise">Coolant Temperature Rise</a></li>
+            </ul>
+          </li>
+          <li><a href="#calc">Calculating Effective Thermal Resistance</a></li>
+          <li><a href="#targets">Realistic Performance Targets</a></li>
+          <li><a href="#flow">Flow, Pressure Drop, and Pump Power</a></li>
+          <li><a href="#fluids">Coolant Properties and Compatibility</a></li>
+          <li><a href="#reliability">Reliability Considerations</a></li>
+          <li><a href="#advanced">Advanced Cooling Technologies</a></li>
+          <li><a href="#validation">Validation and Characterization</a></li>
+          <li><a href="#scenarios">Temperature Class Scenarios</a></li>
+          <li><a href="#tradeoffs">Practical Design Tradeoffs</a></li>
+          <li><a href="#best-practices">Best Practice Guidelines</a></li>
+          <li><a href="#example">Example Calculation</a></li>
+          <li><a href="#conclusion">Conclusion</a></li>
+          <li><a href="#refs">References</a></li>
+        </ol>
+      </div>
+
+      <h2 id="fundamentals">1. Fundamentals of Thermal Resistance</h2>
+      <h3>1.1 Definition</h3>
+      <p>Thermal resistance (<code>Rθ</code>) describes the relationship between temperature rise and power dissipation:</p>
+      <p><code>Rθ = ΔT / Q</code></p>
+      <p>where <code>ΔT</code> is the temperature difference between two reference points in °C and <code>Q</code> is heat flow in watts. A system with <code>Rθ = 0.02 °C/W</code> will rise 20°C when dissipating 1000 W. Lower values are better - they indicate a smaller temperature rise for a given load.</p>
+
+      <h3>1.2 Why It Matters</h3>
+      <p>Semiconductor performance and lifetime depend directly on temperature. In SiC MOSFETs, on resistance, switching losses, and avalanche ruggedness all degrade as junction temperature rises. Every 10°C increase roughly halves solder joint or bond wire life under cyclic stress.</p>
+      <p>Thermal resistance governs this relationship: <code>Tjunction = Tcoolant,in + Q × Rθ,total</code>. If <code>Rθ,total</code> is high, junction temperature climbs rapidly and reliability suffers. If it is low, the same system can handle more current or operate at higher ambient temperature with equal safety margin.</p>
+
+      <h2 id="network">2. The Thermal Resistance Network</h2>
+      <p>Heat moves through a sequence of physical layers, each with its own resistance:</p>
+      <p><code>Junction → Case/Baseplate → Thermal Interface → Cold Plate → Coolant → Heat Exchanger → Ambient</code></p>
+      <p>The total resistance is the sum: <code>Rθ,total = Rθ(j–c) + Rθ(c–tim) + Rθ(tim–plate) + Rθ(plate–fluid) + Rθ(fluid–loop)</code></p>
+      <p>Some segments are fixed by device construction. Others - interface, cold plate, and coolant loop - are controllable through design. Those segments determine whether a system meets its temperature targets.</p>
+
+      <h2 id="segments">3. Segment by Segment Analysis</h2>
+
+      <h3 id="j2c">3.1 Junction to Case</h3>
+      <p>This resistance reflects the conduction path from the semiconductor junction through the die attach, substrate, and baseplate.</p>
+      <table>
+        <tr><th>Device Type</th><th>Rθ(j–c) (°C/W per die)</th></tr>
+        <tr><td>Discrete SiC MOSFET</td><td>0.2 to 0.6</td></tr>
+        <tr><td>Power Module (400–800 A)</td><td>0.03 to 0.08</td></tr>
+      </table>
+      <p>This value is set by the manufacturer and defines the starting point for all further calculations.</p>
+
+      <h3 id="tim">3.2 Case to Plate (Thermal Interface)</h3>
+      <p>Between the module and cold plate lies one of the most misunderstood bottlenecks: the thermal interface material (TIM). The conduction through this layer follows: <code>Rθ,tim = t / (k × A)</code> where <code>t</code> is thickness, <code>k</code> is thermal conductivity, and <code>A</code> is contact area.</p>
+      <p>Example: a 100 µm grease layer with <code>k = 3 W/m·K</code> over 25 cm² yields <code>Rθ = 0.013 °C/W</code>. This single layer can consume half the total thermal budget if applied thickly or unevenly. Metallic bonds - sintered silver, solder, or braze - reduce this by an order of magnitude to 0.001–0.003 °C/W.</p>
+
+      <h3 id="conduction">3.3 Cold Plate Conduction</h3>
+      <p>For a 3 mm aluminum plate (<code>k = 205 W/m·K</code>) and 25 cm² area: <code>Rθ = 0.003 / (205 × 0.0025) = 0.0058 °C/W</code>. Replacing aluminum with copper (<code>k = 385 W/m·K</code>) cuts this roughly in half. When heat sources are small compared to plate area, add spreading resistance - this can add 20–40% to the conduction term.</p>
+
+      <h3 id="convection">3.4 Convective Transfer to Coolant</h3>
+      <p>The convective component is where liquid cooling earns its reputation: <code>Rθ,conv = 1 / (h × Awet)</code></p>
+      <table>
+        <tr><th>Flow Type</th><th>h (W/m²·K)</th></tr>
+        <tr><td>Laminar channel flow</td><td>500 to 2,000</td></tr>
+        <tr><td>Turbulent (moderate Re)</td><td>4,000 to 8,000</td></tr>
+        <tr><td>Micro channel or jet impingement</td><td>10,000 to 30,000</td></tr>
+      </table>
+      <p>The Dittus–Boelter correlation estimates <code>h</code> for turbulent internal flow: <code>Nu = 0.023 × Re^0.8 × Pr^0.4</code>. For a 5 L/min water glycol stream through a 60 × 100 mm plate, <code>h</code> approaches 9,000–10,000 W/m²·K - good enough for cold plate resistances below 0.01 °C/W.</p>
+
+      <h3 id="coolant-rise">3.5 Coolant Temperature Rise</h3>
+      <p>As the fluid absorbs heat, it warms along the flow path: <code>ΔTfluid = P / (ṁ × cp)</code>. For 3 kW load at 5 L/min and <code>cp = 3900 J/kg·K</code>, <code>ΔT ≈ 9.3°C</code>. The outlet is roughly 9°C warmer than the inlet, so the device never sees ideal coolant temperature everywhere across its footprint.</p>
+
+      <h2 id="calc">4. Calculating Effective Thermal Resistance</h2>
+      <p>Suppose a 3 kW inverter leg must maintain a maximum case temperature of 90°C with 65°C coolant inlet:</p>
+      <p><code>Rθ,target = (90 − 65) / 3000 = 0.0083 °C/W</code></p>
+      <p>At 85°C coolant and 120°C case: <code>Rθ = 0.0117 °C/W</code>. At 105°C coolant and 150°C case: <code>Rθ = 0.015 °C/W</code>. Higher coolant temperature relaxes the numeric target but simultaneously raises material stress and aging rates - high temperature systems require more robust TIMs, seals, and plate materials to maintain the same reliability.</p>
+
+      <h2 id="targets">5. Realistic Performance Targets</h2>
+      <table>
+        <tr><th>Application</th><th>Coolant (°C)</th><th>Rθ surface→fluid (°C/W)</th><th>Characteristics</th></tr>
+        <tr><td>Commercial</td><td>≤ 65</td><td>0.005 to 0.010</td><td>Aluminum cold plate, 5–10 LPM, glycol water</td></tr>
+        <tr><td>Extended Temp</td><td>≤ 85</td><td>0.008 to 0.012</td><td>Copper or Cu-Al hybrid, 8–12 LPM, high temp seals</td></tr>
+        <tr><td>MIL Grade</td><td>≤ 105</td><td>0.010 to 0.015</td><td>Copper nickel alloy, metallic TIM, 10–15 LPM</td></tr>
+      </table>
+
+      <h2 id="flow">6. Flow Rate, Pressure Drop, and Pump Power</h2>
+      <p>Increasing flow rate lowers <code>Rθ,conv</code> roughly as <code>Q^-0.8</code> but increases pressure drop as <code>Q²</code>. Pump power follows: <code>Ppump = ΔP × Vdot / η</code>. Doubling flow can cut thermal resistance by ~30% but can quadruple pressure drop. At 5 L/min and 0.2 bar, <code>Ppump ≈ 17 W</code>. At 10 L/min and 0.8 bar, <code>Ppump ≈ 68 W</code>. The optimal design minimizes total energy loss, not just <code>Rθ</code>.</p>
+
+      <h2 id="fluids">7. Coolant Properties and Material Compatibility</h2>
+      <table>
+        <tr><th>Coolant</th><th>k (W/m·K)</th><th>cp (J/kg·K)</th><th>Typical Use</th></tr>
+        <tr><td>Water + 50% glycol</td><td>0.4 to 0.6</td><td>3,800 to 4,200</td><td>Standard industrial</td></tr>
+        <tr><td>PAO oil</td><td>0.13</td><td>2,000</td><td>High temp dielectric</td></tr>
+        <tr><td>Fluorinated (Novec)</td><td>0.06 to 0.08</td><td>1,100 to 1,400</td><td>Dielectric, low conductivity</td></tr>
+      </table>
+      <p>Switching from water glycol to a dielectric can quadruple <code>Rθ,conv</code> if geometry and flow remain constant. Above 100°C, fluorocarbon (FKM or FFKM) or metal seals are preferred. Copper nickel or stainless structures are preferred for 105°C service.</p>
+
+      <h2 id="reliability">8. Reliability Considerations</h2>
+      <h3>8.1 Thermal Cycling</h3>
+      <p>Repeated power cycling generates expansion mismatches between die, substrate, and baseplate. Lower thermal resistance reduces the amplitude of each temperature swing, extending solder and wire bond life.</p>
+      <h3>8.2 TIM Degradation</h3>
+      <p>Greases can pump out and pads can dry. Both increase <code>Rθ</code> over time. Select materials with low volatility and mechanical stability at maximum case temperature. Phase change TIMs or metallic bonds provide consistent long-term performance.</p>
+      <h3>8.3 Corrosion and Contamination</h3>
+      <p>Galvanic couples between copper and aluminum accelerate corrosion in mixed metal systems. Maintain inhibitor chemistry and use deionized, filtered coolant.</p>
+
+      <h2 id="advanced">9. Advanced Cooling Technologies</h2>
+      <h3>9.1 Pin Fin and Micro Channel Designs</h3>
+      <p>Arrays of pins or narrow channels increase surface area and turbulence. Micro channels (0.1–0.5 mm) can reach <code>h > 20,000 W/m²·K</code>, achieving 0.002–0.005 °C/W. They require fine filtration and careful manufacturing but offer exceptional density for systems near 50 kW/L.</p>
+      <h3>9.2 Jet Impingement Cooling</h3>
+      <p>Coolant jets striking the heated surface directly disrupt boundary layers, creating local <code>h</code> up to 30,000 W/m²·K. Jet arrays are common in high performance computing and are now migrating into traction inverter research.</p>
+      <h3>9.3 Additive Manufactured Cold Plates</h3>
+      <p>3D printed metal plates enable internal lattice or spiral geometries that maximize uniformity and minimize mass. These can integrate flow manifolds, structural ribs, and mounting bosses directly into the design.</p>
+      <h3>9.4 Embedded Cooling</h3>
+      <p>Emerging modules embed coolant channels within substrates or busbars, removing interface layers entirely. The result is near-zero spreading resistance and higher allowable current density without sacrificing reliability.</p>
+
+      <h2 id="validation">10. Validation and Characterization</h2>
+      <p><strong>Steady state tests</strong> apply known power and record surface to coolant temperature rise. <strong>Transient thermal impedance (Zth)</strong> pulses power input and extracts time constant response to characterize internal layers. <strong>Flow and pressure mapping</strong> measures differential pressure to confirm channel uniformity. A rise greater than 15% in measured <code>Rθ</code> typically signals interface fatigue or corrosion onset.</p>
+
+      <h2 id="scenarios">11. Temperature Class Scenarios</h2>
+      <h3>Commercial (≤ 65°C Coolant)</h3>
+      <p>Target <code>Rθ ≈ 0.007 °C/W</code> at 3 kW. Aluminum plate, standard glycol water, silicone-based TIM, 5–10 LPM. Focus: low cost, manufacturability, weight reduction.</p>
+      <h3>Extended Temperature (≤ 85°C Coolant)</h3>
+      <p>Target <code>Rθ ≈ 0.010 °C/W</code> at 3 kW. Copper or Cu-Al hybrid plate, graphite or phase change TIM, high temperature EPDM seals, 8–12 LPM. Focus: higher reliability under sustained high coolant temperature and vibration.</p>
+      <h3>MIL Grade (≤ 105°C Coolant)</h3>
+      <p>Target <code>Rθ ≈ 0.015 °C/W</code> at 3 kW. Copper nickel alloy or stainless cold plate, metallic bond TIM, FFKM or metal seals, 10–15 LPM at 0.8–1.0 bar. Focus: long-term stability, zero leak tolerance, compatibility with 105°C continuous coolant.</p>
+
+      <h2 id="tradeoffs">12. Practical Design Tradeoffs</h2>
+      <table>
+        <tr><th>Parameter Change</th><th>Improves</th><th>Tradeoff</th></tr>
+        <tr><td>Higher flow rate</td><td>Convective heat transfer</td><td>Pumping losses, noise, cavitation</td></tr>
+        <tr><td>Copper vs. aluminum</td><td>Conductivity and spreading</td><td>Weight and cost</td></tr>
+        <tr><td>Thinner TIM</td><td>Interface resistance</td><td>Surface flatness tolerance</td></tr>
+        <tr><td>Micro channels</td><td>High h, low Rθ</td><td>Clogging risk, filtration cost</td></tr>
+        <tr><td>Dual sided cooling</td><td>Overall Rθ</td><td>Complexity and packaging</td></tr>
+        <tr><td>Higher coolant temperature</td><td>Smaller radiator</td><td>Material stress, lower margin</td></tr>
+      </table>
+
+      <h2 id="best-practices">13. Best Practice Guidelines</h2>
+      <ol>
+        <li><strong>Define the thermal budget early.</strong> Determine maximum junction temperature, total power loss, and coolant inlet temperature. Derive a numeric Rθ target and allocate portions to each layer.</li>
+        <li><strong>Model the full stack.</strong> Use multiphysics tools to combine electrical, thermal, and fluid dynamics analysis.</li>
+        <li><strong>Prioritize surface flatness.</strong> Target ≤ 25 µm flatness and ≤ 0.8 µm Ra roughness for consistent TIM thickness. Uneven contact can increase interface resistance by 30% or more.</li>
+        <li><strong>Select TIMs deliberately.</strong> For 105°C coolant applications, consider metallic TIMs or sintered silver to prevent pump-out and dry-out.</li>
+        <li><strong>Validate under real thermal loads.</strong> Confirm measured gradients align with simulation within ±10%.</li>
+        <li><strong>Manage flow distribution.</strong> Use CFD to design manifolds that maintain uniform Reynolds number across all channels.</li>
+        <li><strong>Include margin for aging.</strong> Include at least 25% margin below maximum allowable Rθ to accommodate drift over lifetime.</li>
+      </ol>
+
+      <h2 id="example">14. Example Calculation</h2>
+      <p>Consider a 3-phase SiC inverter leg dissipating 3 kW total losses with 85°C coolant inlet. Assume:</p>
+      <ul>
+        <li><code>Rθ(j–c) = 0.05 °C/W</code></li>
+        <li><code>Rθ(c–tim) = 0.003 °C/W</code></li>
+        <li><code>Rθ(plate–fluid) = 0.010 °C/W</code></li>
+        <li><code>Rθ(fluid–loop) = 0.002 °C/W</code></li>
+      </ul>
+      <p>Total <code>Rθ,total = 0.065 °C/W</code>. Temperature rise = <code>3000 W × 0.065 = 195°C</code>. Junction = <code>85 + 195 = 280°C</code> - unacceptable. To achieve a safe 150°C junction: <code>Rθ,req = (150 − 85) / 3000 = 0.0217 °C/W</code>. Achieving that requires at least a 3× improvement through reduced interface thickness, a higher-performance cold plate, and increased flow rate.</p>
+
+      <h2 id="conclusion">15. Conclusion</h2>
+      <p>Thermal resistance defines the invisible boundary between electrical performance and real-world reliability. In power electronics - especially SiC-based systems operating at 400–800 V and hundreds of amps per phase - it determines whether theoretical power density can be realized in practice. Liquid cooling provides unmatched capability, but success depends on understanding every part of the thermal path from semiconductor to coolant.</p>
+      <p>At SiCore Research, thermal, electrical, and mechanical disciplines are integrated from the outset of every program. Quantitative thermal resistance budgeting, verified through analysis and test, forms the foundation for our scalable, high-density SiC platforms capable of operating reliably across 65°C, 85°C, and 105°C coolant regimes.</p>
+
+      <h2 id="refs">References</h2>
+      <ol>
+        <li><a href="https://www.electronics-cooling.com/2017/07/advanced-cooling-power-electronics" target="_blank">Advanced Cooling for Power Electronics. Electronics Cooling Magazine. 2017.</a></li>
+        <li><a href="https://us.mersen.com/sites/default/files/medias/files/2025-04/BR-MERSEN-COOLING-OF-POWER-ELECTRONICS-EN.pdf" target="_blank">Cooling of Power Electronics. Mersen Technical Brochure. 2025.</a></li>
+        <li><a href="https://www.qats.com/cms/wp-content/uploads/Liquid-Cooling-eBook2.pdf" target="_blank">Liquid Cooling Design Guide. Advanced Thermal Solutions. 2024.</a></li>
+        <li>IEEE Components, Packaging and Manufacturing Technology Society. Thermal Design in Power Electronics Packaging. Tutorial Notes. 2020.</li>
+        <li>T. H. Nguyen et al. Experimental Investigation of Jet Impingement Cooling for SiC Power Modules. Applied Thermal Engineering. 2022.</li>
+      </ol>
+
+      <hr>
+      <p style="font-size:12px;color:#666">© 2025 SiCore Research LLC &nbsp;·&nbsp; Michigan &nbsp;·&nbsp; <a href="../index.html#contact" style="color:#e07820;text-decoration:none">Partner Inquiry →</a></p>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="../images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+            <span class="footer-brand-name">SiCore Research</span>
+          </div>
+          <div class="footer-tagline">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Where Physics Goes to Work.</em></div>
+          <p>Michigan built, NDAA compliant SiC converters and power electronics for motorsports, industrial, defense, and aerospace. Advancing electrification through proprietary module-less architecture and rigorous engineering.</p>
+        </div>
+        <div>
+          <h4>Navigate</h4>
+          <a href="../index.html">Home</a>
+          <a href="../index.html#markets">Markets</a>
+          <a href="../index.html#technology">Technology</a>
+          <a href="../blog.html">Research</a>
+          <a href="../index.html#contact">Contact</a>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <a href="#" onclick="alert('Datasheets available to qualified partners under NDA.');return false">Datasheets (NDA)</a>
+          <a href="../index.html#contact">Partner Inquiry</a>
+          <a href="#" onclick="alert('Careers info coming soon.');return false">Careers</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 SiCore Research, LLC. All rights reserved.</span>
+        <span><a href="#">Privacy</a> &nbsp;|&nbsp; <a href="#">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
