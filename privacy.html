@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Privacy Policy | SiCore Research</title>
+  <link rel="icon" type="image/svg+xml" href="images/SiC_Logo_Inverted.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:'Inter',system-ui,-apple-system,sans-serif;background:#0a0a0a;color:#e8e8e8;-webkit-font-smoothing:antialiased}
+    h1,h2,h3,h4,p{margin:0;padding:0}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    :root{--accent:#e07820;--accent-dim:#c06010}
+
+    /* Header */
+    header{position:fixed;top:0;left:0;width:100%;z-index:100;background:rgba(8,8,8,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(224,120,32,.12)}
+    .header-inner{max-width:1400px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand-logo{height:36px;width:36px}
+    .brand-name{font-weight:900;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#fff}
+    .nav-right{display:flex;gap:40px;align-items:center}
+    .nav-link{font-size:11px;color:#777;transition:color .2s;text-transform:uppercase;letter-spacing:.8px;font-weight:700}
+    .nav-link:hover{color:#e07820}
+    .cta-btn{background:#e07820;color:#000;border:none;padding:10px 22px;font-weight:800;cursor:pointer;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;transition:all .2s}
+    .cta-btn:hover{background:#c06010}
+
+    /* Page */
+    .page-wrap{max-width:820px;margin:0 auto;padding:140px 40px 120px}
+
+    /* Back link */
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:1.2px;font-weight:800;color:#666;margin-bottom:56px;transition:color .2s}
+    .back-link:hover{color:#e07820}
+    .back-link::before{content:"←"}
+
+    /* Page header */
+    .page-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#e07820;margin-bottom:16px;display:block}
+    .page-title{font-size:52px;font-weight:900;line-height:1;text-transform:uppercase;letter-spacing:-.03em;margin-bottom:12px}
+    .page-meta{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:56px;padding-bottom:32px;border-bottom:1px solid rgba(224,120,32,.08)}
+
+    /* Content */
+    .doc-content h2{font-size:20px;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;margin:48px 0 14px;color:#fff;line-height:1.1}
+    .doc-content h2::before{content:"";display:block;width:20px;height:2px;background:#e07820;margin-bottom:10px}
+    .doc-content p{font-size:16px;line-height:1.85;color:#888;margin:0 0 18px}
+    .doc-content a{color:#e07820;text-decoration:underline;text-underline-offset:3px}
+    .doc-content ul{margin:0 0 18px;padding-left:20px}
+    .doc-content ul li{font-size:16px;line-height:1.85;color:#888;margin-bottom:6px}
+    .doc-content strong{color:#ccc;font-weight:600}
+
+    /* Footer */
+    footer{background:#040402;border-top:3px solid #e07820;padding:80px 40px 36px}
+    .footer-wrap{max-width:1400px;margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:80px;margin-bottom:56px}
+    footer h4{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 24px;font-weight:900;color:#e07820}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .footer-brand img{height:26px;width:26px;opacity:.7}
+    .footer-brand-name{font-size:12px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
+    .footer-tagline{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6a5a4a;margin-bottom:16px}
+    .footer-tagline em{color:#e07820;font-style:normal}
+    footer p{font-size:13px;line-height:1.9;color:#666;margin:0}
+    footer a{display:block;font-size:13px;color:#888;margin-bottom:12px;transition:all .2s;font-weight:500}
+    footer a:hover{color:#e07820;padding-left:4px}
+    .footer-bottom{border-top:1px solid rgba(224,120,32,.08);padding-top:28px;font-size:10px;color:#666;display:flex;justify-content:space-between;align-items:center;letter-spacing:.5px}
+    .footer-bottom a{color:#666;display:inline;margin:0;padding:0}
+    .footer-bottom a:hover{color:#e07820;padding-left:0}
+    @media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr;gap:40px}.footer-bottom{flex-direction:column;gap:12px;text-align:center}}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <img class="brand-logo" src="images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+        <span class="brand-name">SiCore Research</span>
+      </a>
+      <div class="nav-right">
+        <a href="index.html#markets" class="nav-link">Markets</a>
+        <a href="index.html#technology" class="nav-link">Technology</a>
+        <a href="index.html#capabilities" class="nav-link">Capabilities</a>
+        <a href="index.html#contact" class="nav-link">Contact</a>
+        <a href="careers.html" class="nav-link">Careers</a>
+        <button class="cta-btn" onclick="window.location.href='index.html#contact'">Partner Inquiry</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <a href="index.html" class="back-link">Back to Home</a>
+
+    <span class="page-label">Legal</span>
+    <h1 class="page-title">Privacy Policy</h1>
+    <p class="page-meta">SiCore Research LLC &nbsp;·&nbsp; Effective: January 1, 2026 &nbsp;·&nbsp; Michigan, USA</p>
+
+    <div class="doc-content">
+
+      <p>SiCore Research LLC ("SiCore," "we," "us," or "our") respects your privacy. This Privacy Policy explains what information we collect through this website (sicoreresearch.com), how we use it, and your rights with respect to it. By using this site you agree to the practices described below.</p>
+
+      <h2>Information We Collect</h2>
+      <p>We collect information only when you voluntarily provide it. This occurs primarily through the Partner Inquiry contact form, which asks for:</p>
+      <ul>
+        <li>Name and email address</li>
+        <li>Organization name</li>
+        <li>Application or market description</li>
+        <li>Program details you choose to share in the message field</li>
+      </ul>
+      <p>We do not use cookies for tracking, run analytics platforms, or deploy advertising networks on this site. Basic server logs (IP address, browser type, page requested, timestamp) may be retained by our hosting provider (GitHub Pages) for operational purposes.</p>
+
+      <h2>How We Use Your Information</h2>
+      <p>Information submitted through the contact form is used solely to:</p>
+      <ul>
+        <li>Evaluate whether a partnership is a fit for our current program capacity</li>
+        <li>Respond to your inquiry within 48 hours</li>
+        <li>Communicate about your program if a relationship proceeds</li>
+      </ul>
+      <p>We do not sell, rent, or share your personal information with third parties for marketing purposes.</p>
+
+      <h2>Third-Party Services</h2>
+      <p>This site uses the following third-party services, which may process data as part of their operation:</p>
+      <ul>
+        <li><strong>Formspree</strong> - routes contact form submissions to our inbox. Submissions pass through Formspree's servers. Review their privacy policy at formspree.io/legal/privacy-policy.</li>
+        <li><strong>Google Fonts</strong> - loads typefaces from Google's CDN. Google may log font requests. Review Google's privacy policy at google.com/policies/privacy.</li>
+        <li><strong>GitHub Pages</strong> - hosts this website. GitHub may collect server logs. Review GitHub's privacy statement at docs.github.com.</li>
+      </ul>
+
+      <h2>Confidentiality of Program Information</h2>
+      <p>If you share program details, technical requirements, or proprietary information in your inquiry, we treat that information as confidential and use it only for the purpose of evaluating and pursuing a potential partnership. A formal Non-Disclosure Agreement governs all technical exchanges once a partnership is initiated. Do not submit export-controlled, classified, or regulated information through this contact form.</p>
+
+      <h2>Data Retention</h2>
+      <p>We retain inquiry submissions for as long as reasonably necessary to manage the business relationship or, where no relationship is established, for up to 24 months. You may request deletion at any time by contacting us.</p>
+
+      <h2>Your Rights</h2>
+      <p>You may contact us at any time to request access to, correction of, or deletion of personal information we hold about you. We will respond within a reasonable timeframe. To exercise these rights, email us at the address below.</p>
+
+      <h2>Children's Privacy</h2>
+      <p>This site is intended for business and professional use only and is not directed at individuals under 18 years of age. We do not knowingly collect personal information from minors.</p>
+
+      <h2>Changes to This Policy</h2>
+      <p>We may update this Privacy Policy periodically. Changes will be reflected by the effective date at the top of this page. Continued use of the site after any update constitutes acceptance of the revised policy.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about this Privacy Policy or our data practices:<br>
+      <strong>SiCore Research LLC</strong><br>
+      Michigan, USA<br>
+      <a href="mailto:sicoreresearch@gmail.com">sicoreresearch@gmail.com</a></p>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+            <span class="footer-brand-name">SiCore Research</span>
+          </div>
+          <div class="footer-tagline">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Where Physics Goes to Work.</em></div>
+          <p>NDAA compliant SiC converters and power electronics for motorsports, defense, aerospace, and industrial. Advancing electrification through proprietary module-less architecture.</p>
+        </div>
+        <div>
+          <h4>Navigate</h4>
+          <a href="index.html">Home</a>
+          <a href="index.html#markets">Markets</a>
+          <a href="index.html#technology">Technology</a>
+          <a href="index.html#capabilities">Capabilities</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Use</a>
+          <a href="index.html#contact">Partner Inquiry</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 SiCore Research, LLC. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;|&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>

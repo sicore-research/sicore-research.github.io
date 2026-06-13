@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Terms of Use | SiCore Research</title>
+  <link rel="icon" type="image/svg+xml" href="images/SiC_Logo_Inverted.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:'Inter',system-ui,-apple-system,sans-serif;background:#0a0a0a;color:#e8e8e8;-webkit-font-smoothing:antialiased}
+    h1,h2,h3,h4,p{margin:0;padding:0}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    :root{--accent:#e07820;--accent-dim:#c06010}
+
+    /* Header */
+    header{position:fixed;top:0;left:0;width:100%;z-index:100;background:rgba(8,8,8,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(224,120,32,.12)}
+    .header-inner{max-width:1400px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand-logo{height:36px;width:36px}
+    .brand-name{font-weight:900;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#fff}
+    .nav-right{display:flex;gap:40px;align-items:center}
+    .nav-link{font-size:11px;color:#777;transition:color .2s;text-transform:uppercase;letter-spacing:.8px;font-weight:700}
+    .nav-link:hover{color:#e07820}
+    .cta-btn{background:#e07820;color:#000;border:none;padding:10px 22px;font-weight:800;cursor:pointer;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;transition:all .2s}
+    .cta-btn:hover{background:#c06010}
+
+    /* Page */
+    .page-wrap{max-width:820px;margin:0 auto;padding:140px 40px 120px}
+
+    /* Back link */
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:1.2px;font-weight:800;color:#666;margin-bottom:56px;transition:color .2s}
+    .back-link:hover{color:#e07820}
+    .back-link::before{content:"←"}
+
+    /* Page header */
+    .page-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#e07820;margin-bottom:16px;display:block}
+    .page-title{font-size:52px;font-weight:900;line-height:1;text-transform:uppercase;letter-spacing:-.03em;margin-bottom:12px}
+    .page-meta{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:56px;padding-bottom:32px;border-bottom:1px solid rgba(224,120,32,.08)}
+
+    /* Content */
+    .doc-content h2{font-size:20px;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;margin:48px 0 14px;color:#fff;line-height:1.1}
+    .doc-content h2::before{content:"";display:block;width:20px;height:2px;background:#e07820;margin-bottom:10px}
+    .doc-content p{font-size:16px;line-height:1.85;color:#888;margin:0 0 18px}
+    .doc-content a{color:#e07820;text-decoration:underline;text-underline-offset:3px}
+    .doc-content ul{margin:0 0 18px;padding-left:20px}
+    .doc-content ul li{font-size:16px;line-height:1.85;color:#888;margin-bottom:6px}
+    .doc-content strong{color:#ccc;font-weight:600}
+
+    /* Footer */
+    footer{background:#040402;border-top:3px solid #e07820;padding:80px 40px 36px}
+    .footer-wrap{max-width:1400px;margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:80px;margin-bottom:56px}
+    footer h4{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 24px;font-weight:900;color:#e07820}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .footer-brand img{height:26px;width:26px;opacity:.7}
+    .footer-brand-name{font-size:12px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
+    .footer-tagline{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6a5a4a;margin-bottom:16px}
+    .footer-tagline em{color:#e07820;font-style:normal}
+    footer p{font-size:13px;line-height:1.9;color:#666;margin:0}
+    footer a{display:block;font-size:13px;color:#888;margin-bottom:12px;transition:all .2s;font-weight:500}
+    footer a:hover{color:#e07820;padding-left:4px}
+    .footer-bottom{border-top:1px solid rgba(224,120,32,.08);padding-top:28px;font-size:10px;color:#666;display:flex;justify-content:space-between;align-items:center;letter-spacing:.5px}
+    .footer-bottom a{color:#666;display:inline;margin:0;padding:0}
+    .footer-bottom a:hover{color:#e07820;padding-left:0}
+    @media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr;gap:40px}.footer-bottom{flex-direction:column;gap:12px;text-align:center}}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <img class="brand-logo" src="images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+        <span class="brand-name">SiCore Research</span>
+      </a>
+      <div class="nav-right">
+        <a href="index.html#markets" class="nav-link">Markets</a>
+        <a href="index.html#technology" class="nav-link">Technology</a>
+        <a href="index.html#capabilities" class="nav-link">Capabilities</a>
+        <a href="index.html#contact" class="nav-link">Contact</a>
+        <a href="careers.html" class="nav-link">Careers</a>
+        <button class="cta-btn" onclick="window.location.href='index.html#contact'">Partner Inquiry</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <a href="index.html" class="back-link">Back to Home</a>
+
+    <span class="page-label">Legal</span>
+    <h1 class="page-title">Terms of Use</h1>
+    <p class="page-meta">SiCore Research LLC &nbsp;·&nbsp; Effective: January 1, 2026 &nbsp;·&nbsp; Michigan, USA</p>
+
+    <div class="doc-content">
+
+      <p>These Terms of Use govern your access to and use of the SiCore Research LLC website at sicoreresearch.com (the "Site"). By accessing or using the Site, you agree to be bound by these terms. If you do not agree, do not use the Site.</p>
+
+      <h2>Informational Purpose</h2>
+      <p>The Site is provided for general informational and business development purposes only. Nothing on this Site constitutes an offer to sell, a solicitation, or a binding commitment of any kind. Product availability, specifications, program status, and partnership terms are subject to change without notice and are confirmed only through executed agreements.</p>
+
+      <h2>Intellectual Property</h2>
+      <p>All content on this Site - including text, graphics, logos, design elements, architecture descriptions, technical copy, and the SiCore Research name and marks - is the property of SiCore Research LLC and is protected by applicable intellectual property laws. You may not copy, reproduce, distribute, modify, or create derivative works from any content on this Site without prior written permission.</p>
+      <p>Technical details, architecture descriptions, and product information published on this Site represent general capability claims only. Proprietary designs, circuit topologies, firmware, and manufacturing processes are not disclosed on this Site and remain trade secrets of SiCore Research LLC.</p>
+
+      <h2>No Technical Disclosure</h2>
+      <p>Nothing on this Site constitutes a technical disclosure of SiCore Research's proprietary technology. Detailed specifications, design files, test data, and program information are available only to qualified partners under a fully executed Non-Disclosure Agreement. Do not submit export-controlled, classified, or ITAR-regulated information through any form on this Site.</p>
+
+      <h2>Export Controls</h2>
+      <p>SiCore Research designs power electronics for defense, aerospace, and advanced industrial applications. Certain technologies, information, and products may be subject to U.S. export control laws and regulations, including the Export Administration Regulations (EAR) and the International Traffic in Arms Regulations (ITAR). By using this Site and submitting inquiries, you represent that you are not located in a U.S.-sanctioned country and that you are not listed on any U.S. government denied-party list. SiCore Research reserves the right to decline any partnership inquiry at its sole discretion.</p>
+
+      <h2>Disclaimer of Warranties</h2>
+      <p>The Site and all content on it are provided "as is" and "as available" without warranty of any kind, express or implied, including warranties of merchantability, fitness for a particular purpose, accuracy, or non-infringement. SiCore Research does not warrant that the Site will be uninterrupted, error-free, or free of harmful components.</p>
+
+      <h2>Limitation of Liability</h2>
+      <p>To the fullest extent permitted by law, SiCore Research LLC, its members, officers, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or related to your use of or inability to use the Site, even if advised of the possibility of such damages. SiCore Research's total liability for any claim arising from use of this Site shall not exceed one hundred U.S. dollars ($100).</p>
+
+      <h2>Third-Party Links</h2>
+      <p>The Site may contain links to third-party websites. These links are provided for convenience only. SiCore Research does not endorse, control, or assume any responsibility for the content or practices of any third-party site.</p>
+
+      <h2>Governing Law</h2>
+      <p>These Terms of Use are governed by the laws of the State of Michigan, United States, without regard to its conflict-of-law provisions. Any disputes arising under these terms shall be resolved exclusively in the state or federal courts located in Michigan, and you consent to personal jurisdiction in those courts.</p>
+
+      <h2>Changes to These Terms</h2>
+      <p>We reserve the right to update these Terms of Use at any time. Changes take effect upon posting to this page, as reflected by the effective date above. Continued use of the Site after any changes constitutes acceptance of the revised terms.</p>
+
+      <h2>Contact</h2>
+      <p>Questions regarding these Terms of Use:<br>
+      <strong>SiCore Research LLC</strong><br>
+      Michigan, USA<br>
+      <a href="mailto:sicoreresearch@gmail.com">sicoreresearch@gmail.com</a></p>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+            <span class="footer-brand-name">SiCore Research</span>
+          </div>
+          <div class="footer-tagline">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Where Physics Goes to Work.</em></div>
+          <p>NDAA compliant SiC converters and power electronics for motorsports, defense, aerospace, and industrial. Advancing electrification through proprietary module-less architecture.</p>
+        </div>
+        <div>
+          <h4>Navigate</h4>
+          <a href="index.html">Home</a>
+          <a href="index.html#markets">Markets</a>
+          <a href="index.html#technology">Technology</a>
+          <a href="index.html#capabilities">Capabilities</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Use</a>
+          <a href="index.html#contact">Partner Inquiry</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 SiCore Research, LLC. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;|&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

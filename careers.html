@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Careers | SiCore Research</title>
+  <link rel="icon" type="image/svg+xml" href="images/SiC_Logo_Inverted.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Join SiCore Research. We build rugged silicon carbide power electronics for motorsports, defense, aerospace, and industrial applications. Small team. Hard problems. Real hardware.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:'Inter',system-ui,-apple-system,sans-serif;background:#0a0a0a;color:#e8e8e8;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+    h1,h2,h3,h4,h5,p{margin:0;padding:0}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    :root{--accent:#e07820;--accent-dim:#c06010}
+
+    /* ---------- Header ---------- */
+    header{position:fixed;top:0;left:0;width:100%;z-index:100;background:rgba(8,8,8,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(224,120,32,.12)}
+    .header-inner{max-width:1400px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand-logo{height:36px;width:36px;flex-shrink:0}
+    .brand-name{font-weight:900;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#fff}
+    .nav-menu{display:flex;gap:56px;align-items:center;flex:1;justify-content:center}
+    .nav-menu a{font-size:11px;color:#777;transition:all .25s;text-transform:uppercase;letter-spacing:.8px;font-weight:700;position:relative}
+    .nav-menu a:hover{color:#e07820}
+    .nav-menu a::after{content:"";position:absolute;bottom:-4px;left:0;width:0;height:1px;background:#e07820;transition:width .25s}
+    .nav-menu a:hover::after{width:100%}
+    .nav-menu a.active{color:#e07820}
+    .nav-menu a.active::after{width:100%}
+    .actions{display:flex;gap:20px;align-items:center}
+    .get-started{background:#e07820;color:#000;border:none;padding:10px 22px;font-weight:800;cursor:pointer;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;transition:all .2s}
+    .get-started:hover{background:#c06010;transform:translateY(-1px)}
+    .menu-toggle{display:none;width:32px;height:32px;border:1px solid #333;background:transparent;color:#fff;cursor:pointer;font-size:16px}
+    @media(max-width:1000px){.nav-menu{display:none}.menu-toggle{display:flex;align-items:center;justify-content:center}}
+
+    /* ---------- Hero ---------- */
+    .careers-hero{padding:160px 40px 100px;border-bottom:1px solid rgba(224,120,32,.08);background:#0a0a0a;position:relative;overflow:hidden}
+    .careers-hero::before{content:"";position:absolute;top:0;right:0;width:600px;height:100%;background:radial-gradient(ellipse at 80% 50%,rgba(224,120,32,.04) 0%,transparent 70%);pointer-events:none}
+    .hero-inner{max-width:1400px;margin:0 auto}
+    .hero-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#e07820;margin-bottom:20px;display:block}
+    .hero-headline{font-size:88px;font-weight:900;line-height:.88;letter-spacing:-.05em;text-transform:uppercase;color:#f0ece4;margin-bottom:32px}
+    .hero-headline .orange{color:#e07820}
+    .hero-sub{font-size:18px;color:#888;font-weight:300;line-height:1.75;max-width:680px;margin-bottom:48px}
+    .hero-stats{display:flex;gap:0;border-top:1px solid rgba(224,120,32,.12);border-bottom:3px solid #e07820;max-width:680px}
+    .hero-stat{flex:1;padding:20px 24px;border-right:1px solid rgba(224,120,32,.1)}
+    .hero-stat:first-child{padding-left:0}
+    .hero-stat:last-child{border-right:none}
+    .stat-val{font-size:28px;font-weight:900;color:#f0ece4;letter-spacing:-.03em;line-height:1}
+    .stat-val span{font-size:14px;color:#e07820;font-weight:700}
+    .stat-label{font-size:7px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:rgba(224,120,32,.6);margin-top:5px}
+    @media(max-width:768px){.hero-headline{font-size:52px}.hero-stats{flex-wrap:wrap}.hero-stat{min-width:50%}}
+
+    /* ---------- Mission Strip ---------- */
+    .mission-strip{background:#060604;border-top:1px solid rgba(224,120,32,.25);border-bottom:1px solid rgba(224,120,32,.08);padding:14px 40px}
+    .mission-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+    .mission-text{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#666}
+    .mission-text em{color:#e07820;font-style:normal}
+
+    /* ---------- Values ---------- */
+    .section{padding:100px 40px;position:relative}
+    .section.dark{background:#0a0a0a;border-top:1px solid rgba(224,120,32,.05)}
+    .section.light{background:#0c0b08}
+    .section-wrap{max-width:1400px;margin:0 auto}
+    .section-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#e07820;margin-bottom:16px;display:block}
+    .section-title{font-size:56px;font-weight:900;margin:0 0 16px;text-transform:uppercase;letter-spacing:-.04em;line-height:.95}
+    .section-title span{color:#e07820}
+    .section-subtitle{font-size:17px;font-weight:300;color:#888;line-height:1.75;max-width:700px;margin-bottom:64px}
+
+    .values-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(224,120,32,.06);margin-top:0}
+    .value-card{background:#0a0a0a;padding:40px 32px;position:relative;transition:background .3s}
+    .value-card:hover{background:#0d0c09}
+    .value-num{font-size:9px;font-weight:900;letter-spacing:2px;color:#e07820;opacity:.5;margin-bottom:20px;display:block}
+    .value-icon{display:none}
+    .value-title{font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;margin-bottom:12px;color:#fff}
+    .value-body{font-size:14px;color:#888;line-height:1.75}
+    @media(max-width:1100px){.values-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.values-grid{grid-template-columns:1fr}}
+
+    /* ---------- Roles ---------- */
+    .filter-bar{display:flex;gap:2px;margin-bottom:40px;flex-wrap:wrap}
+    .filter-btn{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:8px 16px;border:1px solid #222;background:transparent;color:#555;cursor:pointer;transition:all .2s}
+    .filter-btn:hover{border-color:#e07820;color:#e07820}
+    .filter-btn.active{background:#e07820;color:#000;border-color:#e07820}
+
+    .coming-soon-banner{display:flex;align-items:center;gap:12px;padding:14px 20px;border:1px solid rgba(224,120,32,.2);background:rgba(224,120,32,.04);margin-bottom:32px}
+    .coming-soon-dot{width:6px;height:6px;background:#e07820;border-radius:50%;flex-shrink:0;animation:pulse 2s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+    .coming-soon-text{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#e07820}
+    .coming-soon-sub{font-size:10px;color:#555;letter-spacing:.5px;margin-left:auto}
+
+    .roles-grid{display:grid;grid-template-columns:1fr;gap:1px;background:rgba(224,120,32,.06)}
+    .role-card{background:#0a0a0a;padding:32px 36px;display:flex;align-items:center;gap:24px;opacity:.6;position:relative}
+    .role-card.hidden{display:none}
+    .role-left{flex:1}
+    .role-dept{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#e07820;margin-bottom:10px}
+    .role-title{font-size:20px;font-weight:800;text-transform:uppercase;letter-spacing:-.02em;margin-bottom:10px;color:#f0ece4}
+    .role-meta{display:flex;gap:20px;flex-wrap:wrap}
+    .role-tag{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#555;display:flex;align-items:center;gap:5px}
+    .role-tag::before{content:"";width:4px;height:4px;background:#333;border-radius:50%;display:inline-block}
+    .role-status{font-size:8px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#5a3a18;border:1px solid #5a3a18;padding:3px 8px;flex-shrink:0}
+    @media(max-width:700px){.role-card{flex-direction:column;align-items:flex-start}}
+
+    /* ---------- No Openings ---------- */
+    .no-openings{padding:80px 36px;text-align:center;background:#0a0a0a;border:1px solid rgba(224,120,32,.06)}
+    .no-openings h3{font-size:20px;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;color:#fff;margin-bottom:12px}
+    .no-openings p{font-size:15px;color:#666;line-height:1.7}
+    .no-openings a{color:#e07820}
+
+    /* ---------- What We Look For ---------- */
+    .traits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(224,120,32,.06)}
+    .trait-card{background:#0c0b08;padding:32px;position:relative}
+    .trait-marker{width:20px;height:2px;background:#e07820;margin-bottom:20px}
+    .trait-title{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;margin-bottom:10px;color:#fff}
+    .trait-body{font-size:14px;color:#888;line-height:1.75}
+    @media(max-width:900px){.traits-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.traits-grid{grid-template-columns:1fr}}
+
+    /* ---------- CTA ---------- */
+    .cta-section{background:#060604;border-top:1px solid rgba(224,120,32,.15);border-bottom:1px solid rgba(224,120,32,.08);padding:100px 40px;text-align:center;position:relative;overflow:hidden}
+    .cta-section::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(224,120,32,.05) 0%,transparent 65%);pointer-events:none}
+    .cta-content{max-width:720px;margin:0 auto;position:relative;z-index:1}
+    .cta-section h3{font-size:52px;font-weight:900;margin:0 0 20px;text-transform:uppercase;letter-spacing:-.03em;line-height:1}
+    .cta-section p{font-size:17px;color:#888;margin:0 0 40px;line-height:1.75;font-weight:300}
+    .cta-btn-primary{display:inline-block;background:#e07820;color:#000;padding:14px 36px;font-weight:800;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;transition:all .2s;cursor:pointer;border:none}
+    .cta-btn-primary:hover{background:#c06010;transform:translateY(-1px)}
+    .cta-note{font-size:17px;color:#777;margin-top:40px;letter-spacing:.5px;font-weight:300;line-height:1.75}
+
+    /* ---------- Footer ---------- */
+    footer{background:#040402;border-top:3px solid #e07820;padding:80px 40px 36px}
+    .footer-wrap{max-width:1400px;margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:80px;margin-bottom:56px}
+    footer h4{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 24px;font-weight:900;color:#e07820}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .footer-brand img{height:26px;width:26px;opacity:.7}
+    .footer-brand-name{font-size:12px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
+    .footer-tagline{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6a5a4a;margin-bottom:16px}
+    .footer-tagline em{color:#e07820;font-style:normal}
+    footer p{font-size:13px;line-height:1.9;color:#666;margin:0}
+    footer a{display:block;font-size:13px;color:#888;margin-bottom:12px;transition:all .2s;font-weight:500}
+    footer a:hover{color:#e07820;padding-left:4px}
+    .footer-bottom{border-top:1px solid rgba(224,120,32,.08);padding-top:28px;font-size:10px;color:#666;display:flex;justify-content:space-between;align-items:center;letter-spacing:.5px}
+    .footer-bottom a{color:#666;display:inline;margin:0;padding:0}
+    .footer-bottom a:hover{color:#e07820;padding-left:0}
+    @media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr;gap:40px}.footer-bottom{flex-direction:column;gap:12px;text-align:center}}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <img class="brand-logo" src="images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+        <span class="brand-name">SiCore Research</span>
+      </a>
+      <nav class="nav-menu">
+        <a href="index.html#markets">Markets</a>
+        <a href="index.html#technology">Technology</a>
+        <a href="index.html#capabilities">Capabilities</a>
+        <a href="blog.html">Research</a>
+        <a href="careers.html" class="active">Careers</a>
+      </nav>
+      <div class="actions">
+        <button class="get-started" onclick="window.location.href='index.html#contact'">Partner Inquiry</button>
+        <button class="menu-toggle">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="careers-hero">
+    <div class="hero-inner">
+      <span class="hero-label">Join the Team</span>
+      <h1 class="hero-headline">Hard Problems.<br><span class="orange">Real Hardware.</span></h1>
+      <p class="hero-sub">We build silicon carbide power electronics that go into motorsports platforms, defense systems, and industrial machinery. Small team. No bureaucracy. Every engineer owns their work from simulation to hardware validation.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="stat-val">SiC<span>-Only</span></div>
+          <div class="stat-label">Power Stage Focus</div>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-val">800<span>V+</span></div>
+          <div class="stat-label">Bus Voltage Platforms</div>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-val">Ann Arbor<span>, MI</span></div>
+          <div class="stat-label">Headquarters</div>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-val">NDAA<span> Compliant</span></div>
+          <div class="stat-label">Defense Ready</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission strip -->
+  <div class="mission-strip">
+    <div class="mission-inner">
+      <span class="mission-text">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Where Physics Goes to Work.</em></span>
+      <span class="mission-text">Active Programs &nbsp;·&nbsp; Motorsports &nbsp;·&nbsp; Defense &nbsp;·&nbsp; Aerospace &nbsp;·&nbsp; Industrial</span>
+    </div>
+  </div>
+
+  <!-- Values -->
+  <section class="section dark">
+    <div class="section-wrap">
+      <span class="section-label">Why SiCore</span>
+      <h2 class="section-title">How We <span>Work</span></h2>
+      <p class="section-subtitle">We are a small, highly technical team. Every person here has direct impact on the hardware that ships.</p>
+      <div class="values-grid">
+        <div class="value-card">
+          <span class="value-num">01</span>
+          <span class="value-icon">⚡</span>
+          <div class="value-title">Own the Full Stack</div>
+          <p class="value-body">From gate driver layout to thermal model to firmware, engineers own their domain end-to-end. No handoffs to a separate team to find out if your design actually worked.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-num">02</span>
+          <span class="value-icon">🔬</span>
+          <div class="value-title">Physics-First Engineering</div>
+          <p class="value-body">We don't sim-and-pray. Every design decision is grounded in measurement, thermal budgets, and first-principles analysis. We build hardware that works in the real environment, not the ideal one.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-num">03</span>
+          <span class="value-icon">🎯</span>
+          <div class="value-title">Mission-Critical Standards</div>
+          <p class="value-body">Our platforms go into environments where failure is not an option — race cars at 200 mph, airborne defense systems, industrial duty cycles running 24/7. We engineer to that standard.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-num">04</span>
+          <span class="value-icon">🚀</span>
+          <div class="value-title">Move Fast, Ship Hardware</div>
+          <p class="value-body">We iterate quickly. Small team means short feedback loops between your schematic and a spinning motor. If you've spent more time in meetings than in the lab, this is a change of pace.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Open Roles -->
+  <section class="section light" id="openings">
+    <div class="section-wrap">
+      <span class="section-label">Open Positions</span>
+      <h2 class="section-title">Roles <span>Coming Soon</span></h2>
+      <p class="section-subtitle">We're preparing to hire. The roles below reflect where we're headed — check back soon for formal postings.</p>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterRoles('all', this)">All Roles</button>
+        <button class="filter-btn" onclick="filterRoles('hardware', this)">Hardware</button>
+        <button class="filter-btn" onclick="filterRoles('firmware', this)">Firmware</button>
+        <button class="filter-btn" onclick="filterRoles('mechanical', this)">Mechanical</button>
+        <button class="filter-btn" onclick="filterRoles('test', this)">Test &amp; Validation</button>
+      </div>
+
+      <div class="coming-soon-banner">
+        <span class="coming-soon-dot"></span>
+        <span class="coming-soon-text">Formal postings opening soon</span>
+        <span class="coming-soon-sub">Roles listed below are planned — not yet accepting applications</span>
+      </div>
+
+      <div class="roles-grid" id="rolesGrid">
+
+        <div class="role-card" data-dept="hardware">
+          <div class="role-left">
+            <div class="role-dept">Hardware Engineering</div>
+            <div class="role-title">Power Electronics Engineer — SiC Inverter Design</div>
+            <div class="role-meta">
+              <span class="role-tag">Ann Arbor, MI</span>
+              <span class="role-tag">Full-Time</span>
+              <span class="role-tag">Mid–Senior</span>
+            </div>
+          </div>
+          <span class="role-status">Not Yet Open</span>
+        </div>
+
+        <div class="role-card" data-dept="hardware">
+          <div class="role-left">
+            <div class="role-dept">Hardware Engineering</div>
+            <div class="role-title">Gate Driver &amp; Analog Design Engineer</div>
+            <div class="role-meta">
+              <span class="role-tag">Ann Arbor, MI</span>
+              <span class="role-tag">Full-Time</span>
+              <span class="role-tag">Mid–Senior</span>
+            </div>
+          </div>
+          <span class="role-status">Not Yet Open</span>
+        </div>
+
+        <div class="role-card" data-dept="firmware">
+          <div class="role-left">
+            <div class="role-dept">Firmware Engineering</div>
+            <div class="role-title">Embedded Firmware Engineer — Inverter Control</div>
+            <div class="role-meta">
+              <span class="role-tag">Ann Arbor, MI / Remote</span>
+              <span class="role-tag">Full-Time</span>
+              <span class="role-tag">Mid–Senior</span>
+            </div>
+          </div>
+          <span class="role-status">Not Yet Open</span>
+        </div>
+
+        <div class="role-card" data-dept="mechanical">
+          <div class="role-left">
+            <div class="role-dept">Mechanical Engineering</div>
+            <div class="role-title">Mechanical &amp; Thermal Engineer — Liquid Cooling</div>
+            <div class="role-meta">
+              <span class="role-tag">Ann Arbor, MI</span>
+              <span class="role-tag">Full-Time</span>
+              <span class="role-tag">Mid–Senior</span>
+            </div>
+          </div>
+          <span class="role-status">Not Yet Open</span>
+        </div>
+
+        <div class="role-card" data-dept="test">
+          <div class="role-left">
+            <div class="role-dept">Test &amp; Validation</div>
+            <div class="role-title">Power Electronics Test &amp; Validation Engineer</div>
+            <div class="role-meta">
+              <span class="role-tag">Ann Arbor, MI</span>
+              <span class="role-tag">Full-Time</span>
+              <span class="role-tag">Mid–Senior</span>
+            </div>
+          </div>
+          <span class="role-status">Not Yet Open</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- What We Look For -->
+  <section class="section dark">
+    <div class="section-wrap">
+      <span class="section-label">The Profile</span>
+      <h2 class="section-title">Who <span>Thrives Here</span></h2>
+      <p class="section-subtitle">We don't hire generalists. We hire people who've gone deep on hard problems and want to keep doing that.</p>
+      <div class="traits-grid">
+        <div class="trait-card">
+          <div class="trait-marker"></div>
+          <div class="trait-title">You understand silicon carbide</div>
+          <p class="trait-body">Gate threshold margins, Miller plateau, negative turn-off rails, short-circuit withstand time — these are your vocabulary, not your homework.</p>
+        </div>
+        <div class="trait-card">
+          <div class="trait-marker"></div>
+          <div class="trait-title">You've touched real hardware</div>
+          <p class="trait-body">Simulation is a starting point. You've breadboarded, probed, burned something, fixed it, and shipped it. Lab time is how you actually learn.</p>
+        </div>
+        <div class="trait-card">
+          <div class="trait-marker"></div>
+          <div class="trait-title">You think about failure modes</div>
+          <p class="trait-body">Defense, motorsports, and industrial customers need hardware that doesn't fail. You design for worst-case, validate at margin, and document what you find.</p>
+        </div>
+        <div class="trait-card">
+          <div class="trait-marker"></div>
+          <div class="trait-title">You move without being pushed</div>
+          <p class="trait-body">We don't assign micro-tasks. You own a domain, set your pace, and report what's blocking you. Self-direction is a requirement, not a perk.</p>
+        </div>
+        <div class="trait-card">
+          <div class="trait-marker"></div>
+          <div class="trait-title">You communicate in engineering</div>
+          <p class="trait-body">Data, schematics, and test results — not buzzwords. We write technical specs, design reviews, and failure analyses. Clear, precise, and to the point.</p>
+        </div>
+        <div class="trait-card">
+          <div class="trait-marker"></div>
+          <div class="trait-title">You want to build something real</div>
+          <p class="trait-body">Our hardware goes into vehicles, weapons systems, and industrial machines. If you want to see your work used in the field, this is the right place.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Apply CTA -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h3>Don't See Your Role?</h3>
+      <p>We're always interested in exceptional power electronics engineers. Send us a note with your background and what you want to work on.</p>
+      <a class="cta-btn-primary" href="index.html#contact">Send an Introduction →</a>
+      <p class="cta-note">No recruiters. No portals. Email goes directly to the engineering team.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+            <span class="footer-brand-name">SiCore Research</span>
+          </div>
+          <div class="footer-tagline">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Where Physics Goes to Work.</em></div>
+          <p>NDAA compliant SiC converters and power electronics for motorsports, defense, aerospace, and industrial. Advancing electrification through proprietary module-less architecture.</p>
+        </div>
+        <div>
+          <h4>Navigate</h4>
+          <a href="index.html">Home</a>
+          <a href="index.html#markets">Markets</a>
+          <a href="index.html#technology">Technology</a>
+          <a href="index.html#capabilities">Capabilities</a>
+          <a href="blog.html">Research</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <a href="careers.html">Careers</a>
+          <a href="index.html#contact">Partner Inquiry</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Use</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>

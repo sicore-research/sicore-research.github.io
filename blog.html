@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Research & Insights | SiCore Research</title>
+  <link rel="icon" type="image/svg+xml" href="images/SiC_Logo_Inverted.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:'Inter',system-ui,-apple-system,sans-serif;background:#0a0a0a;color:#e8e8e8;-webkit-font-smoothing:antialiased}
+    h1,h2,h3,h4,p{margin:0;padding:0}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    :root{--accent:#e07820;--accent-dim:#c06010}
+
+    /* Header */
+    header{position:fixed;top:0;left:0;width:100%;z-index:100;background:rgba(8,8,8,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(224,120,32,.12)}
+    .header-inner{max-width:1400px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand-logo{height:36px;width:36px}
+    .brand-name{font-weight:900;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#fff}
+    .nav-right{display:flex;gap:40px;align-items:center}
+    .nav-link{font-size:11px;color:#777;transition:color .2s;text-transform:uppercase;letter-spacing:.8px;font-weight:700}
+    .nav-link:hover{color:#e07820}
+    .cta-btn{background:#e07820;color:#000;border:none;padding:10px 22px;font-weight:800;cursor:pointer;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;transition:all .2s}
+    .cta-btn:hover{background:#c06010}
+
+    /* Page */
+    main{max-width:1400px;margin:0 auto;padding:140px 40px 100px}
+    .page-header{margin-bottom:80px}
+    .page-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#e07820;margin-bottom:16px;display:block}
+    h1{font-size:68px;font-weight:900;margin:0 0 16px;text-transform:uppercase;letter-spacing:-.04em;line-height:.95}
+    .page-subtitle{font-size:17px;color:#888;font-weight:300;line-height:1.75}
+
+    /* Blog Grid */
+    .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(224,120,32,.06)}
+    .blog-card{background:#0a0a0a;overflow:hidden;transition:all .3s;display:flex;flex-direction:column;position:relative;opacity:0;transform:translateY(20px);animation:fadeUp .6s ease forwards}
+    .blog-card:nth-child(1){animation-delay:0ms}
+    .blog-card:nth-child(2){animation-delay:80ms}
+    .blog-card:nth-child(3){animation-delay:160ms}
+    .blog-card:nth-child(4){animation-delay:100ms}
+    .blog-card:nth-child(5){animation-delay:180ms}
+    .blog-card:nth-child(6){animation-delay:260ms}
+    @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+    .blog-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:#e07820;transform:scaleX(0);transform-origin:left;transition:transform .35s}
+    .blog-card:hover::before{transform:scaleX(1)}
+    .blog-card:hover{background:#0e0d0a}
+    .blog-inner{padding:36px;flex:1;display:flex;flex-direction:column}
+    .blog-date{font-size:9px;color:#666;text-transform:uppercase;letter-spacing:1px;font-weight:800;margin-bottom:16px}
+    .blog-title{font-size:18px;font-weight:800;margin:0 0 16px;line-height:1.3;text-transform:uppercase;letter-spacing:-.01em;flex:1}
+    .blog-excerpt{font-size:15px;color:#888;line-height:1.7;margin:0 0 24px}
+    .blog-link{font-size:10px;color:#e07820;text-transform:uppercase;letter-spacing:1px;font-weight:800;display:inline-flex;align-items:center;gap:6px;transition:gap .2s}
+    .blog-link:hover{gap:10px}
+    .blog-link::after{content:"→"}
+    @media(max-width:1100px){.blog-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:700px){.blog-grid{grid-template-columns:1fr}}
+
+    /* Footer */
+    footer{background:#040402;border-top:3px solid #e07820;padding:80px 40px 36px}
+    .footer-wrap{max-width:1400px;margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:80px;margin-bottom:56px}
+    footer h4{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 24px;font-weight:900;color:#e07820}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .footer-brand img{height:26px;width:26px;opacity:.7}
+    .footer-brand-name{font-size:12px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
+    .footer-tagline{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6a5a4a;margin-bottom:16px}
+    .footer-tagline em{color:#e07820;font-style:normal}
+    footer p{font-size:13px;line-height:1.9;color:#666;margin:0}
+    footer a{display:block;font-size:13px;color:#888;margin-bottom:12px;transition:all .2s;font-weight:500}
+    footer a:hover{color:#e07820;padding-left:4px}
+    .footer-bottom{border-top:1px solid rgba(224,120,32,.08);padding-top:28px;font-size:10px;color:#666;display:flex;justify-content:space-between;align-items:center;letter-spacing:.5px}
+    .footer-bottom a{color:#666;display:inline;margin:0;padding:0}
+    .footer-bottom a:hover{color:#e07820;padding-left:0}
+    @media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr;gap:40px}.footer-bottom{flex-direction:column;gap:12px;text-align:center}}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <img class="brand-logo" src="images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+        <span class="brand-name">SiCore Research</span>
+      </a>
+      <div class="nav-right">
+        <a href="index.html#markets" class="nav-link">Markets</a>
+        <a href="index.html#technology" class="nav-link">Technology</a>
+        <a href="index.html#capabilities" class="nav-link">Capabilities</a>
+        <a href="index.html#contact" class="nav-link">Contact</a>
+        <a href="careers.html" class="nav-link">Careers</a>
+        <button class="cta-btn" onclick="window.location.href='index.html#contact'">Partner Inquiry</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <span class="page-label">From the Team</span>
+      <h1>Research &amp; Insights</h1>
+      <p class="page-subtitle">Technical deep dives, thermal engineering analysis, and program updates from the SiCore team.</p>
+    </div>
+    <div class="blog-grid" id="articleGrid">
+      <p style="grid-column:1/-1;text-align:center;color:#555;padding:60px 0">No articles yet.</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+            <span class="footer-brand-name">SiCore Research</span>
+          </div>
+          <div class="footer-tagline">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Where Physics Goes to Work.</em></div>
+          <p>NDAA compliant SiC converters and power electronics for motorsports, defense, aerospace, and industrial. Advancing electrification through proprietary module-less architecture.</p>
+        </div>
+        <div>
+          <h4>Navigate</h4>
+          <a href="index.html">Home</a>
+          <a href="index.html#markets">Markets</a>
+          <a href="index.html#technology">Technology</a>
+          <a href="index.html#capabilities">Capabilities</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <a href="#" onclick="alert('Datasheets available to qualified partners under NDA.');return false">Datasheets (NDA)</a>
+          <a href="#" onclick="alert('Case studies available to active program partners.');return false">Case Studies</a>
+          <a href="index.html#contact">Partner Inquiry</a>
+          <a href="#" onclick="alert('Careers info coming soon.');return false">Careers</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 SiCore Research, LLC. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;|&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const POSTS = [
+      {
+        title: "Understanding Thermal Resistance in Liquid-Cooled Power Electronics",
+        date: "2025-11-05",
+        tag: "Thermal",
+        excerpt: "Wide-bandgap technologies have changed the design landscape. Devices now switch faster, operate at higher voltages, and deliver unprecedented power densities - yet those same strengths bring new thermal challenges that demand more sophisticated cooling strategies.",
+        url: "posts/understanding-rth.html"
+      },
+      {
+        title: "Thermal Design Notes for 105°C Coolant",
+        date: "2025-11-02",
+        tag: "Thermal",
+        excerpt: "When coolant enters at 105°C, the junction temperature margin shrinks to 70°C and conventional design assumptions stop working. This article covers the specific choices that matter: staggered vs. inline pin-fin geometry, why polymer TIMs fail at this temperature class, realistic Rθ targets at 5–10 LPM, seal material selection, and a worked budget showing how to close a 3 kW design within the available margin.",
+        url: "posts/thermal-105c.html"
+      },
+      {
+        title: "Gate Driver Design for SiC MOSFETs",
+        date: "2025-12-18",
+        tag: "Power Electronics",
+        excerpt: "SiC MOSFETs are not drop-in replacements for silicon IGBTs. Gate drive requirements differ fundamentally: tighter threshold margins, negative turn-off voltage to prevent Miller-induced shoot-through, sub-microsecond short-circuit detection, and CMTI demands that most standard optocouplers cannot meet. This article covers every design decision from voltage rail selection to PCB layout.",
+        url: "posts/gate-driver-sic.html"
+      },
+      {
+        title: "Parasitic Inductance in High-Frequency SiC Converters",
+        date: "2025-12-10",
+       
