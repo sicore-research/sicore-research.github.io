@@ -2,9 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Research & Insights | SiCore Research</title>
+  <title>Power Electronics Research &amp; Insights | SiCore Research</title>
   <link rel="icon" type="image/svg+xml" href="images/SiC_Logo_Inverted.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Engineering articles on SiC inverter design, gate drivers, parasitic inductance, EMI/EMC, and thermal management in high-power SiC systems.">
+  <link rel="canonical" href="https://www.sicoreresearch.com/blog.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SiCore Research">
+  <meta property="og:title" content="Power Electronics Research &amp; Insights | SiCore Research">
+  <meta property="og:description" content="Engineering articles on SiC inverter design, gate drivers, parasitic inductance, EMI/EMC, and thermal management in high-power SiC systems.">
+  <meta property="og:url" content="https://www.sicoreresearch.com/blog.html">
+  <meta property="og:image" content="https://www.sicoreresearch.com/images/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box}
@@ -75,6 +84,8 @@
     .footer-bottom a{color:#666;display:inline;margin:0;padding:0}
     .footer-bottom a:hover{color:#e07820;padding-left:0}
     @media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr;gap:40px}.footer-bottom{flex-direction:column;gap:12px;text-align:center}}
+    @media(max-width:900px){.nav-link{display:none}.nav-right{gap:16px}}
+    @media(max-width:600px){h1{font-size:44px}main{padding:120px 20px 80px}}
   </style>
 </head>
 <body>
@@ -86,10 +97,10 @@
         <span class="brand-name">SiCore Research</span>
       </a>
       <div class="nav-right">
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="kiowa.html" class="nav-link">Kiowa</a>
         <a href="index.html#markets" class="nav-link">Markets</a>
-        <a href="index.html#technology" class="nav-link">Technology</a>
-        <a href="index.html#capabilities" class="nav-link">Capabilities</a>
-        <a href="index.html#contact" class="nav-link">Contact</a>
+        <a href="blog.html" class="nav-link">Research</a>
         <a href="careers.html" class="nav-link">Careers</a>
         <button class="cta-btn" onclick="window.location.href='index.html#contact'">Partner Inquiry</button>
       </div>
@@ -100,7 +111,7 @@
     <div class="page-header">
       <span class="page-label">From the Team</span>
       <h1>Research &amp; Insights</h1>
-      <p class="page-subtitle">Technical deep dives, thermal engineering analysis, and program updates from the SiCore team.</p>
+      <p class="page-subtitle">Engineering articles on SiC inverter design, gate drivers, parasitic inductance, EMI/EMC, and thermal management in high-power SiC systems, from the SiCore team.</p>
     </div>
     <div class="blog-grid" id="articleGrid">
       <p style="grid-column:1/-1;text-align:center;color:#555;padding:60px 0">No articles yet.</p>
@@ -115,15 +126,16 @@
             <img src="images/SiC_Logo_Inverted.svg" alt="SiCore Research">
             <span class="footer-brand-name">SiCore Research</span>
           </div>
-          <div class="footer-tagline">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Where Physics Goes to Work.</em></div>
-          <p>NDAA compliant SiC converters and power electronics for motorsports, defense, aerospace, and industrial. Advancing electrification through proprietary module-less architecture.</p>
+          <div class="footer-tagline">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Maximum Power Density. Minimum Time to Hardware.</em></div>
+          <p>Power electronics and electric motor design for motorsports, defense, aerospace, and industrial programs. Home of Kiowa, the module-less 800 V SiC inverter.</p>
         </div>
         <div>
           <h4>Navigate</h4>
           <a href="index.html">Home</a>
+          <a href="services.html">Services</a>
+          <a href="kiowa.html">Kiowa</a>
           <a href="index.html#markets">Markets</a>
-          <a href="index.html#technology">Technology</a>
-          <a href="index.html#capabilities">Capabilities</a>
+          <a href="blog.html">Research</a>
           <a href="index.html#contact">Contact</a>
         </div>
         <div>
@@ -131,7 +143,7 @@
           <a href="#" onclick="alert('Datasheets available to qualified partners under NDA.');return false">Datasheets (NDA)</a>
           <a href="#" onclick="alert('Case studies available to active program partners.');return false">Case Studies</a>
           <a href="index.html#contact">Partner Inquiry</a>
-          <a href="#" onclick="alert('Careers info coming soon.');return false">Careers</a>
+          <a href="careers.html">Careers</a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -186,7 +198,7 @@
       grid.innerHTML = sorted.map(p=>`
         <article class="blog-card">
           <div class="blog-inner">
-            <p class="blog-date">${new Date(p.date).toLocaleDateString('en-US',{month:'short',day:'2-digit',year:'numeric'})}${p.tag?` &nbsp;·&nbsp; ${p.tag}`:''}</p>
+            <p class="blog-date">${new Date(p.date+'T00:00').toLocaleDateString('en-US',{month:'short',day:'2-digit',year:'numeric'})}${p.tag?` &nbsp;·&nbsp; ${p.tag}`:''}</p>
             <h2 class="blog-title">${p.title}</h2>
             <p class="blog-excerpt">${p.excerpt||''}</p>
             <a href="${p.url}" class="blog-link">Read Article</a>

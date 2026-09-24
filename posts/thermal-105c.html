@@ -6,6 +6,38 @@
   <link rel="icon" type="image/svg+xml" href="../images/SiC_Logo_Inverted.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Engineering notes on pin-fin cold plate design, pressure drop targets, TIM selection, and realistic thermal resistance values for 105°C high-temperature coolant applications in SiC power electronics.">
+  <link rel="canonical" href="https://www.sicoreresearch.com/posts/thermal-105c.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="SiCore Research">
+  <meta property="og:title" content="Thermal Design at 105°C Coolant | SiCore Research">
+  <meta property="og:description" content="Engineering notes on pin-fin cold plate design, pressure drop targets, TIM selection, and realistic thermal resistance values for 105°C high-temperature coolant applications in SiC power electronics.">
+  <meta property="og:url" content="https://www.sicoreresearch.com/posts/thermal-105c.html">
+  <meta property="og:image" content="https://www.sicoreresearch.com/images/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Thermal Design at 105°C Coolant",
+    "description": "Engineering notes on pin-fin cold plate design, pressure drop targets, TIM selection, and realistic thermal resistance values for 105°C high-temperature coolant applications in SiC power electronics.",
+    "datePublished": "2025-11-02",
+    "mainEntityOfPage": "https://www.sicoreresearch.com/posts/thermal-105c.html",
+    "image": "https://www.sicoreresearch.com/images/og-image.jpg",
+    "author": {
+      "@type": "Organization",
+      "name": "SiCore Research",
+      "url": "https://www.sicoreresearch.com/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "SiCore Research, LLC",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.sicoreresearch.com/images/SiC_Logo_Inverted.svg"
+      }
+    }
+  }
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box}
@@ -89,6 +121,8 @@
     .footer-bottom a{color:#666;display:inline;margin:0;padding:0}
     .footer-bottom a:hover{color:#e07820;padding-left:0}
     @media(max-width:900px){.post-title{font-size:36px}.footer-grid{grid-template-columns:1fr 1fr;gap:40px}.footer-bottom{flex-direction:column;gap:12px;text-align:center}}
+    @media(max-width:900px){.nav-link{display:none}.nav-right{gap:16px}}
+    @media(max-width:700px){.post-content table{display:block;overflow-x:auto}}
   </style>
 </head>
 <body>
@@ -100,9 +134,9 @@
         <span class="brand-name">SiCore Research</span>
       </a>
       <div class="nav-right">
+        <a href="../services.html" class="nav-link">Services</a>
+        <a href="../kiowa.html" class="nav-link">Kiowa</a>
         <a href="../index.html#markets" class="nav-link">Markets</a>
-        <a href="../index.html#technology" class="nav-link">Technology</a>
-        <a href="../index.html#capabilities" class="nav-link">Capabilities</a>
         <a href="../blog.html" class="nav-link">Research</a>
         <a href="../careers.html" class="nav-link">Careers</a>
         <button class="cta-btn" onclick="window.location.href='../index.html#contact'">Partner Inquiry</button>
@@ -371,14 +405,15 @@
             <img src="../images/SiC_Logo_Inverted.svg" alt="SiCore Research">
             <span class="footer-brand-name">SiCore Research</span>
           </div>
-          <div class="footer-tagline">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Where Physics Goes to Work.</em></div>
-          <p>Michigan built, NDAA compliant SiC converters and power electronics for motorsports, industrial, defense, and aerospace. Advancing electrification through proprietary module-less architecture and rigorous engineering.</p>
+          <div class="footer-tagline">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Maximum Power Density. Minimum Time to Hardware.</em></div>
+          <p>Power electronics and electric motor design for motorsports, defense, aerospace, and industrial programs. Home of Kiowa, the module-less 800 V SiC inverter.</p>
         </div>
         <div>
           <h4>Navigate</h4>
           <a href="../index.html">Home</a>
+          <a href="../services.html">Services</a>
+          <a href="../kiowa.html">Kiowa</a>
           <a href="../index.html#markets">Markets</a>
-          <a href="../index.html#technology">Technology</a>
           <a href="../blog.html">Research</a>
           <a href="../index.html#contact">Contact</a>
         </div>
@@ -386,7 +421,7 @@
           <h4>Resources</h4>
           <a href="#" onclick="alert('Datasheets available to qualified partners under NDA.');return false">Datasheets (NDA)</a>
           <a href="../index.html#contact">Partner Inquiry</a>
-          <a href="#" onclick="alert('Careers info coming soon.');return false">Careers</a>
+          <a href="../careers.html">Careers</a>
         </div>
       </div>
       <div class="footer-bottom">

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Power Electronics &amp; Motor Design Services | SiCore Research</title>
+  <link rel="icon" type="image/svg+xml" href="images/SiC_Logo_Inverted.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Power electronics and electric motor design services for high-power systems: SiC inverters, gate drives, motor control, and rapid prototyping. Ann Arbor, MI.">
+  <link rel="canonical" href="https://www.sicoreresearch.com/services.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SiCore Research">
+  <meta property="og:title" content="Power Electronics &amp; Motor Design Services | SiCore Research">
+  <meta property="og:description" content="Power electronics and electric motor design services for high-power systems: SiC inverters, gate drives, motor control, and rapid prototyping. Ann Arbor, MI.">
+  <meta property="og:url" content="https://www.sicoreresearch.com/services.html">
+  <meta property="og:image" content="https://www.sicoreresearch.com/images/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ---------- Base ---------- */
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:#0a0a0a;color:#e8e8e8;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+    img{max-width:100%;display:block}
+    h1,h2,h3,h4,h5,p,ul{margin:0;padding:0}
+    a{color:inherit;text-decoration:none}
+
+    /* ---------- Header ---------- */
+    header{position:fixed;top:0;left:0;width:100%;z-index:100;background:rgba(8,8,8,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(224,120,32,.12)}
+    .header-inner{max-width:1400px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-logo{height:36px;width:36px;flex-shrink:0}
+    .brand-name{font-weight:900;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#fff}
+    .nav-menu{display:flex;gap:48px;align-items:center;flex:1;justify-content:center}
+    .nav-menu a{font-size:11px;color:#777;transition:all .25s;text-transform:uppercase;letter-spacing:.8px;font-weight:700;position:relative}
+    .nav-menu a:hover,.nav-menu a.active{color:#e07820}
+    .nav-menu a::after{content:"";position:absolute;bottom:-4px;left:0;width:0;height:1px;background:#e07820;transition:width .25s}
+    .nav-menu a:hover::after,.nav-menu a.active::after{width:100%}
+    .actions{display:flex;gap:20px;align-items:center}
+    .get-started{background:#e07820;color:#000;border:none;padding:10px 22px;font-weight:800;cursor:pointer;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;transition:all .2s}
+    .get-started:hover{background:#c06010}
+    .menu-toggle{display:none;width:32px;height:32px;border:1px solid #333;background:transparent;color:#fff;cursor:pointer;font-size:16px}
+    @media(max-width:1200px){.nav-menu{gap:32px}}
+    @media(max-width:1000px){.nav-menu{display:none}.menu-toggle{display:flex;align-items:center;justify-content:center}}
+    @media(max-width:600px){.header-inner{padding:14px 20px}.brand-name{display:none}}
+
+    /* ---------- Page Hero ---------- */
+    .page-hero{padding:170px 40px 90px;background:#0a0a0a;border-bottom:1px solid rgba(224,120,32,.08);position:relative;overflow:hidden}
+    .page-hero::before{content:"";position:absolute;top:0;right:0;width:700px;height:100%;background:radial-gradient(ellipse at 80% 50%,rgba(224,120,32,.06) 0%,transparent 70%);pointer-events:none}
+    .hero-inner{max-width:1400px;margin:0 auto;position:relative}
+    .hero-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#e07820;margin-bottom:20px;display:block}
+    .page-hero h1{font-size:88px;font-weight:900;line-height:.9;letter-spacing:-.05em;text-transform:uppercase;color:#f0ece4;margin-bottom:32px}
+    .page-hero h1 .orange{color:#e07820}
+    .hero-sub{font-size:18px;color:#999;font-weight:300;line-height:1.75;max-width:760px;margin-bottom:40px}
+    .hero-actions{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:56px}
+    .btn-primary{display:inline-block;background:#e07820;color:#000;padding:14px 28px;font-weight:800;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;transition:all .2s}
+    .btn-primary:hover{background:#c06010;transform:translateY(-1px)}
+    .btn-ghost{display:inline-block;border:2px solid #e07820;color:#e07820;padding:12px 26px;font-weight:800;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;transition:all .2s}
+    .btn-ghost:hover{background:#e07820;color:#000}
+    .hero-specs{display:flex;max-width:880px;border-top:1px solid rgba(224,120,32,.15);border-bottom:3px solid #e07820}
+    .hero-spec{flex:1;padding:20px 0 20px 24px;border-right:1px solid rgba(224,120,32,.1)}
+    .hero-spec:first-child{padding-left:0}
+    .hero-spec:last-child{border-right:none}
+    .hs-val{font-size:30px;font-weight:900;color:#f0ece4;letter-spacing:-.03em;line-height:1}
+    .hs-val.orange{color:#e07820}
+    .hs-unit{font-size:15px;color:#e07820;font-weight:700}
+    .hs-label{font-size:7px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:rgba(224,120,32,.6);margin-top:5px}
+    @media(max-width:900px){.page-hero h1{font-size:56px}.hero-specs{flex-wrap:wrap}.hero-spec{min-width:50%}}
+    @media(max-width:600px){.page-hero{padding:130px 20px 70px}.page-hero h1{font-size:38px}.hero-sub{font-size:16px}}
+
+    /* ---------- Sections ---------- */
+    .section{padding:110px 40px;position:relative}
+    .section.dark{background:#0a0a0a;border-top:1px solid rgba(224,120,32,.05)}
+    .section.light{background:#0c0b08}
+    .section-wrap{max-width:1400px;margin:0 auto}
+    .section-header{margin-bottom:64px}
+    .section-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#e07820;margin-bottom:16px;display:block}
+    .section-title{font-size:60px;font-weight:900;margin:0 0 20px;text-transform:uppercase;letter-spacing:-.04em;line-height:.95}
+    .section-title span{color:#e07820}
+    .section-subtitle{font-size:17px;font-weight:300;color:#888;line-height:1.75;max-width:820px}
+    .section-subtitle a{color:#e07820}
+    @media(max-width:768px){.section-title{font-size:38px}}
+    @media(max-width:600px){.section{padding:80px 20px}}
+
+    /* ---------- Cards ---------- */
+    .grid-2,.grid-4{display:grid;gap:1px;background:rgba(224,120,32,.06)}
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    .grid-4{grid-template-columns:repeat(4,1fr)}
+    .card{background:#0a0a0a;padding:44px 36px;position:relative;overflow:hidden;transition:background .3s}
+    .card::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:#e07820;transform:scaleX(0);transform-origin:left;transition:transform .4s}
+    .card:hover{background:#0e0d0a}
+    .card:hover::after{transform:scaleX(1)}
+    .card-num{font-size:11px;font-weight:800;letter-spacing:1px;color:rgba(224,120,32,.4);margin-bottom:20px;display:block}
+    .card h3{font-size:14px;margin:0 0 14px;text-transform:uppercase;letter-spacing:.8px;font-weight:800;color:#fff}
+    .card.lg h3{font-size:24px;letter-spacing:-.01em;margin-bottom:16px}
+    .card p{color:#888;line-height:1.75;font-size:15px}
+    .card p a{color:#e07820}
+    .card ul{list-style:none;margin-top:24px;display:grid;gap:12px}
+    .card li{font-size:14px;color:#bbb;padding-left:20px;position:relative;line-height:1.6}
+    .card li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;background:#e07820}
+    @media(max-width:1100px){.grid-4{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:700px){.grid-2,.grid-4{grid-template-columns:1fr}.card{padding:36px 28px}}
+
+    /* ---------- Link list ---------- */
+    .link-list{display:grid;gap:1px;background:rgba(224,120,32,.06)}
+    .link-list a{display:flex;justify-content:space-between;align-items:center;gap:24px;background:#0a0a0a;padding:24px 28px;font-size:16px;font-weight:700;color:#ddd;transition:all .2s}
+    .link-list a:hover{background:#0e0d0a;color:#e07820}
+    .link-list .tag{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#e07820;font-weight:800;white-space:nowrap}
+    @media(max-width:600px){.link-list a{flex-direction:column;align-items:flex-start;gap:8px}}
+
+    /* ---------- FAQ ---------- */
+    .faq{max-width:920px;display:grid;gap:1px;background:rgba(224,120,32,.1)}
+    .faq details{background:#0c0b08}
+    .faq summary{cursor:pointer;list-style:none;padding:24px 28px;font-size:16px;font-weight:700;color:#f0ece4;display:flex;justify-content:space-between;gap:24px}
+    .faq summary::-webkit-details-marker{display:none}
+    .faq summary::after{content:"+";color:#e07820;font-weight:800}
+    .faq details[open] summary::after{content:"\2013"}
+    .faq details p{padding:0 28px 24px;font-size:15px;line-height:1.8;color:#999}
+    .faq details p a{color:#e07820}
+
+    /* ---------- CTA ---------- */
+    .cta-section{text-align:center;padding:110px 40px;position:relative;overflow:hidden;background:#060604}
+    .cta-section::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:#e07820}
+    .cta-content{max-width:800px;margin:0 auto}
+    .cta-section h2{font-size:52px;font-weight:900;margin:0 0 20px;text-transform:uppercase;letter-spacing:-.03em;line-height:1}
+    .cta-section p{font-size:17px;color:#888;margin:0 0 40px;line-height:1.75;font-weight:300}
+    @media(max-width:600px){.cta-section{padding:80px 20px}.cta-section h2{font-size:36px}}
+
+    /* ---------- Footer ---------- */
+    footer{background:#040402;border-top:3px solid #e07820;padding:80px 40px 36px}
+    .footer-wrap{max-width:1400px;margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:80px;margin-bottom:56px}
+    footer h4{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 24px;font-weight:900;color:#e07820}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .footer-brand img{height:26px;width:26px;opacity:.7}
+    .footer-brand-name{font-size:12px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
+    .footer-tagline{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6a5a4a;margin-bottom:16px}
+    .footer-tagline em{color:#e07820;font-style:normal}
+    footer p{font-size:13px;line-height:1.9;color:#666;margin:0}
+    footer a{display:block;font-size:13px;color:#888;margin-bottom:12px;transition:all .2s;font-weight:500}
+    footer a:hover{color:#e07820;padding-left:4px}
+    .footer-bottom{border-top:1px solid rgba(224,120,32,.08);padding-top:28px;font-size:10px;color:#666;display:flex;justify-content:space-between;align-items:center;letter-spacing:.5px}
+    .footer-bottom a{color:#666;display:inline;margin:0;padding:0}
+    .footer-bottom a:hover{color:#e07820;padding-left:0}
+    @media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr;gap:48px}.footer-bottom{flex-direction:column;gap:12px;text-align:center}}
+    @media(max-width:600px){footer{padding:64px 20px 32px}}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <img class="brand-logo" src="images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+        <span class="brand-name">SiCore Research</span>
+      </a>
+      <nav class="nav-menu">
+        <a href="services.html" class="active">Services</a>
+        <a href="kiowa.html">Kiowa</a>
+        <a href="index.html#markets">Markets</a>
+        <a href="blog.html">Research</a>
+        <a href="careers.html">Careers</a>
+      </nav>
+      <div class="actions">
+        <a class="get-started" href="index.html#contact">Partner Inquiry</a>
+        <button class="menu-toggle" id="menuBtn" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="hero-inner">
+        <span class="hero-label">Engineering Services</span>
+        <h1>Power Electronics &amp;<br><span class="orange">Motor Design</span></h1>
+        <p class="hero-sub">SiCore Research is a lean Ann Arbor, Michigan engineering firm that designs and rapidly prototypes power electronics and electric motors for high-power systems. We take programs from requirements to validated, production-ready hardware, as a project team or a long-term engineering partner.</p>
+        <div class="hero-actions">
+          <a class="btn-primary" href="index.html#contact">Start a Project →</a>
+          <a class="btn-ghost" href="kiowa.html">See Kiowa, Our 800 V Inverter</a>
+        </div>
+        <div class="hero-specs">
+          <div class="hero-spec">
+            <div class="hs-val">800<span class="hs-unit">V</span></div>
+            <div class="hs-label">Bus Voltage Class</div>
+          </div>
+          <div class="hero-spec">
+            <div class="hs-val orange">&gt;100<span class="hs-unit">kW/L</span></div>
+            <div class="hs-label">Kiowa Power Density</div>
+          </div>
+          <div class="hero-spec">
+            <div class="hs-val">500+<span class="hs-unit">kW</span></div>
+            <div class="hs-label">Scalable from 100 kW</div>
+          </div>
+          <div class="hero-spec">
+            <div class="hs-val">4</div>
+            <div class="hs-label">Disciplines, One Team</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Disciplines -->
+    <section class="section light" id="disciplines">
+      <div class="section-wrap">
+        <div class="section-header">
+          <span class="section-label">What We Design</span>
+          <h2 class="section-title">The Whole <span>Drive System</span></h2>
+          <p class="section-subtitle">High-power electrical systems work best when the power electronics, motor, controls, and cooling are designed together. We cover all four, so you can bring us a single subsystem or a complete drive.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card lg">
+            <span class="card-num">01</span>
+            <h3>Power Electronics Design</h3>
+            <p>High-power inverters and converters built around silicon carbide, from the power stage to the protection circuitry. We design for power density, efficiency, and robustness at 800 V and beyond.</p>
+            <ul>
+              <li>Traction and servo inverters</li>
+              <li>Power export: generator-to-HVDC and grid-forming converters</li>
+              <li>Module-less, direct-die SiC power stages</li>
+              <li>Gate driver design and short-circuit protection</li>
+              <li>Laminated busbars and low-inductance power-loop layout</li>
+            </ul>
+          </div>
+          <div class="card lg">
+            <span class="card-num">02</span>
+            <h3>Electric Motor Design</h3>
+            <p>Motors designed together with the drive that powers them, so the machine, inverter, and controls are optimized as one system rather than matched after the fact.</p>
+            <ul>
+              <li>Electromagnetic design to torque, speed, and packaging targets</li>
+              <li>Motor thermal design and cooling</li>
+              <li>Motor and inverter co-design and trade studies</li>
+            </ul>
+          </div>
+          <div class="card lg">
+            <span class="card-num">03</span>
+            <h3>Controls &amp; Firmware</h3>
+            <p>Embedded motor control and inverter firmware that turns hardware into a working drive and connects it to the rest of your system.</p>
+            <ul>
+              <li>Motor control for servo and traction drives</li>
+              <li>EtherCAT, CAN, and Ethernet communications</li>
+              <li>Resolver, incremental, and absolute encoder feedback</li>
+              <li>Protection, fault handling, and diagnostics</li>
+            </ul>
+          </div>
+          <div class="card lg">
+            <span class="card-num">04</span>
+            <h3>Thermal, EMI &amp; Validation</h3>
+            <p>The engineering that makes high power density survivable and certifiable: heat removal, electromagnetic compatibility, and test.</p>
+            <ul>
+              <li>Liquid-cooled cold plate and thermal design</li>
+              <li>Thermal resistance modeling and budgets</li>
+              <li>EMI/EMC filter design and pre-compliance</li>
+              <li>Hardware test and validation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why SiCore -->
+    <section class="section dark">
+      <div class="section-wrap">
+        <div class="section-header">
+          <span class="section-label">Why SiCore</span>
+          <h2 class="section-title">Built by <span>Specialists</span></h2>
+        </div>
+        <div class="grid-4">
+          <div class="card">
+            <span class="card-num">01</span>
+            <h3>Silicon Carbide Depth</h3>
+            <p>We work at the device level: gate threshold margins, Miller coupling, parasitic inductance, and thermal paths. Our <a href="blog.html">published research</a> shows how we think.</p>
+          </div>
+          <div class="card">
+            <span class="card-num">02</span>
+            <h3>Proven at High Power</h3>
+            <p><a href="kiowa.html">Kiowa</a>, our 800 V SiC inverter, delivers over 100 kW/L and scales from 100 kW to 500 kW and beyond. The same engineering goes into your program.</p>
+          </div>
+          <div class="card">
+            <span class="card-num">03</span>
+            <h3>Lean Team, Fast Hardware</h3>
+            <p>Power electronics, motors, controls, and thermal under one small roof means fewer handoffs and a faster path from spec to working hardware.</p>
+          </div>
+          <div class="card">
+            <span class="card-num">04</span>
+            <h3>Rugged by Design</h3>
+            <p>Designed from first principles for high-shock, high-vibration, mission-critical environments, from race cars to defense platforms.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section class="section light" id="process">
+      <div class="section-wrap">
+        <div class="section-header">
+          <span class="section-label">How We Work</span>
+          <h2 class="section-title">Concept to <span>Production</span></h2>
+          <p class="section-subtitle">Work with us on a single project or as a long-term engineering partner. Either way, the path from requirements to hardware is the same.</p>
+        </div>
+        <div class="grid-4">
+          <div class="card">
+            <span class="card-num">01</span>
+            <h3>Discovery</h3>
+            <p>Share your power, voltage, thermal, and packaging requirements. We respond within 48 hours with an initial read on fit and a proposed path to hardware.</p>
+          </div>
+          <div class="card">
+            <span class="card-num">02</span>
+            <h3>Architecture</h3>
+            <p>Topology, device, thermal, and motor trade studies up front, so the design is right before hardware is built.</p>
+          </div>
+          <div class="card">
+            <span class="card-num">03</span>
+            <h3>Rapid Prototyping</h3>
+            <p>Fast design-build-test loops against your requirements, from first power-up through validation.</p>
+          </div>
+          <div class="card">
+            <span class="card-num">04</span>
+            <h3>Production</h3>
+            <p>Design for manufacture and hand-off to manufacturing partners, with engineering support as your program scales.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Industries -->
+    <section class="section dark">
+      <div class="section-wrap">
+        <div class="section-header">
+          <span class="section-label">Industries</span>
+          <h2 class="section-title">Where We <span>Work</span></h2>
+        </div>
+        <div class="grid-4">
+          <div class="card">
+            <h3>Motorsports &amp; Racing</h3>
+            <p>Compact traction inverters and drives for the thermal swings, vibration loads, and weight budgets of competitive motorsport.</p>
+          </div>
+          <div class="card">
+            <h3>Defense &amp; Aerospace</h3>
+            <p>Ruggedized power conversion for programs with demanding shock, vibration, and certification requirements.</p>
+          </div>
+          <div class="card">
+            <h3>Industrial Motion</h3>
+            <p>High-torque servo and high-cycle industrial drives that integrate with the motion systems you already run.</p>
+          </div>
+          <div class="card">
+            <h3>Advanced Mobility</h3>
+            <p>Propulsion for eVTOL and next-generation vehicles, plus generator-to-HVDC and grid-forming power export.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Research -->
+    <section class="section light">
+      <div class="section-wrap">
+        <div class="section-header">
+          <span class="section-label">Engineering Notes</span>
+          <h2 class="section-title">How We <span>Think</span></h2>
+          <p class="section-subtitle">Technical articles from our team on the problems that decide whether a high-power design works.</p>
+        </div>
+        <div class="link-list">
+          <a href="posts/gate-driver-sic.html">Gate Driver Design for SiC MOSFETs <span class="tag">Power Electronics</span></a>
+          <a href="posts/parasitic-inductance.html">Parasitic Inductance in High-Frequency SiC Converters <span class="tag">Power Electronics</span></a>
+          <a href="posts/emi-emc-sic-inverters.html">EMI/EMC in High-Power SiC Inverters <span class="tag">Power Electronics</span></a>
+          <a href="posts/understanding-rth.html">Understanding Thermal Resistance in Liquid-Cooled Power Electronics <span class="tag">Thermal</span></a>
+          <a href="posts/thermal-105c.html">Thermal Design Notes for 105°C Coolant <span class="tag">Thermal</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section dark">
+      <div class="section-wrap">
+        <div class="section-header">
+          <span class="section-label">FAQ</span>
+          <h2 class="section-title">Common <span>Questions</span></h2>
+        </div>
+        <div class="faq">
+          <details open>
+            <summary>What does SiCore Research design?</summary>
+            <p>Power electronics and electric motors for high-power systems: SiC inverters and converters, gate drives, motor control firmware, and the thermal and EMI engineering around them. Our flagship platform, <a href="kiowa.html">Kiowa</a>, is an 800 V silicon carbide inverter with over 100 kW/L peak power density.</p>
+          </details>
+          <details>
+            <summary>What power and voltage levels do you work at?</summary>
+            <p>Our focus is high-power, high-voltage systems. Kiowa is an 800 V platform that scales from 100 kW to 500 kW and beyond. Tell us your requirements and we'll tell you whether we're a fit.</p>
+          </details>
+          <details>
+            <summary>Do you design electric motors as well as the drive?</summary>
+            <p>Yes. We design motors alongside the power electronics and controls that drive them, so the whole system is optimized together.</p>
+          </details>
+          <details>
+            <summary>Can we start from Kiowa instead of a clean-sheet design?</summary>
+            <p>Yes. Kiowa's scalable architecture and configurable feedback and communication interfaces are built to adapt to different motors, networks, and power levels, which can shorten your path to hardware.</p>
+          </details>
+          <details>
+            <summary>How do engagements work?</summary>
+            <p>We work project-based or as a long-term engineering partner. Every engagement starts with a discovery conversation about your requirements, and we respond to inquiries within 48 hours. Program details are shared under NDA.</p>
+          </details>
+          <details>
+            <summary>Where are you located?</summary>
+            <p>SiCore Research is headquartered in Ann Arbor, Michigan.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="cta-content">
+        <h2>Have a Hard Power Problem?</h2>
+        <p>Tell us about your program: power and voltage requirements, thermal constraints, and timeline. We'll respond within 48 hours with a read on fit and a proposed path to hardware.</p>
+        <a class="btn-primary" href="index.html#contact">Start a Project →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="images/SiC_Logo_Inverted.svg" alt="SiCore Research">
+            <span class="footer-brand-name">SiCore Research</span>
+          </div>
+          <div class="footer-tagline">Michigan LLC &nbsp;·&nbsp; Advanced Power Electronics &nbsp;·&nbsp; <em>Maximum Power Density. Minimum Time to Hardware.</em></div>
+          <p>Power electronics and electric motor design for motorsports, defense, aerospace, and industrial programs. Home of Kiowa, the module-less 800 V SiC inverter.</p>
+        </div>
+        <div>
+          <h4>Navigate</h4>
+          <a href="index.html">Home</a>
+          <a href="services.html">Services</a>
+          <a href="kiowa.html">Kiowa</a>
+          <a href="index.html#markets">Markets</a>
+          <a href="blog.html">Research</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <a href="careers.html">Careers</a>
+          <a href="index.html#contact">Partner Inquiry</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Use</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 SiCore Research, LLC. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;|&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu
+    document.getElementById('menuBtn').addEventListener('click', () => {
+      const nav = document.querySelector('.nav-menu');
+      const open = nav.getAttribute('data-open') === 'true';
+      nav.setAttribute('data-open', !open);
+      Object.assign(nav.style, open ? {
+        display:'none'
+      } : {
+        display:'flex', flexDirection:'column', position:'fixed',
+        top:'60px', left:'0', right:'0', background:'rgba(8,8,8,.98)',
+        padding:'28px 40px', gap:'20px', borderBottom:'1px solid rgba(224,120,32,.12)',
+        zIndex:'99'
+      });
+    });
+  </script>
+</body>
+</html>
